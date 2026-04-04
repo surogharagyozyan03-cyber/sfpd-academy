@@ -1,8 +1,10 @@
 const Database = require('better-sqlite3');
 
-const db = new Database('./data/sfpd.db');
+// создаст файл прямо в /app
+const db = new Database('sfpd.db');
 
-// Удаляем ВСЕХ пользователей
+// очистка пользователей
 db.prepare("DELETE FROM users").run();
 
 console.log("✅ Все пользователи удалены");
+process.exit();
