@@ -9,79 +9,42 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #e8f0fb;
-      color: #1a2a4a;
-      min-height: 100vh;
-      display: flex;
+      background: #e8f0fb; color: #1a2a4a; min-height: 100vh; display: flex;
     }
 
+    /* ── AUTH ── */
     #auth-wrap {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-      width: 100%;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 2rem 1rem; width: 100%;
     }
-
     .card {
-      background: #ffffff;
-      border: 1px solid #c2d4ee;
-      border-radius: 14px;
-      padding: 2.5rem 2.25rem;
-      width: 100%;
-      max-width: 380px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 0 4px 24px rgba(24, 80, 180, 0.08);
+      background: #fff; border: 1px solid #c2d4ee; border-radius: 14px;
+      padding: 2.5rem 2.25rem; width: 100%; max-width: 380px;
+      display: flex; flex-direction: column; align-items: center;
+      box-shadow: 0 4px 24px rgba(24,80,180,0.08);
     }
-
     .badge-icon { width: 68px; height: 68px; margin-bottom: 0.75rem; }
     .dept-name { font-size: 22px; font-weight: 700; color: #1a50b4; letter-spacing: 0.12em; margin-bottom: 4px; }
     .page-title { font-size: 15px; font-weight: 700; color: #1a2a4a; letter-spacing: 0.08em; margin-bottom: 4px; }
     .page-subtitle { font-size: 13px; color: #6b82aa; margin-bottom: 1.75rem; text-align: center; }
-
     .form-group { width: 100%; margin-bottom: 1rem; }
     .form-group label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; color: #4a6090; margin-bottom: 6px; }
-
-    .input-wrap {
-      display: flex; border: 1px solid #c2d4ee; border-radius: 8px;
-      overflow: hidden; background: #f0f5fd; transition: border-color 0.15s;
-    }
+    .input-wrap { display: flex; border: 1px solid #c2d4ee; border-radius: 8px; overflow: hidden; background: #f0f5fd; transition: border-color 0.15s; }
     .input-wrap:focus-within { border-color: #1a50b4; }
-    .input-prefix {
-      padding: 0 12px; background: #dce8f8; color: #4a6090; font-size: 13px;
-      display: flex; align-items: center; border-right: 1px solid #c2d4ee; white-space: nowrap;
-    }
-    .form-group input {
-      width: 100%; background: #f0f5fd; border: none; outline: none;
-      padding: 11px 14px; font-size: 14px; font-family: inherit; color: #1a2a4a;
-    }
+    .input-prefix { padding: 0 12px; background: #dce8f8; color: #4a6090; font-size: 13px; display: flex; align-items: center; border-right: 1px solid #c2d4ee; white-space: nowrap; }
+    .form-group input { width: 100%; background: #f0f5fd; border: none; outline: none; padding: 11px 14px; font-size: 14px; font-family: inherit; color: #1a2a4a; }
     .form-group input::placeholder { color: #8aa0c8; }
     .input-hint { font-size: 11px; color: #8aa0c8; margin-top: 5px; }
-
-    .btn-blue {
-      width: 100%; padding: 12px;
-      background: linear-gradient(135deg, #1a50b4, #1244a0);
-      color: #ffffff; border: none; border-radius: 8px;
-      font-size: 15px; font-weight: 700; font-family: inherit;
-      letter-spacing: 0.05em; cursor: pointer; margin-top: 0.5rem;
-      transition: opacity 0.15s, transform 0.1s;
-    }
+    .btn-blue { width: 100%; padding: 12px; background: linear-gradient(135deg,#1a50b4,#1244a0); color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; font-family: inherit; letter-spacing: 0.05em; cursor: pointer; margin-top: 0.5rem; transition: opacity 0.15s, transform 0.1s; }
     .btn-blue:hover { opacity: 0.9; }
     .btn-blue:active { transform: scale(0.99); }
     .btn-blue:disabled { opacity: 0.5; cursor: not-allowed; }
-
     .links-row { display: flex; gap: 1.25rem; margin-top: 1.25rem; flex-wrap: wrap; justify-content: center; }
     .link-btn { background: none; border: none; color: #1a50b4; font-size: 13px; font-family: inherit; cursor: pointer; padding: 0; }
     .link-btn:hover { opacity: 0.75; }
-
     .back-link { color: #6b82aa; font-size: 13px; margin-top: 1.25rem; }
     .back-link span { color: #1a50b4; cursor: pointer; font-weight: 600; }
-
     .error-msg { font-size: 12px; color: #c03030; width: 100%; margin-top: -4px; margin-bottom: 8px; display: none; }
-
     .page { display: none; flex-direction: column; align-items: center; width: 100%; }
     .page.active { display: flex; }
 
@@ -89,87 +52,66 @@
     #dashboard { display: none; flex: 1; flex-direction: row; }
 
     .sidebar {
-      width: 250px;
-      background: #ffffff;
-      border-right: 1px solid #c2d4ee;
-      padding: 1.5rem 0;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 2px 0 10px rgba(24, 80, 180, 0.05);
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
+      width: 250px; background: #fff; border-right: 1px solid #c2d4ee;
+      padding: 1.5rem 0; display: flex; flex-direction: column;
+      box-shadow: 2px 0 10px rgba(24,80,180,0.05);
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
     }
-
-    .sidebar-header {
-      padding: 0 1.5rem 1.5rem;
-      text-align: center;
-      border-bottom: 1px solid #e0eaf8;
-      margin-bottom: 1.5rem;
-    }
+    .sidebar-header { padding: 0 1.5rem 1.5rem; text-align: center; border-bottom: 1px solid #e0eaf8; margin-bottom: 1.5rem; }
     .sidebar-logo { width: 50px; height: 50px; margin: 0 auto 0.5rem; display: block; }
     .sidebar-title { font-size: 1.1rem; font-weight: 700; color: #1a50b4; line-height: 1.2; letter-spacing: 0.05em; }
     .sidebar-subtitle { font-size: 0.8rem; color: #6b82aa; }
-
     .sidebar-menu { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
     .sidebar-menu-item { margin-bottom: 2px; }
-    .sidebar-menu-item a {
-      display: flex; align-items: center; padding: 10px 1.5rem;
-      color: #4a6090; text-decoration: none; font-size: 14px; font-weight: 600;
-      transition: all 0.15s ease; border-left: 3px solid transparent;
-    }
+    .sidebar-menu-item a { display: flex; align-items: center; padding: 10px 1.5rem; color: #4a6090; text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.15s ease; border-left: 3px solid transparent; }
     .sidebar-menu-item a:hover { background: #f0f5fd; color: #1a50b4; border-left-color: #1a50b4; }
     .sidebar-menu-item a.active { background: #e8f0fb; color: #1a50b4; border-left-color: #1a50b4; }
     .sidebar-menu-item svg { margin-right: 10px; width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
 
-    .sidebar-footer {
-      padding: 1.5rem;
+    /* Профиль внизу сайдбара */
+    .sidebar-profile {
+      margin: auto 0 0;
+      padding: 1rem 1.25rem;
       border-top: 1px solid #e0eaf8;
-      margin-top: auto;
-      text-align: center;
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; transition: background 0.15s;
     }
-    .sidebar-user { font-size: 14px; font-weight: 600; color: #1a50b4; margin-bottom: 8px; }
-    .sidebar-user strong { color: #1a2a4a; }
-    .sidebar-logout-btn {
-      background: none; border: 1px solid #c2d4ee; border-radius: 8px;
-      padding: 6px 14px; color: #6b82aa; font-size: 13px; font-family: inherit;
-      cursor: pointer; transition: all 0.15s; width: 100%;
+    .sidebar-profile:hover { background: #f0f5fd; }
+    .profile-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+      background: #1a50b4;
     }
-    .sidebar-logout-btn:hover { border-color: #ff6b6b; color: #c03030; }
+    .profile-info { flex: 1; min-width: 0; }
+    .profile-name { font-size: 13px; font-weight: 600; color: #1a2a4a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-position { font-size: 11px; font-weight: 600; }
+    .profile-logout { background: none; border: none; cursor: pointer; padding: 4px; color: #8aa0c8; transition: color 0.15s; flex-shrink: 0; }
+    .profile-logout:hover { color: #c03030; }
+
+    /* Цвета должностей */
+    .pos-chief      { color: #1a50b4; }
+    .pos-depchief   { color: #c03030; }
+    .pos-inspector  { color: #8b44d4; }
+    .pos-instructor { color: #e07020; }
+    .pos-trainee    { color: #1a7a40; }
 
     .dashboard-content { flex: 1; display: flex; flex-direction: column; padding: 2rem 1.5rem; overflow-y: auto; }
     .main-content { max-width: 900px; width: 100%; margin: 0 auto; }
-
     .dashboard-page { display: none; }
     .dashboard-page.active { display: block; }
 
-    /* Tabs */
     .dash-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
-    .dash-tab {
-      padding: 8px 20px; border-radius: 8px; font-size: 14px;
-      border: 1px solid #c2d4ee; cursor: pointer;
-      background: #ffffff; color: #4a6090; font-family: inherit; transition: all 0.15s;
-    }
+    .dash-tab { padding: 8px 20px; border-radius: 8px; font-size: 14px; border: 1px solid #c2d4ee; cursor: pointer; background: #fff; color: #4a6090; font-family: inherit; transition: all 0.15s; }
     .dash-tab:hover { border-color: #1a50b4; color: #1a50b4; }
-    .dash-tab.active { background: #1a50b4; color: #ffffff; border-color: #1a50b4; font-weight: 600; }
+    .dash-tab.active { background: #1a50b4; color: #fff; border-color: #1a50b4; font-weight: 600; }
 
-    /* Reports */
     .reports-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .reports-count { font-size: 14px; color: #4a6090; }
-    .btn-new {
-      padding: 8px 18px; background: #1a50b4; color: #ffffff;
-      border: none; border-radius: 8px; font-size: 13px; font-weight: 600;
-      font-family: inherit; cursor: pointer; transition: opacity 0.15s;
-    }
+    .btn-new { padding: 8px 18px; background: #1a50b4; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: opacity 0.15s; }
     .btn-new:hover { opacity: 0.88; }
 
-    .report-card {
-      background: #ffffff; border: 1px solid #c2d4ee; border-radius: 12px;
-      padding: 1rem 1.25rem; margin-bottom: 10px;
-      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-      transition: border-color 0.15s; box-shadow: 0 1px 6px rgba(24,80,180,0.05);
-    }
+    .report-card { background: #fff; border: 1px solid #c2d4ee; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 10px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; transition: border-color 0.15s; box-shadow: 0 1px 6px rgba(24,80,180,0.05); }
     .report-card:hover { border-color: #1a50b4; }
     .report-left { display: flex; flex-direction: column; gap: 3px; flex: 1; }
     .report-cadet { font-size: 15px; font-weight: 600; color: #1a50b4; }
@@ -178,97 +120,106 @@
     .report-author { font-size: 11px; color: #aab8d0; font-style: italic; margin-top: 2px; }
     .report-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
 
-    .status-badge {
-      font-size: 12px; font-weight: 600; padding: 4px 12px;
-      border-radius: 20px; white-space: nowrap;
-    }
+    .status-badge { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
     .status-pending  { background: #e8f0fb; color: #1a50b4; border: 1px solid #b0c8f0; }
     .status-approved { background: #e8f8ee; color: #1a7a40; border: 1px solid #a0d8b0; }
     .status-rejected { background: #fde8e8; color: #c03030; border: 1px solid #f0a0a0; }
 
-    .btn-icon {
-      background: none; border: 1px solid #c2d4ee; border-radius: 6px;
-      padding: 4px 8px; cursor: pointer; font-size: 13px; color: #6b82aa;
-      font-family: inherit; transition: all 0.15s;
-    }
+    .btn-icon { background: none; border: 1px solid #c2d4ee; border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 13px; color: #6b82aa; font-family: inherit; transition: all 0.15s; }
     .btn-approve { color: #1a7a40; }
     .btn-approve:hover { border-color: #1a7a40 !important; color: #1a7a40 !important; }
     .btn-reject:hover { border-color: #c03030 !important; color: #c03030 !important; }
     .btn-delete:hover { border-color: #c03030; color: #c03030; }
 
-    /* Form */
-    .form-card {
-      background: #ffffff; border: 1px solid #c2d4ee;
-      border-radius: 12px; padding: 1.75rem;
-      box-shadow: 0 1px 6px rgba(24,80,180,0.05);
-    }
+    .form-card { background: #fff; border: 1px solid #c2d4ee; border-radius: 12px; padding: 1.75rem; box-shadow: 0 1px 6px rgba(24,80,180,0.05); }
     .form-card-title { font-size: 16px; font-weight: 600; color: #1a50b4; margin-bottom: 1.25rem; }
-    .form-section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.07em; color: #8aa0c8;
-      text-transform: uppercase; margin: 1.25rem 0 0.75rem;
-      padding-bottom: 5px; border-bottom: 1px solid #dce8f8;
-    }
+    .form-section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; color: #8aa0c8; text-transform: uppercase; margin: 1.25rem 0 0.75rem; padding-bottom: 5px; border-bottom: 1px solid #dce8f8; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
     @media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
     .dash-form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
     .dash-form-group label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: #4a6090; text-transform: uppercase; }
-    .dash-form-group input,
-    .dash-form-group select,
-    .dash-form-group textarea {
-      background: #f0f5fd; border: 1px solid #c2d4ee; border-radius: 8px;
-      padding: 9px 12px; font-size: 14px; font-family: inherit;
-      color: #1a2a4a; outline: none; transition: border-color 0.15s;
-    }
+    .dash-form-group input, .dash-form-group select, .dash-form-group textarea { background: #f0f5fd; border: 1px solid #c2d4ee; border-radius: 8px; padding: 9px 12px; font-size: 14px; font-family: inherit; color: #1a2a4a; outline: none; transition: border-color 0.15s; }
     .dash-form-group select option { background: #f0f5fd; }
-    .dash-form-group input:focus,
-    .dash-form-group select:focus,
-    .dash-form-group textarea:focus { border-color: #1a50b4; }
+    .dash-form-group input:focus, .dash-form-group select:focus, .dash-form-group textarea:focus { border-color: #1a50b4; }
     .dash-form-group textarea { resize: vertical; min-height: 80px; }
     .req { color: #c03030; margin-left: 2px; }
     .opt { font-size: 11px; color: #8aa0c8; margin-left: 4px; font-weight: 400; text-transform: none; letter-spacing: 0; }
 
-    .empty-state {
-      text-align: center; padding: 3.5rem 1rem; color: #8aa0c8; font-size: 14px;
-      background: #ffffff; border: 1px solid #c2d4ee; border-radius: 12px;
-    }
+    .empty-state { text-align: center; padding: 3.5rem 1rem; color: #8aa0c8; font-size: 14px; background: #fff; border: 1px solid #c2d4ee; border-radius: 12px; }
     .empty-icon { font-size: 36px; margin-bottom: 0.75rem; opacity: 0.4; }
-
-    .success-banner {
-      background: #e8f8ee; border: 1px solid #a0d8b0; border-radius: 8px;
-      padding: 10px 14px; font-size: 13px; color: #1a7a40;
-      margin-bottom: 1rem; display: none;
-    }
-
-    .section-title {
-      font-size: 18px; font-weight: 700; color: #1a2a4a;
-      margin-bottom: 1.25rem; padding-bottom: 0.75rem;
-      border-bottom: 2px solid #e0eaf8;
-    }
-
-    .placeholder-card {
-      background: #ffffff; border: 1px solid #c2d4ee; border-radius: 12px;
-      padding: 3rem 2rem; text-align: center;
-      box-shadow: 0 1px 6px rgba(24,80,180,0.05);
-    }
+    .success-banner { background: #e8f8ee; border: 1px solid #a0d8b0; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #1a7a40; margin-bottom: 1rem; display: none; }
+    .section-title { font-size: 18px; font-weight: 700; color: #1a2a4a; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 2px solid #e0eaf8; }
+    .placeholder-card { background: #fff; border: 1px solid #c2d4ee; border-radius: 12px; padding: 3rem 2rem; text-align: center; box-shadow: 0 1px 6px rgba(24,80,180,0.05); }
     .placeholder-icon { font-size: 40px; margin-bottom: 1rem; opacity: 0.35; }
     .placeholder-text { color: #8aa0c8; font-size: 14px; line-height: 1.6; }
 
-    @media (max-width: 700px) {
-      .sidebar { width: 200px; }
+    /* ── МОДАЛЬНОЕ ОКНО ПРОФИЛЯ ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(10,20,60,0.45);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.2s;
     }
-    @media (max-width: 520px) {
-      .sidebar { display: none; }
-      .dashboard-content { padding: 1rem; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #fff; border-radius: 16px; width: 100%; max-width: 480px;
+      box-shadow: 0 8px 40px rgba(24,80,180,0.18); overflow: hidden;
+      transform: translateY(16px); transition: transform 0.2s;
     }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-header {
+      background: #1a50b4; padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .modal-avatar { width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .modal-name { font-size: 18px; font-weight: 700; color: #fff; }
+    .modal-pos { font-size: 13px; font-weight: 600; margin-top: 2px; }
+    .modal-close { margin-left: auto; background: rgba(255,255,255,0.15); border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+    .modal-close:hover { background: rgba(255,255,255,0.3); }
+    .modal-body { padding: 1.5rem; }
+    .modal-section { margin-bottom: 1.5rem; }
+    .modal-section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; color: #8aa0c8; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #e0eaf8; }
+
+    /* Карточки должностей */
+    .position-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .pos-card {
+      border: 2px solid #e0eaf8; border-radius: 10px; padding: 10px 12px;
+      cursor: pointer; transition: all 0.15s; background: #f8fafd;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pos-card:hover { border-color: currentColor; background: #fff; }
+    .pos-card.selected { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .pos-card.selected .pos-dot { opacity: 1; transform: scale(1); }
+    .pos-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0; transform: scale(0); transition: all 0.15s; flex-shrink: 0; }
+    .pos-label { font-size: 13px; font-weight: 600; }
+
+    /* Информация */
+    .info-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f5fd; font-size: 13px; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: #8aa0c8; }
+    .info-value { color: #1a2a4a; font-weight: 600; }
+
+    /* Соцсети */
+    .vk-link { display: inline-flex; align-items: center; gap: 6px; background: #e8f0fb; color: #1a50b4; text-decoration: none; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; transition: background 0.15s; }
+    .vk-link:hover { background: #d0e0f8; }
+
+    /* Смена пароля */
+    .modal-input { width: 100%; background: #f0f5fd; border: 1px solid #c2d4ee; border-radius: 8px; padding: 9px 12px; font-size: 14px; font-family: inherit; color: #1a2a4a; outline: none; transition: border-color 0.15s; margin-bottom: 8px; }
+    .modal-input:focus { border-color: #1a50b4; }
+    .btn-save { padding: 8px 20px; background: #1a50b4; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: opacity 0.15s; }
+    .btn-save:hover { opacity: 0.88; }
+    .modal-msg { font-size: 12px; margin-top: 6px; display: none; }
+    .modal-msg.ok { color: #1a7a40; display: block; }
+    .modal-msg.err { color: #c03030; display: block; }
+
+    @media (max-width: 700px) { .sidebar { width: 200px; } }
+    @media (max-width: 520px) { .sidebar { display: none; } .dashboard-content { padding: 1rem; } }
   </style>
 </head>
 <body>
 
-<!-- ══════════════ AUTH ══════════════ -->
+<!-- ══ AUTH ══ -->
 <div id="auth-wrap">
   <div class="card">
-
-    <!-- LOGIN -->
     <div class="page active" id="page-login">
       <svg class="badge-icon" viewBox="0 0 72 72" fill="none">
         <polygon points="36,4 44,14 56,12 58,24 68,30 62,41 66,53 54,55 48,65 36,60 24,65 18,55 6,53 10,41 4,30 14,24 16,12 28,14" fill="#1a50b4" stroke="#1244a0" stroke-width="1.5"/>
@@ -291,12 +242,9 @@
       </div>
       <div id="login-error" class="error-msg"></div>
       <button class="btn-blue" id="login-btn" onclick="doLogin()">Войти</button>
-      <div class="links-row">
-        <button class="link-btn" onclick="goTo('page-register')">Регистрация</button>
-      </div>
+      <div class="links-row"><button class="link-btn" onclick="goTo('page-register')">Регистрация</button></div>
     </div>
 
-    <!-- REGISTER -->
     <div class="page" id="page-register">
       <svg class="badge-icon" viewBox="0 0 72 72" fill="none">
         <polygon points="36,4 44,14 56,12 58,24 68,30 62,41 66,53 54,55 48,65 36,60 24,65 18,55 6,53 10,41 4,30 14,24 16,12 28,14" fill="#1a50b4" stroke="#1244a0" stroke-width="1.5"/>
@@ -309,7 +257,7 @@
       <div class="dept-name">SFPD</div>
       <div class="page-title">РЕГИСТРАЦИЯ</div>
       <div class="form-group" style="margin-top:1rem;">
-        <label>ИГРОВОЙ НИКНЕЙМ — ИСПОЛЬЗУЕТСЯ ДЛЯ ВХОДА</label>
+        <label>ИГРОВОЙ НИКНЕЙМ</label>
         <div class="input-wrap"><input type="text" id="reg-nick" placeholder="Nick Name" /></div>
         <div class="input-hint">Например: Nick_Name</div>
       </div>
@@ -333,11 +281,80 @@
       <button class="btn-blue" id="reg-btn" onclick="doRegister()">Зарегистрироваться</button>
       <div class="back-link">Уже есть аккаунт? <span onclick="goTo('page-login')">Войти</span></div>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════════ DASHBOARD ══════════════ -->
+<!-- ══ MODAL ПРОФИЛЯ ══ -->
+<div class="modal-overlay" id="profile-modal" onclick="closeProfileIfOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-avatar" id="modal-avatar">MA</div>
+      <div>
+        <div class="modal-name" id="modal-name">—</div>
+        <div class="modal-pos" id="modal-pos-header">—</div>
+      </div>
+      <button class="modal-close" onclick="closeProfile()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Должность -->
+      <div class="modal-section">
+        <div class="modal-section-title">Должность</div>
+        <div class="position-grid">
+          <div class="pos-card pos-chief" data-pos="Chief of PA" onclick="selectPosition(this)">
+            <div class="pos-dot"></div>
+            <span class="pos-label">Chief of PA</span>
+          </div>
+          <div class="pos-card pos-depchief" data-pos="Dep.Chief of PA" onclick="selectPosition(this)">
+            <div class="pos-dot"></div>
+            <span class="pos-label">Dep.Chief of PA</span>
+          </div>
+          <div class="pos-card pos-inspector" data-pos="Inspector of PA" onclick="selectPosition(this)">
+            <div class="pos-dot"></div>
+            <span class="pos-label">Inspector of PA</span>
+          </div>
+          <div class="pos-card pos-instructor" data-pos="Instructor of PA" onclick="selectPosition(this)">
+            <div class="pos-dot"></div>
+            <span class="pos-label">Instructor of PA</span>
+          </div>
+          <div class="pos-card pos-trainee" data-pos="Trainee of PA" onclick="selectPosition(this)" style="grid-column:1/-1;">
+            <div class="pos-dot"></div>
+            <span class="pos-label">Trainee of PA</span>
+          </div>
+        </div>
+        <div id="pos-msg" class="modal-msg"></div>
+      </div>
+
+      <!-- Информация -->
+      <div class="modal-section">
+        <div class="modal-section-title">Информация</div>
+        <div class="info-row">
+          <span class="info-label">Дата регистрации</span>
+          <span class="info-value" id="modal-reg-date">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">ВКонтакте</span>
+          <span class="info-value">
+            <a id="modal-vk" href="#" target="_blank" class="vk-link">ВКонтакте</a>
+          </span>
+        </div>
+      </div>
+
+      <!-- Смена пароля -->
+      <div class="modal-section" style="margin-bottom:0;">
+        <div class="modal-section-title">Сменить пароль</div>
+        <input class="modal-input" type="password" id="pw-old" placeholder="Текущий пароль" />
+        <input class="modal-input" type="password" id="pw-new" placeholder="Новый пароль (мин. 6 символов)" />
+        <input class="modal-input" type="password" id="pw-new2" placeholder="Повторите новый пароль" />
+        <button class="btn-save" onclick="changePassword()">Сохранить</button>
+        <div id="pw-msg" class="modal-msg"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
 <div id="dashboard">
   <div class="sidebar">
     <div class="sidebar-header">
@@ -386,18 +403,22 @@
       </li>
     </ul>
 
-    <div class="sidebar-footer">
-      <div class="sidebar-user">Привет, <strong id="sidebar-nick">—</strong>!</div>
-      <button class="sidebar-logout-btn" onclick="doLogout()">Выйти</button>
+    <!-- Профиль внизу -->
+    <div class="sidebar-profile" onclick="openProfile()">
+      <div class="profile-avatar" id="sidebar-avatar">?</div>
+      <div class="profile-info">
+        <div class="profile-name" id="sidebar-nick">—</div>
+        <div class="profile-position" id="sidebar-pos">—</div>
+      </div>
+      <button class="profile-logout" onclick="event.stopPropagation();doLogout();" title="Выйти">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
   </div>
 
   <div class="dashboard-content">
     <div class="main-content">
-
-      <div id="success-banner" class="success-banner">
-        Отчёт успешно отправлен и находится на рассмотрении.
-      </div>
+      <div id="success-banner" class="success-banner">Отчёт успешно отправлен и находится на рассмотрении.</div>
 
       <!-- МОИ ОТЧЁТЫ -->
       <div id="page-my-reports" class="dashboard-page active">
@@ -405,30 +426,20 @@
           <button class="dash-tab active" id="tab-list-btn" onclick="switchReportsTab('list')">Мои отчёты</button>
           <button class="dash-tab" id="tab-form-btn" onclick="switchReportsTab('form')">+ Новый отчёт</button>
         </div>
-
         <div id="my-list-view">
           <div class="reports-header">
             <span class="reports-count" id="my-reports-count">Загрузка...</span>
             <button class="btn-new" onclick="switchReportsTab('form')">+ Новый отчёт</button>
           </div>
-          <div id="my-reports-list">
-            <div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>
-          </div>
+          <div id="my-reports-list"><div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div></div>
         </div>
-
         <div id="my-form-view" style="display:none;">
           <div class="form-card">
             <div class="form-card-title">Новый отчёт</div>
             <div class="form-section-label">Информация об экзамене</div>
             <div class="form-row">
-              <div class="dash-form-group">
-                <label>Кадет <span class="req">*</span></label>
-                <input type="text" id="f-cadet" placeholder="Ник кадета" />
-              </div>
-              <div class="dash-form-group">
-                <label>Инструктор <span class="req">*</span></label>
-                <input type="text" id="f-instructor" placeholder="Ник инструктора" />
-              </div>
+              <div class="dash-form-group"><label>Кадет <span class="req">*</span></label><input type="text" id="f-cadet" placeholder="Ник кадета" /></div>
+              <div class="dash-form-group"><label>Инструктор <span class="req">*</span></label><input type="text" id="f-instructor" placeholder="Ник инструктора" /></div>
             </div>
             <div class="form-row">
               <div class="dash-form-group">
@@ -444,20 +455,11 @@
                   <option value="Тренировка">Тренировка</option>
                 </select>
               </div>
-              <div class="dash-form-group">
-                <label>Дата экзамена</label>
-                <input type="date" id="f-date" />
-              </div>
+              <div class="dash-form-group"><label>Дата экзамена</label><input type="date" id="f-date" /></div>
             </div>
             <div class="form-section-label">Доказательства</div>
-            <div class="dash-form-group">
-              <label>Ссылка на скриншоты <span class="req">*</span></label>
-              <input type="url" id="f-link" placeholder="Imgur, Google Drive, Discord и т.д." />
-            </div>
-            <div class="dash-form-group">
-              <label>Примечание <span class="opt">необязательно</span></label>
-              <textarea id="f-note" placeholder="Дополнительные комментарии..."></textarea>
-            </div>
+            <div class="dash-form-group"><label>Ссылка на скриншоты <span class="req">*</span></label><input type="url" id="f-link" placeholder="Imgur, Google Drive, Discord и т.д." /></div>
+            <div class="dash-form-group"><label>Примечание <span class="opt">необязательно</span></label><textarea id="f-note" placeholder="Дополнительные комментарии..."></textarea></div>
             <div id="form-error" class="error-msg"></div>
             <button class="btn-blue" style="margin-top:0.75rem;" onclick="submitReport()">Отправить</button>
           </div>
@@ -470,44 +472,47 @@
         <div class="reports-header">
           <span class="reports-count" id="all-reports-count">Загрузка...</span>
         </div>
-        <div id="all-reports-list">
-          <div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>
-        </div>
+        <div id="all-reports-list"><div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div></div>
       </div>
 
       <!-- ЛЕКЦИИ -->
       <div id="page-lectures" class="dashboard-page">
         <div class="section-title">Лекции</div>
-        <div class="placeholder-card">
-          <div class="placeholder-icon">📚</div>
-          <div class="placeholder-text">Раздел с учебными материалами и лекциями.<br>Скоро будет доступен.</div>
-        </div>
+        <div class="placeholder-card"><div class="placeholder-icon">📚</div><div class="placeholder-text">Раздел в разработке.</div></div>
       </div>
 
       <!-- БИНДЫ -->
       <div id="page-binds" class="dashboard-page">
         <div class="section-title">Бинды</div>
-        <div class="placeholder-card">
-          <div class="placeholder-icon">⌨️</div>
-          <div class="placeholder-text">Полезные бинды для работы в департаменте.<br>Раздел в разработке.</div>
-        </div>
+        <div class="placeholder-card"><div class="placeholder-icon">⌨️</div><div class="placeholder-text">Раздел в разработке.</div></div>
       </div>
 
       <!-- ОБ ОТДЕЛЕ -->
       <div id="page-about" class="dashboard-page">
         <div class="section-title">Об отделе</div>
-        <div class="placeholder-card">
-          <div class="placeholder-icon">🏢</div>
-          <div class="placeholder-text">Информация о SFPD, ранговой системе и основных правилах.<br>Раздел в разработке.</div>
-        </div>
+        <div class="placeholder-card"><div class="placeholder-icon">🏢</div><div class="placeholder-text">Раздел в разработке.</div></div>
       </div>
-
     </div>
   </div>
 </div>
 
 <script>
-  let CURRENT_USER = '';
+  let CURRENT_USER = {};
+
+  const POSITIONS = {
+    'Chief of PA':      { cls: 'pos-chief',      color: '#1a50b4' },
+    'Dep.Chief of PA':  { cls: 'pos-depchief',   color: '#c03030' },
+    'Inspector of PA':  { cls: 'pos-inspector',  color: '#8b44d4' },
+    'Instructor of PA': { cls: 'pos-instructor', color: '#e07020' },
+    'Trainee of PA':    { cls: 'pos-trainee',    color: '#1a7a40' },
+  };
+
+  function posClass(pos) { return POSITIONS[pos] ? POSITIONS[pos].cls : 'pos-trainee'; }
+  function posColor(pos) { return POSITIONS[pos] ? POSITIONS[pos].color : '#1a7a40'; }
+
+  function getInitials(name) {
+    return name.split(/[\s_]+/).map(w => w[0]).join('').toUpperCase().slice(0,2);
+  }
 
   // ── AUTH ──────────────────────────────────────────────
   function goTo(pageId) {
@@ -516,37 +521,133 @@
     document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
   }
 
-  function showDashboard(nickname) {
-    CURRENT_USER = nickname;
+  function showDashboard(user) {
+    CURRENT_USER = user;
     document.getElementById('auth-wrap').style.display = 'none';
     document.getElementById('dashboard').style.display = 'flex';
-    document.getElementById('sidebar-nick').textContent = nickname;
+    updateSidebarProfile(user);
     switchPage('my-reports');
+  }
+
+  function updateSidebarProfile(user) {
+    const pos = user.position || 'Trainee of PA';
+    document.getElementById('sidebar-nick').textContent = user.nickname;
+    document.getElementById('sidebar-pos').textContent = pos;
+    document.getElementById('sidebar-pos').className = 'profile-position ' + posClass(pos);
+    const av = document.getElementById('sidebar-avatar');
+    av.textContent = getInitials(user.nickname);
+    av.style.background = posColor(pos);
   }
 
   function showAuth() {
     document.getElementById('auth-wrap').style.display = 'flex';
     document.getElementById('dashboard').style.display = 'none';
-    CURRENT_USER = '';
+    CURRENT_USER = {};
   }
 
-  // ── SIDEBAR NAV ───────────────────────────────────────
+  // ── ПРОФИЛЬ МОДАЛ ─────────────────────────────────────
+  function openProfile() {
+    const user = CURRENT_USER;
+    const pos = user.position || 'Trainee of PA';
+
+    document.getElementById('modal-name').textContent = user.nickname || '—';
+    document.getElementById('modal-avatar').textContent = getInitials(user.nickname || '?');
+    document.getElementById('modal-avatar').style.background = posColor(pos);
+
+    const hdr = document.getElementById('modal-pos-header');
+    hdr.textContent = pos;
+    hdr.style.color = 'rgba(255,255,255,0.85)';
+
+    // Дата регистрации
+    if (user.created_at) {
+      const d = new Date(user.created_at);
+      document.getElementById('modal-reg-date').textContent = d.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
+
+    // ВК
+    const vkLink = document.getElementById('modal-vk');
+    if (user.vk_page) {
+      const vkUrl = user.vk_page.startsWith('http') ? user.vk_page : 'https://vk.com/' + user.vk_page;
+      vkLink.href = vkUrl;
+      vkLink.textContent = 'vk.com/' + user.vk_page.replace(/^https?:\/\/vk\.com\//,'');
+    }
+
+    // Выбранная должность
+    document.querySelectorAll('.pos-card').forEach(c => {
+      c.classList.toggle('selected', c.dataset.pos === pos);
+      const color = posColor(c.dataset.pos);
+      c.style.color = color;
+      c.style.borderColor = c.classList.contains('selected') ? color : '';
+    });
+
+    // Очищаем поля пароля
+    ['pw-old','pw-new','pw-new2'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('pw-msg').className = 'modal-msg';
+    document.getElementById('pos-msg').className = 'modal-msg';
+
+    document.getElementById('profile-modal').classList.add('open');
+  }
+
+  function closeProfile() { document.getElementById('profile-modal').classList.remove('open'); }
+  function closeProfileIfOutside(e) { if (e.target === document.getElementById('profile-modal')) closeProfile(); }
+
+  async function selectPosition(card) {
+    const pos = card.dataset.pos;
+    document.querySelectorAll('.pos-card').forEach(c => {
+      c.classList.remove('selected');
+      c.style.borderColor = '';
+    });
+    card.classList.add('selected');
+    card.style.borderColor = posColor(pos);
+
+    const data = await api('PATCH', '/api/profile/position', { position: pos });
+    const msg = document.getElementById('pos-msg');
+    if (data.success) {
+      CURRENT_USER.position = pos;
+      updateSidebarProfile(CURRENT_USER);
+      // Обновляем шапку модала
+      document.getElementById('modal-pos-header').textContent = pos;
+      document.getElementById('modal-avatar').style.background = posColor(pos);
+      msg.textContent = 'Должность обновлена!';
+      msg.className = 'modal-msg ok';
+    } else {
+      msg.textContent = data.error || 'Ошибка';
+      msg.className = 'modal-msg err';
+    }
+    setTimeout(() => msg.className = 'modal-msg', 2000);
+  }
+
+  async function changePassword() {
+    const oldP = document.getElementById('pw-old').value;
+    const newP = document.getElementById('pw-new').value;
+    const newP2 = document.getElementById('pw-new2').value;
+    const msg = document.getElementById('pw-msg');
+    if (newP !== newP2) { msg.textContent = 'Пароли не совпадают'; msg.className = 'modal-msg err'; return; }
+    const data = await api('PATCH', '/api/profile/password', { old_password: oldP, new_password: newP });
+    if (data.success) {
+      ['pw-old','pw-new','pw-new2'].forEach(id => document.getElementById(id).value = '');
+      msg.textContent = 'Пароль изменён!';
+      msg.className = 'modal-msg ok';
+    } else {
+      msg.textContent = data.error || 'Ошибка';
+      msg.className = 'modal-msg err';
+    }
+    setTimeout(() => msg.className = 'modal-msg', 3000);
+  }
+
+  // ── NAV ───────────────────────────────────────────────
   function switchPage(pageName) {
     document.querySelectorAll('.sidebar-menu-item a').forEach(a => a.classList.remove('active'));
     document.querySelectorAll('.dashboard-page').forEach(p => p.classList.remove('active'));
-
     const link = document.querySelector(`.sidebar-menu-item a[data-page="${pageName}"]`);
     if (link) link.classList.add('active');
     const page = document.getElementById('page-' + pageName);
     if (page) page.classList.add('active');
-
     document.getElementById('success-banner').style.display = 'none';
-
     if (pageName === 'my-reports') loadMyReports();
     if (pageName === 'all-reports') loadAllReports();
   }
 
-  // ── REPORTS SUBTABS ───────────────────────────────────
   function switchReportsTab(tab) {
     const isList = tab === 'list';
     document.getElementById('my-list-view').style.display = isList ? 'block' : 'none';
@@ -564,7 +665,6 @@
     return r.json();
   }
 
-  // ── LOGIN / REGISTER / LOGOUT ─────────────────────────
   async function doLogin() {
     const nick = document.getElementById('login-nick').value.trim();
     const pass = document.getElementById('login-pass').value;
@@ -573,7 +673,7 @@
     btn.disabled = true; btn.textContent = 'Вход...';
     try {
       const data = await api('POST', '/api/login', { nickname: nick, password: pass });
-      if (data.success) { showDashboard(data.nickname); }
+      if (data.success) { showDashboard(data); }
       else { errEl.textContent = data.error; errEl.style.display = 'block'; }
     } catch { errEl.textContent = 'Ошибка сети.'; errEl.style.display = 'block'; }
     btn.disabled = false; btn.textContent = 'Войти';
@@ -590,7 +690,7 @@
     btn.disabled = true; btn.textContent = 'Регистрация...';
     try {
       const data = await api('POST', '/api/register', { nickname: nick, password: pass, vk_page: vk });
-      if (data.success) { showDashboard(data.nickname); }
+      if (data.success) { showDashboard({ nickname: nick, position: 'Trainee of PA', vk_page: vk }); }
       else { errEl.textContent = data.error; errEl.style.display = 'block'; }
     } catch { errEl.textContent = 'Ошибка сети.'; errEl.style.display = 'block'; }
     btn.disabled = false; btn.textContent = 'Зарегистрироваться';
@@ -598,13 +698,14 @@
 
   async function doLogout() {
     try { await api('POST', '/api/logout'); } finally {
+      closeProfile();
       showAuth(); goTo('page-login');
       document.getElementById('login-nick').value = '';
       document.getElementById('login-pass').value = '';
     }
   }
 
-  // ── МОИ ОТЧЁТЫ ────────────────────────────────────────
+  // ── REPORTS ───────────────────────────────────────────
   async function loadMyReports() {
     const list = document.getElementById('my-reports-list');
     list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>';
@@ -612,11 +713,10 @@
       const data = await api('GET', '/api/reports/my');
       renderReportsList(data.reports || [], 'my-reports-list', 'my-reports-count', true);
     } catch {
-      list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div>Ошибка загрузки отчётов.</div></div>';
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div>Ошибка загрузки.</div></div>';
     }
   }
 
-  // ── ВСЕ ОТЧЁТЫ ────────────────────────────────────────
   async function loadAllReports() {
     const list = document.getElementById('all-reports-list');
     list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>';
@@ -624,65 +724,50 @@
       const data = await api('GET', '/api/reports/all');
       renderReportsList(data.reports || [], 'all-reports-list', 'all-reports-count', false);
     } catch {
-      list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div>Ошибка загрузки отчётов.</div></div>';
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div>Ошибка загрузки.</div></div>';
     }
   }
 
   function renderReportsList(reports, listId, countId, showDeleteBtn) {
     const list = document.getElementById(listId);
     document.getElementById(countId).textContent = 'Всего отчётов: ' + reports.length;
-
     if (!reports.length) {
       list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Отчётов пока нет.</div></div>';
       return;
     }
-
     list.innerHTML = reports.map(r => {
       const statusLabel = r.status === 'pending' ? 'Ожидание' : r.status === 'approved' ? 'Принято' : 'Отклонено';
-      const date = r.exam_date
-        ? new Date(r.exam_date + 'T00:00:00').toLocaleDateString('ru-RU')
-        : new Date(r.created_at).toLocaleDateString('ru-RU');
-      const authorLine = r.author_nickname
-        ? `<div class="report-author">Добавил: ${r.author_nickname}</div>` : '';
+      const date = r.exam_date ? new Date(r.exam_date + 'T00:00:00').toLocaleDateString('ru-RU') : new Date(r.created_at).toLocaleDateString('ru-RU');
+      const authorLine = r.author_nickname ? `<div class="report-author">Добавил: ${r.author_nickname}</div>` : '';
       const adminBtns = r.status === 'pending'
         ? `<button class="btn-icon btn-approve" onclick="setStatus(${r.id},'approved','${listId}','${countId}',${showDeleteBtn})" title="Принять">✓</button>
            <button class="btn-icon btn-reject"  onclick="setStatus(${r.id},'rejected','${listId}','${countId}',${showDeleteBtn})" title="Отклонить">✕</button>` : '';
-      const deleteBtn = showDeleteBtn
-        ? `<button class="btn-icon btn-delete" onclick="deleteReport(${r.id})" title="Удалить">🗑</button>` : '';
-
-      return `
-        <div class="report-card" id="rc-${r.id}">
-          <div class="report-left">
-            <div class="report-cadet">${r.cadet}</div>
-            <div class="report-type">${r.exam_type}</div>
-            <div class="report-meta">
-              Инструктор: ${r.instructor} · ${date}
-              ${r.screenshot_link ? ` · <a href="${r.screenshot_link}" target="_blank" style="color:#1a50b4;text-decoration:none;">скриншоты ↗</a>` : ''}
-            </div>
-            ${r.note ? `<div class="report-meta" style="color:#8aa0c8;font-style:italic;">${r.note}</div>` : ''}
-            ${authorLine}
-          </div>
-          <div class="report-right">
-            <span class="status-badge status-${r.status}">${statusLabel}</span>
-            ${adminBtns}
-            ${deleteBtn}
-          </div>
-        </div>`;
+      const deleteBtn = showDeleteBtn ? `<button class="btn-icon btn-delete" onclick="deleteReport(${r.id})" title="Удалить">🗑</button>` : '';
+      return `<div class="report-card" id="rc-${r.id}">
+        <div class="report-left">
+          <div class="report-cadet">${r.cadet}</div>
+          <div class="report-type">${r.exam_type}</div>
+          <div class="report-meta">Инструктор: ${r.instructor} · ${date}${r.screenshot_link ? ` · <a href="${r.screenshot_link}" target="_blank" style="color:#1a50b4;text-decoration:none;">скриншоты ↗</a>` : ''}</div>
+          ${r.note ? `<div class="report-meta" style="color:#8aa0c8;font-style:italic;">${r.note}</div>` : ''}
+          ${authorLine}
+        </div>
+        <div class="report-right">
+          <span class="status-badge status-${r.status}">${statusLabel}</span>
+          ${adminBtns}${deleteBtn}
+        </div>
+      </div>`;
     }).join('');
   }
 
   async function submitReport() {
-    const cadet      = document.getElementById('f-cadet').value.trim();
+    const cadet = document.getElementById('f-cadet').value.trim();
     const instructor = document.getElementById('f-instructor').value.trim();
-    const type       = document.getElementById('f-type').value;
-    const link       = document.getElementById('f-link').value.trim();
-    const date       = document.getElementById('f-date').value;
-    const note       = document.getElementById('f-note').value.trim();
-    const errEl      = document.getElementById('form-error');
-    if (!cadet || !instructor || !type || !link) {
-      errEl.textContent = 'Пожалуйста, заполните все обязательные поля.';
-      errEl.style.display = 'block'; return;
-    }
+    const type = document.getElementById('f-type').value;
+    const link = document.getElementById('f-link').value.trim();
+    const date = document.getElementById('f-date').value;
+    const note = document.getElementById('f-note').value.trim();
+    const errEl = document.getElementById('form-error');
+    if (!cadet || !instructor || !type || !link) { errEl.textContent = 'Заполните все обязательные поля.'; errEl.style.display = 'block'; return; }
     errEl.style.display = 'none';
     try {
       const data = await api('POST', '/api/reports', { cadet, exam_type: type, instructor, exam_date: date, screenshot_link: link, note });
@@ -697,9 +782,7 @@
 
   async function setStatus(id, status, listId, countId, showDelete) {
     await api('PATCH', `/api/reports/${id}/status`, { status });
-    // Обновляем нужный список
-    if (listId === 'my-reports-list') loadMyReports();
-    else loadAllReports();
+    if (listId === 'my-reports-list') loadMyReports(); else loadAllReports();
   }
 
   async function deleteReport(id) {
@@ -708,7 +791,6 @@
     loadMyReports();
   }
 
-  // ── ENTER KEY ─────────────────────────────────────────
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
     if (document.getElementById('page-login').classList.contains('active')) doLogin();
@@ -719,8 +801,7 @@
   (async () => {
     try {
       const data = await api('GET', '/api/me');
-      if (data.loggedIn) showDashboard(data.nickname);
-      else showAuth();
+      if (data.loggedIn) showDashboard(data); else showAuth();
     } catch { showAuth(); }
   })();
 </script>
