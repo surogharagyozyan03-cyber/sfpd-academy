@@ -85,7 +85,7 @@
     .page { display: none; flex-direction: column; align-items: center; width: 100%; }
     .page.active { display: flex; }
 
-    /* в”Ђв”Ђ DASHBOARD в”Ђв”Ђ */
+    /* ── DASHBOARD ── */
     #dashboard { display: none; flex: 1; flex-direction: row; }
 
     .sidebar {
@@ -264,7 +264,7 @@
 </head>
 <body>
 
-<!-- в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ AUTH в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ -->
+<!-- ══════════════ AUTH ══════════════ -->
 <div id="auth-wrap">
   <div class="card">
 
@@ -279,20 +279,20 @@
         <text x="36" y="48" text-anchor="middle" font-size="5" fill="#4a6090" font-family="Segoe UI,sans-serif">P.D.</text>
       </svg>
       <div class="dept-name">SFPD</div>
-      <div class="page-title">РђР’РўРћР Р�Р—РђР¦Р�РЇ</div>
-      <div class="page-subtitle">РЎРёСЃС‚РµРјР° СѓРїСЂР°РІР»РµРЅРёСЏ РѕС‚РґРµР»РѕРј Рё РѕС‚С‡С‘С‚Р°РјРё</div>
+      <div class="page-title">АВТОРИЗАЦИЯ</div>
+      <div class="page-subtitle">Система управления отделом и отчётами</div>
       <div class="form-group">
-        <label>РќР�РљРќР•Р™Рњ</label>
-        <div class="input-wrap"><input type="text" id="login-nick" placeholder="Р’РІРµРґРёС‚Рµ РЅРёРєРЅРµР№Рј" /></div>
+        <label>НИКНЕЙМ</label>
+        <div class="input-wrap"><input type="text" id="login-nick" placeholder="Введите никнейм" /></div>
       </div>
       <div class="form-group">
-        <label>РџРђР РћР›Р¬</label>
-        <div class="input-wrap"><input type="password" id="login-pass" placeholder="Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ" /></div>
+        <label>ПАРОЛЬ</label>
+        <div class="input-wrap"><input type="password" id="login-pass" placeholder="Введите пароль" /></div>
       </div>
       <div id="login-error" class="error-msg"></div>
-      <button class="btn-blue" id="login-btn" onclick="doLogin()">Р’РѕР№С‚Рё</button>
+      <button class="btn-blue" id="login-btn" onclick="doLogin()">Войти</button>
       <div class="links-row">
-        <button class="link-btn" onclick="goTo('page-register')">Р РµРіРёСЃС‚СЂР°С†РёСЏ</button>
+        <button class="link-btn" onclick="goTo('page-register')">Регистрация</button>
       </div>
     </div>
 
@@ -307,37 +307,37 @@
         <text x="36" y="48" text-anchor="middle" font-size="5" fill="#4a6090" font-family="Segoe UI,sans-serif">P.D.</text>
       </svg>
       <div class="dept-name">SFPD</div>
-      <div class="page-title">Р Р•Р“Р�РЎРўР РђР¦Р�РЇ</div>
+      <div class="page-title">РЕГИСТРАЦИЯ</div>
       <div class="form-group" style="margin-top:1rem;">
-        <label>Р�Р“Р РћР’РћР™ РќР�РљРќР•Р™Рњ вЂ” Р�РЎРџРћР›Р¬Р—РЈР•РўРЎРЇ Р”Р›РЇ Р’РҐРћР”Рђ</label>
+        <label>ИГРОВОЙ НИКНЕЙМ — ИСПОЛЬЗУЕТСЯ ДЛЯ ВХОДА</label>
         <div class="input-wrap"><input type="text" id="reg-nick" placeholder="Nick Name" /></div>
-        <div class="input-hint">РќР°РїСЂРёРјРµСЂ: Nick_Name</div>
+        <div class="input-hint">Например: Nick_Name</div>
       </div>
       <div class="form-group">
-        <label>РџРђР РћР›Р¬</label>
-        <div class="input-wrap"><input type="password" id="reg-pass" placeholder="РњРёРЅРёРјСѓРј 6 СЃРёРјРІРѕР»РѕРІ" /></div>
+        <label>ПАРОЛЬ</label>
+        <div class="input-wrap"><input type="password" id="reg-pass" placeholder="Минимум 6 символов" /></div>
       </div>
       <div class="form-group">
-        <label>РџРћР’РўРћР Р�РўР• РџРђР РћР›Р¬</label>
-        <div class="input-wrap"><input type="password" id="reg-pass2" placeholder="РџРѕРІС‚РѕСЂРёС‚Рµ РїР°СЂРѕР»СЊ" /></div>
+        <label>ПОВТОРИТЕ ПАРОЛЬ</label>
+        <div class="input-wrap"><input type="password" id="reg-pass2" placeholder="Повторите пароль" /></div>
       </div>
       <div class="form-group">
-        <label>РЎРўР РђРќР�Р¦Рђ Р’РљРћРќРўРђРљРўР•</label>
+        <label>СТРАНИЦА ВКОНТАКТЕ</label>
         <div class="input-wrap">
           <span class="input-prefix">vk.com/</span>
           <input type="text" id="reg-vk" placeholder="username" />
         </div>
-        <div class="input-hint">Р®Р·РµСЂРЅРµР№Рј РёР»Рё СЃСЃС‹Р»РєР° С†РµР»РёРєРѕРј</div>
+        <div class="input-hint">Юзернейм или ссылка целиком</div>
       </div>
       <div id="reg-error" class="error-msg"></div>
-      <button class="btn-blue" id="reg-btn" onclick="doRegister()">Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ</button>
-      <div class="back-link">РЈР¶Рµ РµСЃС‚СЊ Р°РєРєР°СѓРЅС‚? <span onclick="goTo('page-login')">Р’РѕР№С‚Рё</span></div>
+      <button class="btn-blue" id="reg-btn" onclick="doRegister()">Зарегистрироваться</button>
+      <div class="back-link">Уже есть аккаунт? <span onclick="goTo('page-login')">Войти</span></div>
     </div>
 
   </div>
 </div>
 
-<!-- в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ DASHBOARD в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ -->
+<!-- ══════════════ DASHBOARD ══════════════ -->
 <div id="dashboard">
   <div class="sidebar">
     <div class="sidebar-header">
@@ -349,46 +349,46 @@
         <text x="36" y="41" text-anchor="middle" font-size="6" font-weight="700" fill="#1a50b4" font-family="Segoe UI,sans-serif">FIERRO</text>
         <text x="36" y="48" text-anchor="middle" font-size="5" fill="#4a6090" font-family="Segoe UI,sans-serif">P.D.</text>
       </svg>
-      <div class="sidebar-title">SFPD В· Police Academy</div>
-      <div class="sidebar-subtitle">РЎРёСЃС‚РµРјР° СѓРїСЂР°РІР»РµРЅРёСЏ</div>
+      <div class="sidebar-title">SFPD · Police Academy</div>
+      <div class="sidebar-subtitle">Система управления</div>
     </div>
 
     <ul class="sidebar-menu">
       <li class="sidebar-menu-item">
         <a href="#" data-page="my-reports" class="active" onclick="switchPage('my-reports');return false;">
           <svg viewBox="0 0 24 24"><path d="M14 2H6C5.45 2 5 2.45 5 3V21C5 21.55 5.45 22 6 22H18C18.55 22 19 21.55 19 21V8L14 2ZM13 3.5L17.5 8H13V3.5ZM8 17H16V19H8V17ZM8 13H16V15H8V13ZM8 9H11V11H8V9Z"/></svg>
-          РњРѕРё РѕС‚С‡С‘С‚С‹
+          Мои отчёты
         </a>
       </li>
       <li class="sidebar-menu-item">
         <a href="#" data-page="all-reports" onclick="switchPage('all-reports');return false;">
           <svg viewBox="0 0 24 24"><path d="M20 6H4V4H20V6ZM20 10H4V8H20V10ZM20 14H4V12H20V14ZM14 18H4V16H14V18ZM17 15V18H16V15H13L17 11L21 15H18Z"/></svg>
-          Р’СЃРµ РѕС‚С‡С‘С‚С‹
+          Все отчёты
         </a>
       </li>
       <li class="sidebar-menu-item">
         <a href="#" data-page="lectures" onclick="switchPage('lectures');return false;">
           <svg viewBox="0 0 24 24"><path d="M12 2L2 6V8H22V6L12 2ZM4 10V18H6V10H4ZM10 10V18H14V10H10ZM18 10V18H20V10H18ZM2 20V22H22V20H2Z"/></svg>
-          Р›РµРєС†РёРё
+          Лекции
         </a>
       </li>
       <li class="sidebar-menu-item">
         <a href="#" data-page="binds" onclick="switchPage('binds');return false;">
           <svg viewBox="0 0 24 24"><path d="M20 2H4C3 2 2 3 2 4V6C2 7.1 2.9 8 4 8H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V8H20C21 8 22 7 22 6V4C22 3 21 2 20 2ZM15 13H13V17H11V13H9L12 10L15 13ZM20 6H4V4H20V6Z"/></svg>
-          Р‘РёРЅРґС‹
+          Бинды
         </a>
       </li>
       <li class="sidebar-menu-item">
         <a href="#" data-page="about" onclick="switchPage('about');return false;">
           <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z"/></svg>
-          РћР± РѕС‚РґРµР»Рµ
+          Об отделе
         </a>
       </li>
     </ul>
 
     <div class="sidebar-footer">
-      <div class="sidebar-user">РџСЂРёРІРµС‚, <strong id="sidebar-nick">вЂ”</strong>!</div>
-      <button class="sidebar-logout-btn" onclick="doLogout()">Р’С‹Р№С‚Рё</button>
+      <div class="sidebar-user">Привет, <strong id="sidebar-nick">—</strong>!</div>
+      <button class="sidebar-logout-btn" onclick="doLogout()">Выйти</button>
     </div>
   </div>
 
@@ -396,109 +396,109 @@
     <div class="main-content">
 
       <div id="success-banner" class="success-banner">
-        РћС‚С‡С‘С‚ СѓСЃРїРµС€РЅРѕ РѕС‚РїСЂР°РІР»РµРЅ Рё РЅР°С…РѕРґРёС‚СЃСЏ РЅР° СЂР°СЃСЃРјРѕС‚СЂРµРЅРёРё.
+        Отчёт успешно отправлен и находится на рассмотрении.
       </div>
 
-      <!-- РњРћР� РћРўР§РЃРўР« -->
+      <!-- МОИ ОТЧЁТЫ -->
       <div id="page-my-reports" class="dashboard-page active">
         <div class="dash-tabs">
-          <button class="dash-tab active" id="tab-list-btn" onclick="switchReportsTab('list')">РњРѕРё РѕС‚С‡С‘С‚С‹</button>
-          <button class="dash-tab" id="tab-form-btn" onclick="switchReportsTab('form')">+ РќРѕРІС‹Р№ РѕС‚С‡С‘С‚</button>
+          <button class="dash-tab active" id="tab-list-btn" onclick="switchReportsTab('list')">Мои отчёты</button>
+          <button class="dash-tab" id="tab-form-btn" onclick="switchReportsTab('form')">+ Новый отчёт</button>
         </div>
 
         <div id="my-list-view">
           <div class="reports-header">
-            <span class="reports-count" id="my-reports-count">Р—Р°РіСЂСѓР·РєР°...</span>
-            <button class="btn-new" onclick="switchReportsTab('form')">+ РќРѕРІС‹Р№ РѕС‚С‡С‘С‚</button>
+            <span class="reports-count" id="my-reports-count">Загрузка...</span>
+            <button class="btn-new" onclick="switchReportsTab('form')">+ Новый отчёт</button>
           </div>
           <div id="my-reports-list">
-            <div class="empty-state"><div class="empty-icon">рџ“‹</div><div>Р—Р°РіСЂСѓР·РєР°...</div></div>
+            <div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>
           </div>
         </div>
 
         <div id="my-form-view" style="display:none;">
           <div class="form-card">
-            <div class="form-card-title">РќРѕРІС‹Р№ РѕС‚С‡С‘С‚</div>
-            <div class="form-section-label">Р�РЅС„РѕСЂРјР°С†РёСЏ РѕР± СЌРєР·Р°РјРµРЅРµ</div>
+            <div class="form-card-title">Новый отчёт</div>
+            <div class="form-section-label">Информация об экзамене</div>
             <div class="form-row">
               <div class="dash-form-group">
-                <label>РљР°РґРµС‚ <span class="req">*</span></label>
-                <input type="text" id="f-cadet" placeholder="РќРёРє РєР°РґРµС‚Р°" />
+                <label>Кадет <span class="req">*</span></label>
+                <input type="text" id="f-cadet" placeholder="Ник кадета" />
               </div>
               <div class="dash-form-group">
-                <label>Р�РЅСЃС‚СЂСѓРєС‚РѕСЂ <span class="req">*</span></label>
-                <input type="text" id="f-instructor" placeholder="РќРёРє РёРЅСЃС‚СЂСѓРєС‚РѕСЂР°" />
+                <label>Инструктор <span class="req">*</span></label>
+                <input type="text" id="f-instructor" placeholder="Ник инструктора" />
               </div>
             </div>
             <div class="form-row">
               <div class="dash-form-group">
-                <label>РўРёРї СЌРєР·Р°РјРµРЅР° <span class="req">*</span></label>
+                <label>Тип экзамена <span class="req">*</span></label>
                 <select id="f-type">
-                  <option value="">вЂ” Р’С‹Р±РµСЂРёС‚Рµ вЂ”</option>
-                  <option value="Р›РµРєС†РёСЏ вЂ” Р’РІРѕРґРЅР°СЏ">Р›РµРєС†РёСЏ вЂ” Р’РІРѕРґРЅР°СЏ</option>
-                  <option value="Р›РµРєС†РёСЏ вЂ” SFPD">Р›РµРєС†РёСЏ вЂ” SFPD</option>
-                  <option value="РџСЂР°РєС‚РёРєР° вЂ” 10-55">РџСЂР°РєС‚РёРєР° вЂ” 10-55</option>
-                  <option value="РџСЂР°РєС‚РёРєР° вЂ” РђСЂРµСЃС‚">РџСЂР°РєС‚РёРєР° вЂ” РђСЂРµСЃС‚</option>
-                  <option value="Р­РєР·Р°РјРµРЅ вЂ” 10-55">Р­РєР·Р°РјРµРЅ вЂ” 10-55</option>
-                  <option value="Р­РєР·Р°РјРµРЅ вЂ” РђСЂРµСЃС‚">Р­РєР·Р°РјРµРЅ вЂ” РђСЂРµСЃС‚</option>
-                  <option value="РўСЂРµРЅРёСЂРѕРІРєР°">РўСЂРµРЅРёСЂРѕРІРєР°</option>
+                  <option value="">— Выберите —</option>
+                  <option value="Лекция — Вводная">Лекция — Вводная</option>
+                  <option value="Лекция — SFPD">Лекция — SFPD</option>
+                  <option value="Практика — 10-55">Практика — 10-55</option>
+                  <option value="Практика — Арест">Практика — Арест</option>
+                  <option value="Экзамен — 10-55">Экзамен — 10-55</option>
+                  <option value="Экзамен — Арест">Экзамен — Арест</option>
+                  <option value="Тренировка">Тренировка</option>
                 </select>
               </div>
               <div class="dash-form-group">
-                <label>Р”Р°С‚Р° СЌРєР·Р°РјРµРЅР°</label>
+                <label>Дата экзамена</label>
                 <input type="date" id="f-date" />
               </div>
             </div>
-            <div class="form-section-label">Р”РѕРєР°Р·Р°С‚РµР»СЊСЃС‚РІР°</div>
+            <div class="form-section-label">Доказательства</div>
             <div class="dash-form-group">
-              <label>РЎСЃС‹Р»РєР° РЅР° СЃРєСЂРёРЅС€РѕС‚С‹ <span class="req">*</span></label>
-              <input type="url" id="f-link" placeholder="Imgur, Google Drive, Discord Рё С‚.Рґ." />
+              <label>Ссылка на скриншоты <span class="req">*</span></label>
+              <input type="url" id="f-link" placeholder="Imgur, Google Drive, Discord и т.д." />
             </div>
             <div class="dash-form-group">
-              <label>РџСЂРёРјРµС‡Р°РЅРёРµ <span class="opt">РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕ</span></label>
-              <textarea id="f-note" placeholder="Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РєРѕРјРјРµРЅС‚Р°СЂРёРё..."></textarea>
+              <label>Примечание <span class="opt">необязательно</span></label>
+              <textarea id="f-note" placeholder="Дополнительные комментарии..."></textarea>
             </div>
             <div id="form-error" class="error-msg"></div>
-            <button class="btn-blue" style="margin-top:0.75rem;" onclick="submitReport()">РћС‚РїСЂР°РІРёС‚СЊ</button>
+            <button class="btn-blue" style="margin-top:0.75rem;" onclick="submitReport()">Отправить</button>
           </div>
         </div>
       </div>
 
-      <!-- Р’РЎР• РћРўР§РЃРўР« -->
+      <!-- ВСЕ ОТЧЁТЫ -->
       <div id="page-all-reports" class="dashboard-page">
-        <div class="section-title">Р’СЃРµ РѕС‚С‡С‘С‚С‹</div>
+        <div class="section-title">Все отчёты</div>
         <div class="reports-header">
-          <span class="reports-count" id="all-reports-count">Р—Р°РіСЂСѓР·РєР°...</span>
+          <span class="reports-count" id="all-reports-count">Загрузка...</span>
         </div>
         <div id="all-reports-list">
-          <div class="empty-state"><div class="empty-icon">рџ“‹</div><div>Р—Р°РіСЂСѓР·РєР°...</div></div>
+          <div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>
         </div>
       </div>
 
-      <!-- Р›Р•РљР¦Р�Р� -->
+      <!-- ЛЕКЦИИ -->
       <div id="page-lectures" class="dashboard-page">
-        <div class="section-title">Р›РµРєС†РёРё</div>
+        <div class="section-title">Лекции</div>
         <div class="placeholder-card">
-          <div class="placeholder-icon">рџ“љ</div>
-          <div class="placeholder-text">Р Р°Р·РґРµР» СЃ СѓС‡РµР±РЅС‹РјРё РјР°С‚РµСЂРёР°Р»Р°РјРё Рё Р»РµРєС†РёСЏРјРё.<br>РЎРєРѕСЂРѕ Р±СѓРґРµС‚ РґРѕСЃС‚СѓРїРµРЅ.</div>
+          <div class="placeholder-icon">📚</div>
+          <div class="placeholder-text">Раздел с учебными материалами и лекциями.<br>Скоро будет доступен.</div>
         </div>
       </div>
 
-      <!-- Р‘Р�РќР”Р« -->
+      <!-- БИНДЫ -->
       <div id="page-binds" class="dashboard-page">
-        <div class="section-title">Р‘РёРЅРґС‹</div>
+        <div class="section-title">Бинды</div>
         <div class="placeholder-card">
-          <div class="placeholder-icon">вЊЁпёЏ</div>
-          <div class="placeholder-text">РџРѕР»РµР·РЅС‹Рµ Р±РёРЅРґС‹ РґР»СЏ СЂР°Р±РѕС‚С‹ РІ РґРµРїР°СЂС‚Р°РјРµРЅС‚Рµ.<br>Р Р°Р·РґРµР» РІ СЂР°Р·СЂР°Р±РѕС‚РєРµ.</div>
+          <div class="placeholder-icon">⌨️</div>
+          <div class="placeholder-text">Полезные бинды для работы в департаменте.<br>Раздел в разработке.</div>
         </div>
       </div>
 
-      <!-- РћР‘ РћРўР”Р•Р›Р• -->
+      <!-- ОБ ОТДЕЛЕ -->
       <div id="page-about" class="dashboard-page">
-        <div class="section-title">РћР± РѕС‚РґРµР»Рµ</div>
+        <div class="section-title">Об отделе</div>
         <div class="placeholder-card">
-          <div class="placeholder-icon">рџЏў</div>
-          <div class="placeholder-text">Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ SFPD, СЂР°РЅРіРѕРІРѕР№ СЃРёСЃС‚РµРјРµ Рё РѕСЃРЅРѕРІРЅС‹С… РїСЂР°РІРёР»Р°С….<br>Р Р°Р·РґРµР» РІ СЂР°Р·СЂР°Р±РѕС‚РєРµ.</div>
+          <div class="placeholder-icon">🏢</div>
+          <div class="placeholder-text">Информация о SFPD, ранговой системе и основных правилах.<br>Раздел в разработке.</div>
         </div>
       </div>
 
@@ -509,7 +509,7 @@
 <script>
   let CURRENT_USER = '';
 
-  // в”Ђв”Ђ AUTH в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── AUTH ──────────────────────────────────────────────
   function goTo(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
@@ -530,7 +530,7 @@
     CURRENT_USER = '';
   }
 
-  // в”Ђв”Ђ SIDEBAR NAV в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── SIDEBAR NAV ───────────────────────────────────────
   function switchPage(pageName) {
     document.querySelectorAll('.sidebar-menu-item a').forEach(a => a.classList.remove('active'));
     document.querySelectorAll('.dashboard-page').forEach(p => p.classList.remove('active'));
@@ -546,7 +546,7 @@
     if (pageName === 'all-reports') loadAllReports();
   }
 
-  // в”Ђв”Ђ REPORTS SUBTABS в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── REPORTS SUBTABS ───────────────────────────────────
   function switchReportsTab(tab) {
     const isList = tab === 'list';
     document.getElementById('my-list-view').style.display = isList ? 'block' : 'none';
@@ -556,7 +556,7 @@
     document.getElementById('success-banner').style.display = 'none';
   }
 
-  // в”Ђв”Ђ API в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── API ───────────────────────────────────────────────
   async function api(method, url, body) {
     const opts = { method, headers: { 'Content-Type': 'application/json' } };
     if (body) opts.body = JSON.stringify(body);
@@ -564,19 +564,19 @@
     return r.json();
   }
 
-  // в”Ђв”Ђ LOGIN / REGISTER / LOGOUT в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── LOGIN / REGISTER / LOGOUT ─────────────────────────
   async function doLogin() {
     const nick = document.getElementById('login-nick').value.trim();
     const pass = document.getElementById('login-pass').value;
     const errEl = document.getElementById('login-error');
     const btn = document.getElementById('login-btn');
-    btn.disabled = true; btn.textContent = 'Р’С…РѕРґ...';
+    btn.disabled = true; btn.textContent = 'Вход...';
     try {
       const data = await api('POST', '/api/login', { nickname: nick, password: pass });
       if (data.success) { showDashboard(data.nickname); }
       else { errEl.textContent = data.error; errEl.style.display = 'block'; }
-    } catch { errEl.textContent = 'РћС€РёР±РєР° СЃРµС‚Рё.'; errEl.style.display = 'block'; }
-    btn.disabled = false; btn.textContent = 'Р’РѕР№С‚Рё';
+    } catch { errEl.textContent = 'Ошибка сети.'; errEl.style.display = 'block'; }
+    btn.disabled = false; btn.textContent = 'Войти';
   }
 
   async function doRegister() {
@@ -586,14 +586,14 @@
     const vk    = document.getElementById('reg-vk').value.trim();
     const errEl = document.getElementById('reg-error');
     const btn   = document.getElementById('reg-btn');
-    if (pass !== pass2) { errEl.textContent = 'РџР°СЂРѕР»Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚'; errEl.style.display = 'block'; return; }
-    btn.disabled = true; btn.textContent = 'Р РµРіРёСЃС‚СЂР°С†РёСЏ...';
+    if (pass !== pass2) { errEl.textContent = 'Пароли не совпадают'; errEl.style.display = 'block'; return; }
+    btn.disabled = true; btn.textContent = 'Регистрация...';
     try {
       const data = await api('POST', '/api/register', { nickname: nick, password: pass, vk_page: vk });
       if (data.success) { showDashboard(data.nickname); }
       else { errEl.textContent = data.error; errEl.style.display = 'block'; }
-    } catch { errEl.textContent = 'РћС€РёР±РєР° СЃРµС‚Рё.'; errEl.style.display = 'block'; }
-    btn.disabled = false; btn.textContent = 'Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ';
+    } catch { errEl.textContent = 'Ошибка сети.'; errEl.style.display = 'block'; }
+    btn.disabled = false; btn.textContent = 'Зарегистрироваться';
   }
 
   async function doLogout() {
@@ -604,51 +604,51 @@
     }
   }
 
-  // в”Ђв”Ђ РњРћР� РћРўР§РЃРўР« в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── МОИ ОТЧЁТЫ ────────────────────────────────────────
   async function loadMyReports() {
     const list = document.getElementById('my-reports-list');
-    list.innerHTML = '<div class="empty-state"><div class="empty-icon">рџ“‹</div><div>Р—Р°РіСЂСѓР·РєР°...</div></div>';
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>';
     try {
       const data = await api('GET', '/api/reports/my');
       renderReportsList(data.reports || [], 'my-reports-list', 'my-reports-count', true);
     } catch {
-      list.innerHTML = '<div class="empty-state"><div class="empty-icon">вљ пёЏ</div><div>РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РѕС‚С‡С‘С‚РѕРІ.</div></div>';
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div>Ошибка загрузки отчётов.</div></div>';
     }
   }
 
-  // в”Ђв”Ђ Р’РЎР• РћРўР§РЃРўР« в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── ВСЕ ОТЧЁТЫ ────────────────────────────────────────
   async function loadAllReports() {
     const list = document.getElementById('all-reports-list');
-    list.innerHTML = '<div class="empty-state"><div class="empty-icon">рџ“‹</div><div>Р—Р°РіСЂСѓР·РєР°...</div></div>';
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>';
     try {
       const data = await api('GET', '/api/reports/all');
       renderReportsList(data.reports || [], 'all-reports-list', 'all-reports-count', false);
     } catch {
-      list.innerHTML = '<div class="empty-state"><div class="empty-icon">вљ пёЏ</div><div>РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РѕС‚С‡С‘С‚РѕРІ.</div></div>';
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div>Ошибка загрузки отчётов.</div></div>';
     }
   }
 
   function renderReportsList(reports, listId, countId, showDeleteBtn) {
     const list = document.getElementById(listId);
-    document.getElementById(countId).textContent = 'Р’СЃРµРіРѕ РѕС‚С‡С‘С‚РѕРІ: ' + reports.length;
+    document.getElementById(countId).textContent = 'Всего отчётов: ' + reports.length;
 
     if (!reports.length) {
-      list.innerHTML = '<div class="empty-state"><div class="empty-icon">рџ“‹</div><div>РћС‚С‡С‘С‚РѕРІ РїРѕРєР° РЅРµС‚.</div></div>';
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Отчётов пока нет.</div></div>';
       return;
     }
 
     list.innerHTML = reports.map(r => {
-      const statusLabel = r.status === 'pending' ? 'РћР¶РёРґР°РЅРёРµ' : r.status === 'approved' ? 'РџСЂРёРЅСЏС‚Рѕ' : 'РћС‚РєР»РѕРЅРµРЅРѕ';
+      const statusLabel = r.status === 'pending' ? 'Ожидание' : r.status === 'approved' ? 'Принято' : 'Отклонено';
       const date = r.exam_date
         ? new Date(r.exam_date + 'T00:00:00').toLocaleDateString('ru-RU')
         : new Date(r.created_at).toLocaleDateString('ru-RU');
       const authorLine = r.author_nickname
-        ? `<div class="report-author">Р”РѕР±Р°РІРёР»: ${r.author_nickname}</div>` : '';
+        ? `<div class="report-author">Добавил: ${r.author_nickname}</div>` : '';
       const adminBtns = r.status === 'pending'
-        ? `<button class="btn-icon btn-approve" onclick="setStatus(${r.id},'approved','${listId}','${countId}',${showDeleteBtn})" title="РџСЂРёРЅСЏС‚СЊ">вњ“</button>
-           <button class="btn-icon btn-reject"  onclick="setStatus(${r.id},'rejected','${listId}','${countId}',${showDeleteBtn})" title="РћС‚РєР»РѕРЅРёС‚СЊ">вњ•</button>` : '';
+        ? `<button class="btn-icon btn-approve" onclick="setStatus(${r.id},'approved','${listId}','${countId}',${showDeleteBtn})" title="Принять">✓</button>
+           <button class="btn-icon btn-reject"  onclick="setStatus(${r.id},'rejected','${listId}','${countId}',${showDeleteBtn})" title="Отклонить">✕</button>` : '';
       const deleteBtn = showDeleteBtn
-        ? `<button class="btn-icon btn-delete" onclick="deleteReport(${r.id})" title="РЈРґР°Р»РёС‚СЊ">рџ—‘</button>` : '';
+        ? `<button class="btn-icon btn-delete" onclick="deleteReport(${r.id})" title="Удалить">🗑</button>` : '';
 
       return `
         <div class="report-card" id="rc-${r.id}">
@@ -656,8 +656,8 @@
             <div class="report-cadet">${r.cadet}</div>
             <div class="report-type">${r.exam_type}</div>
             <div class="report-meta">
-              Р�РЅСЃС‚СЂСѓРєС‚РѕСЂ: ${r.instructor} В· ${date}
-              ${r.screenshot_link ? ` В· <a href="${r.screenshot_link}" target="_blank" style="color:#1a50b4;text-decoration:none;">СЃРєСЂРёРЅС€РѕС‚С‹ в†—</a>` : ''}
+              Инструктор: ${r.instructor} · ${date}
+              ${r.screenshot_link ? ` · <a href="${r.screenshot_link}" target="_blank" style="color:#1a50b4;text-decoration:none;">скриншоты ↗</a>` : ''}
             </div>
             ${r.note ? `<div class="report-meta" style="color:#8aa0c8;font-style:italic;">${r.note}</div>` : ''}
             ${authorLine}
@@ -680,7 +680,7 @@
     const note       = document.getElementById('f-note').value.trim();
     const errEl      = document.getElementById('form-error');
     if (!cadet || !instructor || !type || !link) {
-      errEl.textContent = 'РџРѕР¶Р°Р»СѓР№СЃС‚Р°, Р·Р°РїРѕР»РЅРёС‚Рµ РІСЃРµ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ РїРѕР»СЏ.';
+      errEl.textContent = 'Пожалуйста, заполните все обязательные поля.';
       errEl.style.display = 'block'; return;
     }
     errEl.style.display = 'none';
@@ -692,30 +692,30 @@
         document.getElementById('success-banner').style.display = 'block';
         loadMyReports();
       } else { errEl.textContent = data.error; errEl.style.display = 'block'; }
-    } catch { errEl.textContent = 'РћС€РёР±РєР° СЃРµС‚Рё.'; errEl.style.display = 'block'; }
+    } catch { errEl.textContent = 'Ошибка сети.'; errEl.style.display = 'block'; }
   }
 
   async function setStatus(id, status, listId, countId, showDelete) {
     await api('PATCH', `/api/reports/${id}/status`, { status });
-    // РћР±РЅРѕРІР»СЏРµРј РЅСѓР¶РЅС‹Р№ СЃРїРёСЃРѕРє
+    // Обновляем нужный список
     if (listId === 'my-reports-list') loadMyReports();
     else loadAllReports();
   }
 
   async function deleteReport(id) {
-    if (!confirm('РЈРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РѕС‚С‡С‘С‚?')) return;
+    if (!confirm('Удалить этот отчёт?')) return;
     await api('DELETE', `/api/reports/${id}`);
     loadMyReports();
   }
 
-  // в”Ђв”Ђ ENTER KEY в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── ENTER KEY ─────────────────────────────────────────
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
     if (document.getElementById('page-login').classList.contains('active')) doLogin();
     else if (document.getElementById('page-register').classList.contains('active')) doRegister();
   });
 
-  // в”Ђв”Ђ INIT в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+  // ── INIT ──────────────────────────────────────────────
   (async () => {
     try {
       const data = await api('GET', '/api/me');
