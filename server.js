@@ -9,7 +9,6 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Папка data/ — на Railway подключи Volume на путь /app/data
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -21,7 +20,7 @@ db.exec(`
     nickname TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     vk_page TEXT,
-    role TEXT DEFAULT 'instructor',
+    position TEXT DEFAULT 'Trainee of PA',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
   CREATE TABLE IF NOT EXISTS reports (
@@ -39,6 +38,9 @@ db.exec(`
   );
 `);
 
+// Добавляем колонку position если её нет (для существующих БД)
+try { db.exec("ALTER TABLE users ADD COLUMN position TEXT DEFAULT 'Trainee of PA'"); } catch(e) {}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,6 +57,7 @@ function requireAuth(req, res, next) {
   next();
 }
 
+// ─── AUTH ──────────────────────────────────────────────────────────────────────
 app.post('/api/register', (req, res) => {
   const { nickname, password, vk_page } = req.body;
   if (!nickname || !password || !vk_page) return res.json({ success: false, error: 'Заполните все поля' });
@@ -81,17 +84,46 @@ app.post('/api/login', (req, res) => {
 app.post('/api/logout', (req, res) => { req.session.destroy(); res.json({ success: true }); });
 
 app.get('/api/me', (req, res) => {
-  if (req.session.userId) res.json({ loggedIn: true, nickname: req.session.nickname });
-  else res.json({ loggedIn: false });
+  if (!req.session.userId) return res.json({ loggedIn: false });
+  const user = db.prepare('SELECT nickname, vk_page, position, created_at FROM users WHERE id = ?').get(req.session.userId);
+  res.json({ loggedIn: true, ...user });
 });
 
-// Только МОИ отчёты
+// ─── PROFILE ───────────────────────────────────────────────────────────────────
+// Обновить должность
+app.patch('/api/profile/position', requireAuth, (req, res) => {
+  const { position } = req.body;
+  const allowed = ['Chief of PA', 'Dep.Chief of PA', 'Inspector of PA', 'Instructor of PA', 'Trainee of PA'];
+  if (!allowed.includes(position)) return res.json({ success: false, error: 'Неверная должность' });
+  db.prepare('UPDATE users SET position = ? WHERE id = ?').run(position, req.session.userId);
+  res.json({ success: true });
+});
+
+// Изменить пароль
+app.patch('/api/profile/password', requireAuth, (req, res) => {
+  const { old_password, new_password } = req.body;
+  if (!old_password || !new_password) return res.json({ success: false, error: 'Заполните все поля' });
+  if (new_password.length < 6) return res.json({ success: false, error: 'Новый пароль минимум 6 символов' });
+  const user = db.prepare('SELECT password FROM users WHERE id = ?').get(req.session.userId);
+  if (!bcrypt.compareSync(old_password, user.password)) return res.json({ success: false, error: 'Неверный текущий пароль' });
+  const hash = bcrypt.hashSync(new_password, 10);
+  db.prepare('UPDATE users SET password = ? WHERE id = ?').run(hash, req.session.userId);
+  res.json({ success: true });
+});
+
+// Обновить VK
+app.patch('/api/profile/vk', requireAuth, (req, res) => {
+  const { vk_page } = req.body;
+  db.prepare('UPDATE users SET vk_page = ? WHERE id = ?').run(vk_page || '', req.session.userId);
+  res.json({ success: true });
+});
+
+// ─── REPORTS ───────────────────────────────────────────────────────────────────
 app.get('/api/reports/my', requireAuth, (req, res) => {
   const reports = db.prepare('SELECT * FROM reports WHERE user_id = ? ORDER BY created_at DESC').all(req.session.userId);
   res.json({ success: true, reports });
 });
 
-// ВСЕ отчёты (общий список)
 app.get('/api/reports/all', requireAuth, (req, res) => {
   const reports = db.prepare(`
     SELECT r.*, u.nickname as author_nickname
@@ -101,7 +133,6 @@ app.get('/api/reports/all', requireAuth, (req, res) => {
   res.json({ success: true, reports });
 });
 
-// Создать отчёт
 app.post('/api/reports', requireAuth, (req, res) => {
   const { cadet, exam_type, instructor, exam_date, screenshot_link, note } = req.body;
   if (!cadet || !exam_type || !instructor || !screenshot_link) return res.json({ success: false, error: 'Заполните все обязательные поля' });
@@ -112,7 +143,6 @@ app.post('/api/reports', requireAuth, (req, res) => {
   res.json({ success: true, report });
 });
 
-// Изменить статус
 app.patch('/api/reports/:id/status', requireAuth, (req, res) => {
   const { status } = req.body;
   if (!['pending', 'approved', 'rejected'].includes(status)) return res.json({ success: false, error: 'Неверный статус' });
@@ -120,7 +150,6 @@ app.patch('/api/reports/:id/status', requireAuth, (req, res) => {
   res.json({ success: true });
 });
 
-// Удалить (только свой отчёт)
 app.delete('/api/reports/:id', requireAuth, (req, res) => {
   db.prepare('DELETE FROM reports WHERE id = ? AND user_id = ?').run(req.params.id, req.session.userId);
   res.json({ success: true });
@@ -128,5 +157,4 @@ app.delete('/api/reports/:id', requireAuth, (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`SFPD Academy запущен на http://localhost:${PORT}`);
-  console.log(`База данных: ${path.join(DATA_DIR, 'sfpd.db')}`);
 });
