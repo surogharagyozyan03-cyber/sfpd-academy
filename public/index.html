@@ -233,6 +233,7 @@
     .u-vk   { color:#1a50b4; text-decoration:none; font-size:12px; }
     .u-vk:hover { text-decoration:underline; }
     .badge-admin { display:inline-block; padding:1px 7px; border-radius:20px; font-size:10px; font-weight:700; background:#e8f0fb; color:#1a50b4; border:1px solid #b0c8f0; margin-left:5px; }
+    .badge-mod   { display:inline-block; padding:1px 7px; border-radius:20px; font-size:10px; font-weight:700; background:#f3eafd; color:#8b44d4; border:1px solid #d4b0f0; margin-left:5px; }
     .badge-yes   { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:700; background:#e8f8ee; color:#1a7a40; border:1px solid #a0d8b0; }
     .badge-no    { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:700; background:#fde8e8; color:#c03030; border:1px solid #f0a0a0; }
 
@@ -262,6 +263,7 @@
     .pm-btn-prefix-on  { background:#e8f8ee; color:#1a7a40; border:1px solid #a0d8b0; }
     .pm-btn-prefix-off { background:#f0f5fd; color:#8aa0c8; border:1px solid #c2d4ee; }
     .pm-btn-admin  { background:#e8f0fb; color:#1a50b4; border:1px solid #b0c8f0; }
+    .pm-btn-mod    { background:#f3eafd; color:#8b44d4; border:1px solid #d4b0f0; }
     .pm-btn-del    { background:none; color:#c03030; border:1px solid #f0a0a0; grid-column:1/-1; }
     .pm-msg { font-size:12px; text-align:center; margin-top:8px; min-height:16px; }
     .pm-msg.ok  { color:#1a7a40; }
@@ -662,9 +664,9 @@
     document.getElementById('auth-wrap').style.display = 'none';
     document.getElementById('dashboard').style.display = 'flex';
     updateSidebarProfile(user);
-    // Показываем меню Пользователи только для admin
+    // Показываем меню Пользователи для admin и moderator
     const menuUsers = document.getElementById('menu-users');
-    if (menuUsers) menuUsers.style.display = (user.role === 'admin') ? 'block' : 'none';
+    if (menuUsers) menuUsers.style.display = ['admin','moderator'].includes(user.role) ? 'block' : 'none';
     switchPage('my-reports');
   }
 
@@ -717,7 +719,7 @@
     const posNoAccess = document.getElementById('pos-no-access');
     posDisplay.textContent = pos;
     posDisplay.className = posClass(pos);
-    const canChangePos = user.can_use_prefix || user.role === 'admin';
+    const canChangePos = ['admin','moderator'].includes(user.role);
     posGridWrap.style.display = canChangePos ? 'block' : 'none';
     posNoAccess.style.display = canChangePos ? 'none' : 'block';
     if (canChangePos) {
@@ -841,7 +843,11 @@
     try {
       const data = await api('POST', '/api/register', { nickname: nick, password: pass, vk_page: vk });
       if (data.success) { showDashboard({ nickname: nick, position: 'Игрок', vk_page: vk }); }
-      else if (data.pending) { goTo('page-pending'); }
+      else if (data.pending) {
+        btn.disabled = false; btn.textContent = 'Зарегистрироваться';
+        goTo('page-pending');
+        return;
+      }
       else { errEl.textContent = data.error; errEl.style.display = 'block'; }
     } catch { errEl.textContent = 'Ошибка сети.'; errEl.style.display = 'block'; }
     btn.disabled = false; btn.textContent = 'Зарегистрироваться';
@@ -947,9 +953,19 @@
   let ALL_USERS = [];
   let SELECTED_USER = null;
 
+  const ROLE_ORDER = { 'admin': 0, 'moderator': 1 };
+  const POS_ORDER = { 'Chief of PA': 2, 'Dep.Chief of PA': 3, 'Inspector of PA': 4, 'Instructor of PA': 5, 'Trainee of PA': 6, 'Игрок': 7 };
+
   async function loadUsers() {
     const data = await api('GET', '/api/admin/users');
-    ALL_USERS = data.users || [];
+    ALL_USERS = (data.users || []).sort((a, b) => {
+      const ra = ROLE_ORDER[a.role] !== undefined ? ROLE_ORDER[a.role] : 8;
+      const rb = ROLE_ORDER[b.role] !== undefined ? ROLE_ORDER[b.role] : 8;
+      if (ra !== rb) return ra - rb;
+      const pa = POS_ORDER[a.position] !== undefined ? POS_ORDER[a.position] : 9;
+      const pb = POS_ORDER[b.position] !== undefined ? POS_ORDER[b.position] : 9;
+      return pa - pb;
+    });
     renderUsers(ALL_USERS);
     document.getElementById('u-count').textContent = 'Всего: ' + ALL_USERS.length;
   }
@@ -975,7 +991,7 @@
         'Chief of PA':'pos-chief','Dep.Chief of PA':'pos-depchief',
         'Inspector of PA':'pos-inspector','Instructor of PA':'pos-instructor','Trainee of PA':'pos-trainee'
       }[u.position] || 'pos-trainee';
-      const roleBadge = u.role === 'admin' ? '<span class="badge-admin">ADMIN</span>' : '';
+      const roleBadge = u.role === 'admin' ? '<span class="badge-admin">ADMIN</span>' : (u.role === 'moderator' ? '<span class="badge-mod">MOD</span>' : '');
       const vkText = u.vk_page ? `vk.com/${u.vk_page.replace(/^https?:\/\/vk\.com\//,'')}` : '—';
       const accessBadge = u.approved ? '<span class="badge-yes">Да</span>' : '<span class="badge-no">Нет</span>';
       return `<tr onclick="openPlayer(${u.id})">
@@ -1000,7 +1016,8 @@
 
     document.getElementById('pm-avatar').textContent = initials;
     document.getElementById('pm-avatar').style.background = posColor2;
-    document.getElementById('pm-name').textContent = u.nickname;
+    const roleBadgePm = u.role === 'admin' ? ' <span style="background:rgba(255,255,255,0.2);padding:1px 7px;border-radius:20px;font-size:11px;font-weight:700;">ADMIN</span>' : (u.role === 'moderator' ? ' <span style="background:rgba(255,255,255,0.15);padding:1px 7px;border-radius:20px;font-size:11px;font-weight:700;">MOD</span>' : '');
+    document.getElementById('pm-name').innerHTML = u.nickname + roleBadgePm;
     document.getElementById('pm-pos').textContent = u.position || '—';
     document.getElementById('pm-reg').textContent = fmtDate(u.created_at);
     document.getElementById('pm-login').textContent = fmtDate(u.last_login);
@@ -1015,25 +1032,38 @@
       vkEl.textContent = 'vk.com/' + u.vk_page.replace(/^https?:\/\/vk\.com\//,'');
     } else { vkEl.textContent = '—'; vkEl.href='#'; }
 
-    // Кнопки действий
+    // Кнопки действий в зависимости от роли текущего пользователя
+    const myRole = CURRENT_USER.role;
     let btns = '';
     if (!isSelf) {
+      // Доступ на сайт — и admin и moderator
       if (u.approved) {
         btns += `<button class="pm-btn pm-btn-block" onclick="pmAction('block')">Заблокировать</button>`;
       } else {
         btns += `<button class="pm-btn pm-btn-approve" onclick="pmAction('approve')">Дать доступ</button>`;
       }
+      // Префикс — и admin и moderator
       if (u.can_use_prefix) {
         btns += `<button class="pm-btn pm-btn-prefix-off" onclick="pmAction('prefix-off')">Убрать префикс</button>`;
       } else {
         btns += `<button class="pm-btn pm-btn-prefix-on" onclick="showPrefixSelect()">Дать префикс</button>`;
       }
-      if (u.role !== 'admin') {
-        btns += `<button class="pm-btn pm-btn-admin" onclick="pmAction('make-admin')">Сделать Admin</button>`;
-      } else {
-        btns += `<button class="pm-btn pm-btn-prefix-off" onclick="pmAction('remove-admin')">Снять Admin</button>`;
+      // Назначить moderator — только admin
+      if (myRole === 'admin') {
+        if (u.role === 'moderator') {
+          btns += `<button class="pm-btn pm-btn-mod" onclick="pmAction('remove-mod')">Снять Moderator</button>`;
+        } else if (u.role !== 'admin') {
+          btns += `<button class="pm-btn pm-btn-mod" onclick="pmAction('make-mod')">Назначить Moderator</button>`;
+        }
+        // Сделать admin — только admin
+        if (u.role !== 'admin') {
+          btns += `<button class="pm-btn pm-btn-admin" onclick="pmAction('make-admin')">Сделать Admin</button>`;
+        } else {
+          btns += `<button class="pm-btn pm-btn-prefix-off" onclick="pmAction('remove-admin')">Снять Admin</button>`;
+        }
+        // Удалить — только admin
+        btns += `<button class="pm-btn pm-btn-del" onclick="pmAction('delete')">Удалить пользователя</button>`;
       }
-      btns += `<button class="pm-btn pm-btn-del" onclick="pmAction('delete')">Удалить пользователя</button>`;
     }
     document.getElementById('pm-actions').innerHTML = btns;
     document.getElementById('pm-msg').textContent = '';
@@ -1077,6 +1107,8 @@
     else if (action === 'prefix-off') result = await api('PATCH', `/api/admin/users/${u.id}/prefix`, { can_use_prefix: false });
     else if (action === 'make-admin')   result = await api('PATCH', `/api/admin/users/${u.id}/role`, { role: 'admin' });
     else if (action === 'remove-admin') result = await api('PATCH', `/api/admin/users/${u.id}/role`, { role: 'user' });
+    else if (action === 'make-mod')     result = await api('PATCH', `/api/admin/users/${u.id}/role`, { role: 'moderator' });
+    else if (action === 'remove-mod')   result = await api('PATCH', `/api/admin/users/${u.id}/role`, { role: 'user' });
     else if (action === 'delete') {
       if (!confirm('Удалить пользователя ' + u.nickname + '?')) return;
       result = await api('DELETE', `/api/admin/users/${u.id}`);
