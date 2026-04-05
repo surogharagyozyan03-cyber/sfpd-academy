@@ -352,6 +352,32 @@
   </div>
 </div>
 
+
+    <!-- ОЖИДАНИЕ ОДОБРЕНИЯ -->
+    <div class="page" id="page-pending">
+      <svg class="badge-icon" style="width:80px;height:80px;margin-bottom:0.5rem;" viewBox="0 0 72 72" fill="none">
+        <polygon points="36,4 44,14 56,12 58,24 68,30 62,41 66,53 54,55 48,65 36,60 24,65 18,55 6,53 10,41 4,30 14,24 16,12 28,14" fill="#1a50b4" stroke="#1244a0" stroke-width="1.5"/>
+        <polygon points="36,10 42,18 52,16 54,26 62,31 57,40 60,50 50,52 45,60 36,56 27,60 22,52 12,50 15,40 10,31 18,26 20,16 30,18" fill="#2460cc" stroke="#1a50b4" stroke-width="1"/>
+        <circle cx="36" cy="36" r="13" fill="#ffffff" stroke="#1a50b4" stroke-width="1.5"/>
+        <text x="36" y="33" text-anchor="middle" font-size="7" font-weight="700" fill="#1a50b4" font-family="Segoe UI,sans-serif">SAN</text>
+        <text x="36" y="41" text-anchor="middle" font-size="6" font-weight="700" fill="#1a50b4" font-family="Segoe UI,sans-serif">FIERRO</text>
+        <text x="36" y="48" text-anchor="middle" font-size="5" fill="#4a6090" font-family="Segoe UI,sans-serif">P.D.</text>
+      </svg>
+      <div class="dept-name">SFPD</div>
+      <div class="page-title" style="margin-bottom:1.5rem;">Заявка отправлена</div>
+      <div style="width:64px;height:64px;border-radius:50%;background:#e8f0fb;border:2px solid #b0c8f0;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#1a50b4" stroke-width="1.5"/>
+          <polyline points="12,6 12,12 16,14" stroke="#1a50b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="pending-text">Ваша заявка на регистрацию отправлена на рассмотрение.<br>Дождитесь одобрения от руководства.</div>
+      <button class="link-btn" style="margin-top:1rem;font-size:13px;color:#1a50b4;" onclick="goTo('page-login')">Вернуться на страницу входа</button>
+    </div>
+
+  </div>
+</div>
+
 <!-- ══ MODAL ПРОФИЛЯ ══ -->
 <div class="modal-overlay" id="profile-modal" onclick="closeProfileIfOutside(event)">
   <div class="modal">
