@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -214,31 +213,55 @@
 
 
     /* ── СТРАНИЦА ПОЛЬЗОВАТЕЛЕЙ ── */
-    .users-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    .users-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #8aa0c8; text-transform: uppercase; border-bottom: 2px solid #e0eaf8; background: #f8fafd; }
-    .users-table td { padding: 10px 12px; border-bottom: 1px solid #f0f5fd; vertical-align: middle; }
-    .users-table tr:hover td { background: #f8fafd; }
-    .u-nick { font-weight: 600; color: #1a2a4a; }
-    .u-vk   { color: #1a50b4; text-decoration: none; font-size: 12px; }
-    .u-vk:hover { text-decoration: underline; }
-    .u-date { color: #8aa0c8; font-size: 12px; }
-    .u-ip   { color: #aab8d0; font-size: 11px; font-family: monospace; }
-    .badge-access  { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:700; }
-    .badge-yes     { background:#e8f8ee; color:#1a7a40; border:1px solid #a0d8b0; }
-    .badge-no      { background:#fde8e8; color:#c03030; border:1px solid #f0a0a0; }
-    .badge-admin   { background:#e8f0fb; color:#1a50b4; border:1px solid #b0c8f0; }
-    .toggle-btn    { padding:4px 10px; border-radius:6px; font-size:12px; font-weight:600; font-family:inherit; cursor:pointer; border:none; transition:opacity 0.15s; }
-    .toggle-btn:hover { opacity:0.8; }
-    .btn-approve-u { background:#1a50b4; color:#fff; }
-    .btn-block-u   { background:#fde8e8; color:#c03030; border:1px solid #f0a0a0; }
-    .btn-prefix-on { background:#e8f8ee; color:#1a7a40; border:1px solid #a0d8b0; }
-    .btn-prefix-off{ background:#f0f5fd; color:#8aa0c8; border:1px solid #c2d4ee; }
-    .btn-del-u     { background:none; border:1px solid #f0a0a0; color:#c03030; padding:4px 8px; border-radius:6px; font-size:12px; cursor:pointer; }
-    .btn-del-u:hover { background:#fde8e8; }
     .users-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:8px; }
     .u-search { padding:7px 12px; border:1px solid #c2d4ee; border-radius:8px; font-size:13px; font-family:inherit; outline:none; background:#f0f5fd; color:#1a2a4a; width:220px; }
     .u-search:focus { border-color:#1a50b4; }
     .users-wrap { background:#fff; border:1px solid #c2d4ee; border-radius:12px; overflow:hidden; box-shadow:0 1px 6px rgba(24,80,180,0.05); overflow-x:auto; }
+    .users-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .users-table th { text-align:left; padding:10px 14px; font-size:11px; font-weight:700; letter-spacing:0.06em; color:#8aa0c8; text-transform:uppercase; border-bottom:2px solid #e0eaf8; background:#f8fafd; }
+    .users-table td { padding:12px 14px; border-bottom:1px solid #f0f5fd; vertical-align:middle; }
+    .users-table tbody tr { cursor:pointer; transition:background 0.12s; }
+    .users-table tbody tr:hover td { background:#f0f5fd; }
+    .u-nick { font-weight:600; color:#1a50b4; font-size:14px; }
+    .u-pos  { font-size:12px; font-weight:600; margin-top:2px; }
+    .u-date { color:#8aa0c8; font-size:12px; }
+    .u-ip   { color:#aab8d0; font-size:11px; font-family:monospace; }
+    .u-vk   { color:#1a50b4; text-decoration:none; font-size:12px; }
+    .u-vk:hover { text-decoration:underline; }
+    .badge-admin { display:inline-block; padding:1px 7px; border-radius:20px; font-size:10px; font-weight:700; background:#e8f0fb; color:#1a50b4; border:1px solid #b0c8f0; margin-left:5px; }
+    .badge-yes   { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:700; background:#e8f8ee; color:#1a7a40; border:1px solid #a0d8b0; }
+    .badge-no    { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:700; background:#fde8e8; color:#c03030; border:1px solid #f0a0a0; }
+
+    /* ── МОДАЛ ПРОФИЛЯ ИГРОКА (ADMIN) ── */
+    .player-modal-overlay { position:fixed; inset:0; background:rgba(10,20,60,0.45); display:flex; align-items:center; justify-content:center; z-index:2000; padding:1rem; opacity:0; pointer-events:none; transition:opacity 0.2s; }
+    .player-modal-overlay.open { opacity:1; pointer-events:all; }
+    .player-modal { background:#fff; border-radius:16px; width:100%; max-width:440px; box-shadow:0 8px 40px rgba(24,80,180,0.18); overflow:hidden; transform:translateY(16px); transition:transform 0.2s; }
+    .player-modal-overlay.open .player-modal { transform:translateY(0); }
+    .pm-header { background:#1a50b4; padding:1.25rem 1.5rem; display:flex; align-items:center; gap:14px; }
+    .pm-avatar { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; color:#fff; flex-shrink:0; background:rgba(255,255,255,0.2); }
+    .pm-name { font-size:18px; font-weight:700; color:#fff; }
+    .pm-pos  { font-size:13px; font-weight:600; margin-top:2px; color:rgba(255,255,255,0.85); }
+    .pm-close { margin-left:auto; background:rgba(255,255,255,0.15); border:none; border-radius:8px; width:32px; height:32px; cursor:pointer; color:#fff; font-size:16px; display:flex; align-items:center; justify-content:center; transition:background 0.15s; }
+    .pm-close:hover { background:rgba(255,255,255,0.3); }
+    .pm-body { padding:1.25rem 1.5rem; }
+    .pm-section { margin-bottom:1.25rem; }
+    .pm-section-title { font-size:11px; font-weight:700; letter-spacing:0.07em; color:#8aa0c8; text-transform:uppercase; margin-bottom:8px; padding-bottom:5px; border-bottom:1px solid #e0eaf8; }
+    .pm-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f0f5fd; font-size:13px; }
+    .pm-row:last-child { border-bottom:none; }
+    .pm-label { color:#8aa0c8; }
+    .pm-value { color:#1a2a4a; font-weight:600; }
+    .pm-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:1rem; }
+    .pm-btn { padding:9px 12px; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; border:none; transition:opacity 0.15s; text-align:center; }
+    .pm-btn:hover { opacity:0.85; }
+    .pm-btn-approve { background:#1a50b4; color:#fff; }
+    .pm-btn-block   { background:#fde8e8; color:#c03030; border:1px solid #f0a0a0; }
+    .pm-btn-prefix-on  { background:#e8f8ee; color:#1a7a40; border:1px solid #a0d8b0; }
+    .pm-btn-prefix-off { background:#f0f5fd; color:#8aa0c8; border:1px solid #c2d4ee; }
+    .pm-btn-admin  { background:#e8f0fb; color:#1a50b4; border:1px solid #b0c8f0; }
+    .pm-btn-del    { background:none; color:#c03030; border:1px solid #f0a0a0; grid-column:1/-1; }
+    .pm-msg { font-size:12px; text-align:center; margin-top:8px; min-height:16px; }
+    .pm-msg.ok  { color:#1a7a40; }
+    .pm-msg.err { color:#c03030; }
 
     @media (max-width: 700px) { .sidebar { width: 200px; } }
     @media (max-width: 520px) { .sidebar { display: none; } .dashboard-content { padding: 1rem; } }
@@ -541,14 +564,42 @@
                 <th>Дата рег.</th>
                 <th>Последний вход</th>
                 <th>Доступ</th>
-                <th>Префикс</th>
-                <th>Действия</th>
               </tr>
             </thead>
             <tbody id="users-tbody">
-              <tr><td colspan="9" style="text-align:center;padding:2rem;color:#8aa0c8;">Загрузка...</td></tr>
+              <tr><td colspan="7" style="text-align:center;padding:2rem;color:#8aa0c8;">Загрузка...</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- МОДАЛ ПРОФИЛЯ ИГРОКА -->
+      <div class="player-modal-overlay" id="player-modal" onclick="closePlayerIfOutside(event)">
+        <div class="player-modal">
+          <div class="pm-header">
+            <div class="pm-avatar" id="pm-avatar">?</div>
+            <div>
+              <div class="pm-name" id="pm-name">—</div>
+              <div class="pm-pos" id="pm-pos">—</div>
+            </div>
+            <button class="pm-close" onclick="closePlayer()">✕</button>
+          </div>
+          <div class="pm-body">
+            <div class="pm-section">
+              <div class="pm-section-title">Информация</div>
+              <div class="pm-row"><span class="pm-label">Дата регистрации</span><span class="pm-value" id="pm-reg">—</span></div>
+              <div class="pm-row"><span class="pm-label">Последний вход</span><span class="pm-value" id="pm-login">—</span></div>
+              <div class="pm-row"><span class="pm-label">IP адрес</span><span class="pm-value" id="pm-ip" style="font-family:monospace;font-size:12px;">—</span></div>
+              <div class="pm-row"><span class="pm-label">ВКонтакте</span><span class="pm-value"><a id="pm-vk" href="#" target="_blank" style="color:#1a50b4;text-decoration:none;">—</a></span></div>
+              <div class="pm-row"><span class="pm-label">Доступ к сайту</span><span class="pm-value" id="pm-access">—</span></div>
+              <div class="pm-row"><span class="pm-label">Доступ к префиксу</span><span class="pm-value" id="pm-prefix-status">—</span></div>
+            </div>
+            <div class="pm-section" style="margin-bottom:0;">
+              <div class="pm-section-title">Управление</div>
+              <div class="pm-actions" id="pm-actions"></div>
+              <div class="pm-msg" id="pm-msg"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -863,6 +914,7 @@
 
   // ── ADMIN: ПОЛЬЗОВАТЕЛИ ───────────────────────────────
   let ALL_USERS = [];
+  let SELECTED_USER = null;
 
   async function loadUsers() {
     const data = await api('GET', '/api/admin/users');
@@ -884,52 +936,112 @@
   function renderUsers(users) {
     const tbody = document.getElementById('users-tbody');
     if (!users.length) {
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:2rem;color:#8aa0c8;">Нет пользователей</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#8aa0c8;">Нет пользователей</td></tr>';
       return;
     }
     tbody.innerHTML = users.map(u => {
-      const isSelf = u.id == CURRENT_USER.id;
-      const vkLink = u.vk_page ? `<a class="u-vk" href="https://vk.com/${u.vk_page.replace(/^https?:\/\/vk\.com\//,'')}" target="_blank">vk.com/${u.vk_page.replace(/^https?:\/\/vk\.com\//,'')}</a>` : '<span style="color:#ccc">—</span>';
       const posClass2 = {
         'Chief of PA':'pos-chief','Dep.Chief of PA':'pos-depchief',
         'Inspector of PA':'pos-inspector','Instructor of PA':'pos-instructor','Trainee of PA':'pos-trainee'
       }[u.position] || 'pos-trainee';
-      const roleBadge = u.role === 'admin' ? '<span class="badge-access badge-admin">ADMIN</span>' : '';
-      const accessBadge = u.approved ? '<span class="badge-access badge-yes">Да</span>' : '<span class="badge-access badge-no">Нет</span>';
-      const prefixBadge = u.can_use_prefix ? '<span class="badge-access badge-yes">Да</span>' : '<span class="badge-access badge-no">Нет</span>';
-      const approveBtn = isSelf ? '' : (u.approved
-        ? `<button class="toggle-btn btn-block-u" onclick="setUserApproved(${u.id},0)">Блок</button>`
-        : `<button class="toggle-btn btn-approve-u" onclick="setUserApproved(${u.id},1)">Одобрить</button>`);
-      const prefixBtn = isSelf ? '' : (u.can_use_prefix
-        ? `<button class="toggle-btn btn-prefix-off" onclick="setUserPrefix(${u.id},0)">Убрать</button>`
-        : `<button class="toggle-btn btn-prefix-on" onclick="setUserPrefix(${u.id},1)">Дать</button>`);
-      const delBtn = isSelf ? '' : `<button class="btn-del-u" onclick="deleteUser(${u.id},'${u.nickname}')">🗑</button>`;
-      return `<tr id="urow-${u.id}">
-        <td><div class="u-nick">${u.nickname} ${roleBadge}</div></td>
-        <td><span class="${posClass2}" style="font-size:12px;font-weight:600;">${u.position||'—'}</span></td>
-        <td>${vkLink}</td>
-        <td><div class="u-ip">${u.ip_address||'—'}</div><div class="u-ip" style="color:#c8d8f0">рег: ${u.reg_ip||'—'}</div></td>
+      const roleBadge = u.role === 'admin' ? '<span class="badge-admin">ADMIN</span>' : '';
+      const vkText = u.vk_page ? `vk.com/${u.vk_page.replace(/^https?:\/\/vk\.com\//,'')}` : '—';
+      const accessBadge = u.approved ? '<span class="badge-yes">Да</span>' : '<span class="badge-no">Нет</span>';
+      return `<tr onclick="openPlayer(${u.id})">
+        <td><div class="u-nick">${u.nickname}${roleBadge}</div></td>
+        <td><span class="${posClass2} u-pos">${u.position||'—'}</span></td>
+        <td><span class="u-vk">${vkText}</span></td>
+        <td><div class="u-ip">${u.ip_address||'—'}</div></td>
         <td class="u-date">${fmtDate(u.created_at)}</td>
         <td class="u-date">${fmtDate(u.last_login)}</td>
-        <td>${accessBadge} ${approveBtn}</td>
-        <td>${prefixBadge} ${prefixBtn}</td>
-        <td style="display:flex;gap:4px;align-items:center;">${delBtn}</td>
+        <td>${accessBadge}</td>
       </tr>`;
     }).join('');
   }
 
-  async function setUserApproved(id, val) {
-    await api('PATCH', `/api/admin/users/${id}/approved`, { approved: val });
-    loadUsers();
+  function openPlayer(id) {
+    const u = ALL_USERS.find(x => x.id == id);
+    if (!u) return;
+    SELECTED_USER = u;
+    const isSelf = u.id == CURRENT_USER.id;
+    const posColor2 = {'Chief of PA':'#1a50b4','Dep.Chief of PA':'#c03030','Inspector of PA':'#8b44d4','Instructor of PA':'#e07020','Trainee of PA':'#1a7a40'}[u.position] || '#1a7a40';
+    const initials = u.nickname.split(/[\s_]+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+
+    document.getElementById('pm-avatar').textContent = initials;
+    document.getElementById('pm-avatar').style.background = posColor2;
+    document.getElementById('pm-name').textContent = u.nickname;
+    document.getElementById('pm-pos').textContent = u.position || '—';
+    document.getElementById('pm-reg').textContent = fmtDate(u.created_at);
+    document.getElementById('pm-login').textContent = fmtDate(u.last_login);
+    document.getElementById('pm-ip').textContent = u.ip_address || '—';
+    document.getElementById('pm-access').innerHTML = u.approved ? '<span class="badge-yes">Есть доступ</span>' : '<span class="badge-no">Нет доступа</span>';
+    document.getElementById('pm-prefix-status').innerHTML = u.can_use_prefix ? '<span class="badge-yes">Есть</span>' : '<span class="badge-no">Нет</span>';
+
+    const vkEl = document.getElementById('pm-vk');
+    if (u.vk_page) {
+      const url = u.vk_page.startsWith('http') ? u.vk_page : 'https://vk.com/' + u.vk_page;
+      vkEl.href = url;
+      vkEl.textContent = 'vk.com/' + u.vk_page.replace(/^https?:\/\/vk\.com\//,'');
+    } else { vkEl.textContent = '—'; vkEl.href='#'; }
+
+    // Кнопки действий
+    let btns = '';
+    if (!isSelf) {
+      if (u.approved) {
+        btns += `<button class="pm-btn pm-btn-block" onclick="pmAction('block')">Заблокировать</button>`;
+      } else {
+        btns += `<button class="pm-btn pm-btn-approve" onclick="pmAction('approve')">Дать доступ</button>`;
+      }
+      if (u.can_use_prefix) {
+        btns += `<button class="pm-btn pm-btn-prefix-off" onclick="pmAction('prefix-off')">Убрать префикс</button>`;
+      } else {
+        btns += `<button class="pm-btn pm-btn-prefix-on" onclick="pmAction('prefix-on')">Дать префикс</button>`;
+      }
+      if (u.role !== 'admin') {
+        btns += `<button class="pm-btn pm-btn-admin" onclick="pmAction('make-admin')">Сделать Admin</button>`;
+      } else {
+        btns += `<button class="pm-btn pm-btn-prefix-off" onclick="pmAction('remove-admin')">Снять Admin</button>`;
+      }
+      btns += `<button class="pm-btn pm-btn-del" onclick="pmAction('delete')">Удалить пользователя</button>`;
+    }
+    document.getElementById('pm-actions').innerHTML = btns;
+    document.getElementById('pm-msg').textContent = '';
+    document.getElementById('pm-msg').className = 'pm-msg';
+    document.getElementById('player-modal').classList.add('open');
   }
-  async function setUserPrefix(id, val) {
-    await api('PATCH', `/api/admin/users/${id}/prefix`, { can_use_prefix: val });
-    loadUsers();
-  }
-  async function deleteUser(id, nick) {
-    if (!confirm(`Удалить пользователя ${nick}?`)) return;
-    await api('DELETE', `/api/admin/users/${id}`);
-    loadUsers();
+
+  function closePlayer() { document.getElementById('player-modal').classList.remove('open'); SELECTED_USER = null; }
+  function closePlayerIfOutside(e) { if (e.target === document.getElementById('player-modal')) closePlayer(); }
+
+  async function pmAction(action) {
+    if (!SELECTED_USER) return;
+    const u = SELECTED_USER;
+    const msg = document.getElementById('pm-msg');
+    let result;
+
+    if (action === 'approve')      result = await api('PATCH', `/api/admin/users/${u.id}/approved`, { approved: true });
+    else if (action === 'block')   result = await api('PATCH', `/api/admin/users/${u.id}/approved`, { approved: false });
+    else if (action === 'prefix-on')  result = await api('PATCH', `/api/admin/users/${u.id}/prefix`, { can_use_prefix: true });
+    else if (action === 'prefix-off') result = await api('PATCH', `/api/admin/users/${u.id}/prefix`, { can_use_prefix: false });
+    else if (action === 'make-admin')   result = await api('PATCH', `/api/admin/users/${u.id}/role`, { role: 'admin' });
+    else if (action === 'remove-admin') result = await api('PATCH', `/api/admin/users/${u.id}/role`, { role: 'user' });
+    else if (action === 'delete') {
+      if (!confirm('Удалить пользователя ' + u.nickname + '?')) return;
+      result = await api('DELETE', `/api/admin/users/${u.id}`);
+      if (result.success) { closePlayer(); loadUsers(); return; }
+    }
+
+    if (result && result.success) {
+      msg.textContent = 'Сохранено!';
+      msg.className = 'pm-msg ok';
+      await loadUsers();
+      // Обновляем SELECTED_USER
+      SELECTED_USER = ALL_USERS.find(x => x.id == u.id);
+      if (SELECTED_USER) openPlayer(SELECTED_USER.id);
+    } else {
+      msg.textContent = (result && result.error) || 'Ошибка';
+      msg.className = 'pm-msg err';
+    }
   }
 
   document.addEventListener('keydown', e => {
