@@ -329,3 +329,5 @@ async function connectWithRetry(attempts = 10) {
     }
   }
   console.error('Не удалось подключиться к БД после всех попыток');
+}
+connectWithRetry();
