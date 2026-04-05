@@ -157,6 +157,16 @@
     .placeholder-icon { font-size: 40px; margin-bottom: 1rem; opacity: 0.35; }
     .placeholder-text { color: #8aa0c8; font-size: 14px; line-height: 1.6; }
 
+    /* ── БИНДЫ ── */
+    .binds-section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #8aa0c8; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 6px; border-bottom: 2px solid #e0eaf8; }
+    .bind-card { background: #fff; border: 1px solid #c2d4ee; border-radius: 12px; margin-bottom: 14px; overflow: hidden; box-shadow: 0 1px 6px rgba(24,80,180,0.05); }
+    .bind-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #f0f5fd; border-bottom: 1px solid #c2d4ee; }
+    .bind-title { font-size: 14px; font-weight: 700; color: #1a2a4a; }
+    .bind-copy-btn { padding: 5px 14px; background: #1a50b4; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+    .bind-copy-btn:hover { opacity: 0.85; }
+    .bind-copy-btn.copied { background: #1a7a40; }
+    .bind-code { padding: 14px 16px; font-family: 'Courier New', monospace; font-size: 13px; color: #1a2a4a; line-height: 1.7; white-space: pre-wrap; word-break: break-word; margin: 0; background: #fff; }
+
     /* ── МОДАЛЬНОЕ ОКНО ПРОФИЛЯ ── */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(10,20,60,0.45);
@@ -552,7 +562,55 @@
       <!-- БИНДЫ -->
       <div id="page-binds" class="dashboard-page">
         <div class="section-title">Бинды</div>
-        <div class="placeholder-card"><div class="placeholder-icon">⌨️</div><div class="placeholder-text">Раздел в разработке.</div></div>
+        <div class="binds-section-label">Необходимые бинды для GTools</div>
+
+        <div class="bind-card">
+          <div class="bind-header">
+            <div class="bind-title">Приветствие</div>
+            <button class="bind-copy-btn" onclick="copyBind(this)">Копировать</button>
+          </div>
+          <pre class="bind-code">/me достал жетон и развернул его к гражданину
+{wait:2500}
+/do На жетоне видны данные: {rpnick}, {rank}, {organization}
+{wait:2500}
+Здравствуйте, представлюсь: {rank} {organization} {rpnick}.</pre>
+        </div>
+
+        <div class="bind-card">
+          <div class="bind-header">
+            <div class="bind-title">Бинд для 10-55</div>
+            <button class="bind-copy-btn" onclick="copyBind(this)">Копировать</button>
+          </div>
+          <pre class="bind-code">/me провёл рукой по задней части автомобиля
+{pause}
+/do Окно открыто?
+{pause}
+Здравствуйте, я сотрудник полиции г.San-Fierro - {rpnick}.
+{wait:6000}
+Вот моё удостоверение.
+{noe}/showudost</pre>
+        </div>
+
+        <div class="bind-card">
+          <div class="bind-header">
+            <div class="bind-title">Бинд для составления протокола</div>
+            <button class="bind-copy-btn" onclick="copyBind(this)">Копировать</button>
+          </div>
+          <pre class="bind-code">/me вставил ключ в скважину наручников на правой руке задержанного.
+{wait:7000}
+/me сделал полный оборот ключом, затем прицепил правый наручник к столу.
+{wait:7000}
+/do Правая рука задержанного свободна.
+{pause}
+/me выдвинув ящик стола, достал шариковую ручку и бланк протокола.
+{wait:7000}
+/me переписывает данные задержанного в бланк протокола.
+{wait:7000}
+/me поставил дату и свою подпись в протоколе.
+{wait:7000}
+/todo Подпишите протокол указательным пальцем правой руки указал на место подписи.</pre>
+        </div>
+
       </div>
 
 
@@ -1126,6 +1184,29 @@
       msg.textContent = (result && result.error) || 'Ошибка';
       msg.className = 'pm-msg err';
     }
+  }
+
+  function copyBind(btn) {
+    const code = btn.closest('.bind-card').querySelector('.bind-code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = 'Скопировано!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Копировать';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = 'Скопировано!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Копировать'; btn.classList.remove('copied'); }, 2000);
+    });
   }
 
   document.addEventListener('keydown', e => {
