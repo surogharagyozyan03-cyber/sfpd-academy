@@ -43,8 +43,13 @@ async function initDB() {
       screenshot_link TEXT NOT NULL,
       note            TEXT,
       status          TEXT DEFAULT 'pending',
+      reviewed_by     TEXT,
+      reviewed_at     TIMESTAMPTZ,
       created_at      TIMESTAMPTZ DEFAULT NOW()
     );
+    -- Миграция: добавляем поля если их нет
+    ALTER TABLE reports ADD COLUMN IF NOT EXISTS reviewed_by TEXT;
+    ALTER TABLE reports ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMPTZ;
 
     CREATE TABLE IF NOT EXISTS login_logs (
       id          SERIAL PRIMARY KEY,
@@ -281,6 +286,11 @@ app.get('/api/reports/all', requireAuth, async (req, res) => {
 app.post('/api/reports', requireAuth, async (req, res) => {
   const { cadet, exam_type, instructor, exam_date, screenshot_link, note } = req.body;
   if (!cadet || !exam_type || !instructor || !screenshot_link) return res.json({ success: false, error: 'Заполните все обязательные поля' });
+  // Проверяем что пользователь не "Игрок"
+  const { rows: ur } = await pool.query('SELECT position, role FROM users WHERE id=$1', [req.session.userId]);
+  if (ur[0] && ur[0].position === 'Игрок' && ur[0].role === 'user') {
+    return res.json({ success: false, error: 'Нет прав для создания отчётов' });
+  }
   const { rows } = await pool.query(
     'INSERT INTO reports (user_id,cadet,exam_type,instructor,exam_date,screenshot_link,note) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *',
     [req.session.userId, cadet, exam_type, instructor, exam_date||null, screenshot_link, note||null]
@@ -291,7 +301,9 @@ app.post('/api/reports', requireAuth, async (req, res) => {
 app.patch('/api/reports/:id/status', requireAuth, async (req, res) => {
   const { status } = req.body;
   if (!['pending','approved','rejected'].includes(status)) return res.json({ success: false, error: 'Неверный статус' });
-  await pool.query('UPDATE reports SET status=$1 WHERE id=$2', [status, req.params.id]);
+  // Сохраняем кто проверил
+  await pool.query('UPDATE reports SET status=$1, reviewed_by=$2, reviewed_at=NOW() WHERE id=$3',
+    [status, req.session.nickname, req.params.id]);
   res.json({ success: true });
 });
 
@@ -317,5 +329,3 @@ async function connectWithRetry(attempts = 10) {
     }
   }
   console.error('Не удалось подключиться к БД после всех попыток');
-}
-connectWithRetry();
