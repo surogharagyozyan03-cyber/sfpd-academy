@@ -157,7 +157,7 @@ app.post('/api/login', async (req, res) => {
 
   if (!user.approved) {
     await pool.query('INSERT INTO login_logs (user_id,ip_address,user_agent,success) VALUES ($1,$2,$3,FALSE)', [user.id, ip, ua]);
-    return res.json({ success: false, error: 'Ваш аккаунт ожидает одобрения администратора' });
+    return res.json({ success: false, not_approved: true, error: 'Ваш аккаунт ожидает одобрения администратора' });
   }
 
   await pool.query('UPDATE users SET last_login=NOW(), ip_address=$1 WHERE id=$2', [ip, user.id]);
