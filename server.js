@@ -119,8 +119,8 @@ app.post('/api/register', async (req, res) => {
   const isFirst = count.rows[0].count === '0';
 
   const result = await pool.query(
-    'INSERT INTO users (nickname, password_hash, vk_page, reg_ip, ip_address, approved, can_use_prefix, role) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id',
-    [nickname, hash, vk_page, ip, ip, isFirst, isFirst, isFirst ? 'admin' : 'user']
+    'INSERT INTO users (nickname, password_hash, vk_page, reg_ip, ip_address, approved, can_use_prefix, role, position) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id',
+    [nickname, hash, vk_page, ip, ip, isFirst, isFirst, isFirst ? 'admin' : 'user', isFirst ? 'Chief of PA' : 'Игрок']
   );
 
   if (!isFirst) {
@@ -183,9 +183,13 @@ app.patch('/api/profile/position', requireAuth, async (req, res) => {
   const { position } = req.body;
   const allowed = ['Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA'];
   if (!allowed.includes(position)) return res.json({ success: false, error: 'Неверная должность' });
-  const { rows } = await pool.query('SELECT can_use_prefix FROM users WHERE id=$1', [req.session.userId]);
-  if (['Chief of PA','Dep.Chief of PA'].includes(position) && !rows[0].can_use_prefix)
-    return res.json({ success: false, error: 'Нет доступа к этой должности' });
+  // Проверяем: только если есть can_use_prefix можно менять должность (не Trainee и не Игрок)
+  const { rows } = await pool.query('SELECT can_use_prefix, role FROM users WHERE id=$1', [req.session.userId]);
+  const user = rows[0];
+  // Только admin может менять должность без ограничений
+  if (user.role !== 'admin' && !user.can_use_prefix) {
+    return res.json({ success: false, error: 'Нет доступа к выбору должности. Обратитесь к администратору.' });
+  }
   await pool.query('UPDATE users SET position=$1 WHERE id=$2', [position, req.session.userId]);
   res.json({ success: true });
 });
@@ -229,7 +233,21 @@ app.patch('/api/admin/users/:id/role', requireAdmin, async (req, res) => {
 
 app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
   if (req.params.id == req.session.userId) return res.json({ success: false, error: 'Нельзя удалить себя' });
-  await pool.query('DELETE FROM users WHERE id=$1', [req.params.id]);
+  const id = req.params.id;
+  // Удаляем все связанные данные перед удалением пользователя
+  await pool.query('DELETE FROM login_logs WHERE user_id=$1', [id]);
+  await pool.query('DELETE FROM prefixes WHERE user_id=$1', [id]);
+  await pool.query('DELETE FROM reports WHERE user_id=$1', [id]);
+  await pool.query('DELETE FROM users WHERE id=$1', [id]);
+  res.json({ success: true });
+});
+
+// Выдать конкретный префикс пользователю
+app.patch('/api/admin/users/:id/give-prefix', requireAdmin, async (req, res) => {
+  const { prefix_label } = req.body;
+  const allowed = ['Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA'];
+  if (!allowed.includes(prefix_label)) return res.json({ success: false, error: 'Неверный префикс' });
+  await pool.query('UPDATE users SET can_use_prefix=TRUE, position=$1 WHERE id=$2', [prefix_label, req.params.id]);
   res.json({ success: true });
 });
 
