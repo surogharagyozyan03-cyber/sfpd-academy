@@ -271,9 +271,21 @@ app.delete('/api/reports/:id', requireAuth, async (req, res) => {
 });
 
 // ── ЗАПУСК ────────────────────────────────────────────────────────────────────
-initDB().then(() => {
-  app.listen(PORT, () => console.log(`SFPD Academy: http://localhost:${PORT}`));
-}).catch(err => {
-  console.error('Ошибка БД:', err);
-  process.exit(1);
-});
+// Запускаем сервер сразу — даже если БД ещё не готова
+app.listen(PORT, () => console.log(`SFPD Academy: http://localhost:${PORT}`));
+
+// Подключаемся к БД с повторными попытками
+async function connectWithRetry(attempts = 10) {
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      await initDB();
+      console.log('БД подключена успешно!');
+      return;
+    } catch (err) {
+      console.error(`Попытка ${i}/${attempts} не удалась:`, err.message);
+      if (i < attempts) await new Promise(r => setTimeout(r, 3000));
+    }
+  }
+  console.error('Не удалось подключиться к БД после всех попыток');
+}
+connectWithRetry();
