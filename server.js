@@ -104,6 +104,14 @@ async function requireAdmin(req, res, next) {
   next();
 }
 
+// Moderator или Admin
+async function requireMod(req, res, next) {
+  if (!req.session.userId) return res.status(401).json({ error: 'Не авторизован' });
+  const { rows } = await pool.query('SELECT role FROM users WHERE id=$1', [req.session.userId]);
+  if (!rows[0] || !['admin','moderator'].includes(rows[0].role)) return res.status(403).json({ error: 'Нет прав' });
+  next();
+}
+
 // ── РЕГИСТРАЦИЯ ───────────────────────────────────────────────────────────────
 app.post('/api/register', async (req, res) => {
   const { nickname, password, vk_page } = req.body;
@@ -186,9 +194,13 @@ app.patch('/api/profile/position', requireAuth, async (req, res) => {
   // Проверяем: только если есть can_use_prefix можно менять должность (не Trainee и не Игрок)
   const { rows } = await pool.query('SELECT can_use_prefix, role FROM users WHERE id=$1', [req.session.userId]);
   const user = rows[0];
-  // Только admin может менять должность без ограничений
-  if (user.role !== 'admin' && !user.can_use_prefix) {
+  // Только admin/moderator может менять должность. Обычный игрок не может.
+  if (!['admin','moderator'].includes(user.role) && !user.can_use_prefix) {
     return res.json({ success: false, error: 'Нет доступа к выбору должности. Обратитесь к администратору.' });
+  }
+  // Если обычный пользователь с префиксом — не может сменить сам
+  if (user.role === 'user') {
+    return res.json({ success: false, error: 'Должность назначается только администратором или модератором.' });
   }
   await pool.query('UPDATE users SET position=$1 WHERE id=$2', [position, req.session.userId]);
   res.json({ success: true });
@@ -205,7 +217,7 @@ app.patch('/api/profile/password', requireAuth, async (req, res) => {
 });
 
 // ── ADMIN: ПОЛЬЗОВАТЕЛИ ───────────────────────────────────────────────────────
-app.get('/api/admin/users', requireAdmin, async (req, res) => {
+app.get('/api/admin/users', requireMod, async (req, res) => {
   const { rows } = await pool.query(`
     SELECT id, nickname, vk_page, position, role, approved, can_use_prefix,
            ip_address, reg_ip, created_at, last_login, notes
@@ -214,19 +226,19 @@ app.get('/api/admin/users', requireAdmin, async (req, res) => {
   res.json({ success: true, users: rows });
 });
 
-app.patch('/api/admin/users/:id/approved', requireAdmin, async (req, res) => {
+app.patch('/api/admin/users/:id/approved', requireMod, async (req, res) => {
   await pool.query('UPDATE users SET approved=$1 WHERE id=$2', [req.body.approved, req.params.id]);
   res.json({ success: true });
 });
 
-app.patch('/api/admin/users/:id/prefix', requireAdmin, async (req, res) => {
+app.patch('/api/admin/users/:id/prefix', requireMod, async (req, res) => {
   await pool.query('UPDATE users SET can_use_prefix=$1 WHERE id=$2', [req.body.can_use_prefix, req.params.id]);
   res.json({ success: true });
 });
 
 app.patch('/api/admin/users/:id/role', requireAdmin, async (req, res) => {
   const { role } = req.body;
-  if (!['user','admin'].includes(role)) return res.json({ success: false, error: 'Неверная роль' });
+  if (!['user','admin','moderator'].includes(role)) return res.json({ success: false, error: 'Неверная роль' });
   await pool.query('UPDATE users SET role=$1 WHERE id=$2', [role, req.params.id]);
   res.json({ success: true });
 });
@@ -243,7 +255,7 @@ app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
 });
 
 // Выдать конкретный префикс пользователю
-app.patch('/api/admin/users/:id/give-prefix', requireAdmin, async (req, res) => {
+app.patch('/api/admin/users/:id/give-prefix', requireMod, async (req, res) => {
   const { prefix_label } = req.body;
   const allowed = ['Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA'];
   if (!allowed.includes(prefix_label)) return res.json({ success: false, error: 'Неверный префикс' });
