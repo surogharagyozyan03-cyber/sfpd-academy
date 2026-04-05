@@ -157,6 +157,113 @@
     .placeholder-icon { font-size: 40px; margin-bottom: 1rem; opacity: 0.35; }
     .placeholder-text { color: #8aa0c8; font-size: 14px; line-height: 1.6; }
 
+    /* ── ТЁМНАЯ ТЕМА ── */
+    body.dark-theme { background: #0f1117 !important; color: #cdd2e0 !important; }
+    body.dark-theme .sidebar { background: #141820 !important; border-color: #2a2f42 !important; }
+    body.dark-theme .sidebar-menu-item a { color: #8aa0c8 !important; }
+    body.dark-theme .sidebar-menu-item a:hover,
+    body.dark-theme .sidebar-menu-item a.active { background: #1e2235 !important; color: #6090d4 !important; border-left-color: #4a70b4 !important; }
+    body.dark-theme .sidebar-profile:hover { background: #1e2235 !important; }
+    body.dark-theme .profile-name { color: #cdd2e0 !important; }
+    body.dark-theme .card,
+    body.dark-theme .form-card,
+    body.dark-theme .report-card,
+    body.dark-theme .users-wrap,
+    body.dark-theme .bind-card,
+    body.dark-theme .placeholder-card,
+    body.dark-theme .empty-state { background: #141820 !important; border-color: #2a2f42 !important; }
+    body.dark-theme .bind-header { background: #1e2235 !important; border-color: #2a2f42 !important; }
+    body.dark-theme .bind-code { background: #141820 !important; color: #cdd2e0 !important; }
+    body.dark-theme .form-group input,
+    body.dark-theme .dash-form-group input,
+    body.dark-theme .dash-form-group select,
+    body.dark-theme .dash-form-group textarea,
+    body.dark-theme .u-search,
+    body.dark-theme .modal-input { background: #1e2235 !important; border-color: #2a2f42 !important; color: #cdd2e0 !important; }
+    body.dark-theme .input-wrap { background: #1e2235 !important; border-color: #2a2f42 !important; }
+    body.dark-theme .form-group input { background: #1e2235 !important; color: #cdd2e0 !important; }
+    body.dark-theme .input-prefix { background: #252a3a !important; border-color: #2a2f42 !important; }
+    body.dark-theme .modal,
+    body.dark-theme .player-modal { background: #141820 !important; }
+    body.dark-theme .modal-body,
+    body.dark-theme .pm-body { background: #141820 !important; }
+    body.dark-theme .info-row,
+    body.dark-theme .pm-row { border-color: #1e2235 !important; }
+    body.dark-theme .info-value,
+    body.dark-theme .pm-value,
+    body.dark-theme .report-cadet,
+    body.dark-theme .u-nick { color: #6090d4 !important; }
+    body.dark-theme .report-type,
+    body.dark-theme .section-title,
+    body.dark-theme .form-card-title,
+    body.dark-theme .bind-title { color: #a0b8d8 !important; }
+    body.dark-theme .form-section-label,
+    body.dark-theme .modal-section-title,
+    body.dark-theme .pm-section-title,
+    body.dark-theme .binds-section-label { border-color: #2a2f42 !important; }
+    body.dark-theme .users-table th { background: #1e2235 !important; color: #6b82aa !important; }
+    body.dark-theme .users-table td { border-color: #1e2235 !important; }
+    body.dark-theme .users-table tbody tr:hover td { background: #1e2235 !important; }
+    body.dark-theme .dash-tab { background: #141820 !important; border-color: #2a2f42 !important; color: #6b82aa !important; }
+    body.dark-theme .dash-tab.active { background: #1a50b4 !important; color: #fff !important; }
+    body.dark-theme .page-subtitle,
+    body.dark-theme .report-meta,
+    body.dark-theme .u-date,
+    body.dark-theme .pm-label,
+    body.dark-theme .info-label { color: #6b7a99 !important; }
+    body.dark-theme .pos-card { background: #1e2235 !important; border-color: #2a2f42 !important; }
+    body.dark-theme .pos-card.selected { background: #252a3a !important; }
+
+    /* Кнопка темы */
+    .theme-btn {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 500;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #1a50b4; color: #fff; border: none;
+      font-size: 20px; cursor: pointer;
+      box-shadow: 0 2px 12px rgba(26,80,180,0.3);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .theme-btn:hover { transform: scale(1.1); }
+
+    /* ── МОДАЛ ОТЧЁТА ── */
+    .report-modal-overlay { position:fixed; inset:0; background:rgba(10,20,60,0.5); display:flex; align-items:center; justify-content:center; z-index:1500; padding:1rem; opacity:0; pointer-events:none; transition:opacity 0.2s; }
+    .report-modal-overlay.open { opacity:1; pointer-events:all; }
+    .report-modal { background:#fff; border-radius:16px; width:100%; max-width:560px; box-shadow:0 8px 40px rgba(24,80,180,0.18); overflow:hidden; transform:translateY(16px); transition:transform 0.2s; }
+    .report-modal-overlay.open .report-modal { transform:translateY(0); }
+    body.dark-theme .report-modal { background:#141820 !important; }
+    .rm-header { background:#1a50b4; padding:1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+    .rm-title { font-size:16px; font-weight:700; color:#fff; }
+    .rm-status-badge { padding:4px 14px; border-radius:20px; font-size:12px; font-weight:700; }
+    .rm-status-pending  { background:rgba(255,255,255,0.2); color:#fff; }
+    .rm-status-approved { background:#22c55e; color:#fff; }
+    .rm-status-rejected { background:#ef4444; color:#fff; }
+    .rm-close { background:rgba(255,255,255,0.15); border:none; border-radius:8px; width:30px; height:30px; cursor:pointer; color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center; transition:background 0.15s; }
+    .rm-close:hover { background:rgba(255,255,255,0.3); }
+    .rm-body { padding:1.5rem; }
+    .rm-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .rm-field { display:flex; flex-direction:column; gap:4px; }
+    .rm-label { font-size:11px; font-weight:700; letter-spacing:0.07em; color:#8aa0c8; text-transform:uppercase; }
+    .rm-value { font-size:14px; font-weight:600; color:#1a2a4a; }
+    body.dark-theme .rm-value { color:#cdd2e0 !important; }
+    .rm-link { color:#1a50b4; text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-size:13px; font-weight:600; }
+    .rm-link:hover { text-decoration:underline; }
+    .rm-divider { border:none; border-top:1px solid #e0eaf8; margin:1rem 0; }
+    body.dark-theme .rm-divider { border-color:#2a2f42 !important; }
+    .rm-actions { display:flex; gap:8px; margin-top:1rem; flex-wrap:wrap; }
+    .rm-btn-approve { padding:8px 18px; background:#22c55e; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; transition:opacity 0.15s; }
+    .rm-btn-reject  { padding:8px 18px; background:#ef4444; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; transition:opacity 0.15s; }
+    .rm-btn-approve:hover, .rm-btn-reject:hover { opacity:0.85; }
+
+    /* Улучшенные статусы в списке */
+    .status-badge { font-size:12px; font-weight:700; padding:4px 14px; border-radius:20px; white-space:nowrap; }
+    .status-pending  { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
+    .status-approved { background:#dcfce7; color:#166534; border:1px solid #86efac; }
+    .status-rejected { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+    body.dark-theme .status-pending  { background:#2a2010 !important; color:#d4a843 !important; border-color:#4a3810 !important; }
+    body.dark-theme .status-approved { background:#102010 !important; color:#4ade80 !important; border-color:#1a4a1a !important; }
+    body.dark-theme .status-rejected { background:#2a1010 !important; color:#f87171 !important; border-color:#4a1a1a !important; }
+
     /* ── БИНДЫ ── */
     .binds-section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #8aa0c8; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 6px; border-bottom: 2px solid #e0eaf8; }
     .bind-card { background: #fff; border: 1px solid #c2d4ee; border-radius: 12px; margin-bottom: 14px; overflow: hidden; box-shadow: 0 1px 6px rgba(24,80,180,0.05); }
@@ -445,6 +552,9 @@
     </div>
   </div>
 </div>
+
+<!-- Кнопка переключения темы -->
+<button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Тёмная/светлая тема">🌙</button>
 
 <!-- ══ DASHBOARD ══ -->
 <div id="dashboard">
@@ -947,7 +1057,8 @@
     list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>';
     try {
       const data = await api('GET', '/api/reports/my');
-      renderReportsList(data.reports || [], 'my-reports-list', 'my-reports-count', true);
+      window._myReports = data.reports || [];
+      renderReportsList(window._myReports, 'my-reports-list', 'my-reports-count', true);
     } catch {
       list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div>Ошибка загрузки.</div></div>';
     }
@@ -958,7 +1069,8 @@
     list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Загрузка...</div></div>';
     try {
       const data = await api('GET', '/api/reports/all');
-      renderReportsList(data.reports || [], 'all-reports-list', 'all-reports-count', false);
+      window._allReports = data.reports || [];
+      renderReportsList(window._allReports, 'all-reports-list', 'all-reports-count', false);
     } catch {
       list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div>Ошибка загрузки.</div></div>';
     }
@@ -974,25 +1086,89 @@
     list.innerHTML = reports.map(r => {
       const statusLabel = r.status === 'pending' ? 'Ожидание' : r.status === 'approved' ? 'Принято' : 'Отклонено';
       const date = r.exam_date ? new Date(r.exam_date + 'T00:00:00').toLocaleDateString('ru-RU') : new Date(r.created_at).toLocaleDateString('ru-RU');
-      const authorLine = r.author_nickname ? `<div class="report-author">Добавил: ${r.author_nickname}</div>` : '';
-      const adminBtns = r.status === 'pending'
-        ? `<button class="btn-icon btn-approve" onclick="setStatus(${r.id},'approved','${listId}','${countId}',${showDeleteBtn})" title="Принять">✓</button>
-           <button class="btn-icon btn-reject"  onclick="setStatus(${r.id},'rejected','${listId}','${countId}',${showDeleteBtn})" title="Отклонить">✕</button>` : '';
-      const deleteBtn = showDeleteBtn ? `<button class="btn-icon btn-delete" onclick="deleteReport(${r.id})" title="Удалить">🗑</button>` : '';
-      return `<div class="report-card" id="rc-${r.id}">
+      const author = r.author_nickname || r.instructor || '';
+      return `<div class="report-card" id="rc-${r.id}" onclick="openReport(${r.id}, '${listId}', '${countId}', ${showDeleteBtn})" style="cursor:pointer;">
         <div class="report-left">
           <div class="report-cadet">${r.cadet}</div>
-          <div class="report-type">${r.exam_type}</div>
-          <div class="report-meta">Инструктор: ${r.instructor} · ${date}${r.screenshot_link ? ` · <a href="${r.screenshot_link}" target="_blank" style="color:#1a50b4;text-decoration:none;">скриншоты ↗</a>` : ''}</div>
-          ${r.note ? `<div class="report-meta" style="color:#8aa0c8;font-style:italic;">${r.note}</div>` : ''}
-          ${authorLine}
+          <div class="report-type">${r.exam_type} · ${date}</div>
+          ${author ? `<div class="report-meta">Инструктор: ${r.instructor}</div>` : ''}
         </div>
         <div class="report-right">
           <span class="status-badge status-${r.status}">${statusLabel}</span>
-          ${adminBtns}${deleteBtn}
         </div>
       </div>`;
     }).join('');
+  }
+
+  // ── МОДАЛ ОТЧЁТА ─────────────────────────────────────
+  let CURRENT_REPORT = null;
+  let CURRENT_REPORT_LIST = null;
+  let CURRENT_REPORT_COUNT = null;
+  let CURRENT_REPORT_DELETE = false;
+
+  function openReport(id, listId, countId, showDelete) {
+    const allReports = [...(window._myReports||[]), ...(window._allReports||[])];
+    const r = allReports.find(x => x.id == id);
+    if (!r) return;
+    CURRENT_REPORT = r;
+    CURRENT_REPORT_LIST = listId;
+    CURRENT_REPORT_COUNT = countId;
+    CURRENT_REPORT_DELETE = showDelete;
+
+    const statusLabel = r.status === 'pending' ? 'Ожидание' : r.status === 'approved' ? 'Принято' : 'Отклонено';
+    const statusClass = 'rm-status-' + r.status;
+    const date = r.exam_date ? new Date(r.exam_date + 'T00:00:00').toLocaleDateString('ru-RU') : '—';
+    const created = r.created_at ? new Date(r.created_at).toLocaleString('ru-RU', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+
+    document.getElementById('rm-title').textContent = 'Отчёт #' + r.id;
+    const badge = document.getElementById('rm-status-badge');
+    badge.textContent = statusLabel;
+    badge.className = 'rm-status-badge ' + statusClass;
+    document.getElementById('rm-cadet').textContent = r.cadet;
+    document.getElementById('rm-type').textContent = r.exam_type;
+    document.getElementById('rm-instructor').textContent = r.instructor;
+    document.getElementById('rm-date').textContent = date;
+    document.getElementById('rm-reviewer').textContent = r.reviewed_by || '—';
+    document.getElementById('rm-created').textContent = created;
+    const linkEl = document.getElementById('rm-link');
+    if (r.screenshot_link) { linkEl.href = r.screenshot_link; linkEl.style.display = 'inline-flex'; }
+    else { linkEl.style.display = 'none'; }
+    const noteWrap = document.getElementById('rm-note-wrap');
+    if (r.note) { document.getElementById('rm-note').textContent = r.note; noteWrap.style.display = 'block'; }
+    else { noteWrap.style.display = 'none'; }
+
+    // Кнопки
+    const myRole = CURRENT_USER.role;
+    const myPos = CURRENT_USER.position;
+    const canReview = ['admin','moderator'].includes(myRole) || !['Игрок','Trainee of PA'].includes(myPos);
+    let btns = '';
+    if (r.status === 'pending' && canReview) {
+      btns += `<button class="rm-btn-approve" onclick="reportAction('approved')">✓ Принять</button>`;
+      btns += `<button class="rm-btn-reject"  onclick="reportAction('rejected')">✕ Отклонить</button>`;
+    }
+    if (showDelete) {
+      btns += `<button class="btn-icon btn-delete" style="margin-left:auto;" onclick="deleteReportFromModal()">🗑 Удалить</button>`;
+    }
+    document.getElementById('rm-actions').innerHTML = btns;
+    document.getElementById('report-modal').classList.add('open');
+  }
+
+  function closeReport() { document.getElementById('report-modal').classList.remove('open'); }
+  function closeReportIfOutside(e) { if (e.target === document.getElementById('report-modal')) closeReport(); }
+
+  async function reportAction(status) {
+    if (!CURRENT_REPORT) return;
+    await api('PATCH', `/api/reports/${CURRENT_REPORT.id}/status`, { status });
+    closeReport();
+    if (CURRENT_REPORT_LIST === 'my-reports-list') loadMyReports();
+    else loadAllReports();
+  }
+
+  async function deleteReportFromModal() {
+    if (!CURRENT_REPORT || !confirm('Удалить этот отчёт?')) return;
+    await api('DELETE', `/api/reports/${CURRENT_REPORT.id}`);
+    closeReport();
+    loadMyReports();
   }
 
   async function submitReport() {
@@ -1025,6 +1201,21 @@
     if (!confirm('Удалить этот отчёт?')) return;
     await api('DELETE', `/api/reports/${id}`);
     loadMyReports();
+  }
+
+  // ── ТЁМНАЯ ТЕМА ──────────────────────────────────────
+  function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-theme');
+    document.getElementById('theme-btn').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('sfpd-theme', isDark ? 'dark' : 'light');
+  }
+  // Восстанавливаем тему при загрузке
+  if (localStorage.getItem('sfpd-theme') === 'dark') {
+    document.body.classList.add('dark-theme');
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('theme-btn');
+      if (btn) btn.textContent = '☀️';
+    });
   }
 
 
@@ -1244,5 +1435,39 @@
     } catch { showAuth(); }
   })();
 </script>
+
+<!-- ══ МОДАЛ ОТЧЁТА ══ -->
+<div class="report-modal-overlay" id="report-modal" onclick="closeReportIfOutside(event)">
+  <div class="report-modal">
+    <div class="rm-header">
+      <div class="rm-title" id="rm-title">Отчёт</div>
+      <span class="rm-status-badge" id="rm-status-badge">—</span>
+      <button class="rm-close" onclick="closeReport()">✕</button>
+    </div>
+    <div class="rm-body">
+      <div class="rm-grid">
+        <div class="rm-field"><div class="rm-label">Кадет</div><div class="rm-value" id="rm-cadet">—</div></div>
+        <div class="rm-field"><div class="rm-label">Тип экзамена</div><div class="rm-value" id="rm-type">—</div></div>
+        <div class="rm-field"><div class="rm-label">Инструктор</div><div class="rm-value" id="rm-instructor">—</div></div>
+        <div class="rm-field"><div class="rm-label">Дата экзамена</div><div class="rm-value" id="rm-date">—</div></div>
+        <div class="rm-field"><div class="rm-label">Проверил</div><div class="rm-value" id="rm-reviewer">—</div></div>
+        <div class="rm-field"><div class="rm-label">Создан</div><div class="rm-value" id="rm-created">—</div></div>
+      </div>
+      <hr class="rm-divider">
+      <div class="rm-field" style="margin-bottom:0.75rem;">
+        <div class="rm-label">Доказательства</div>
+        <a id="rm-link" href="#" target="_blank" class="rm-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Открыть ссылку
+        </a>
+      </div>
+      <div class="rm-field" id="rm-note-wrap" style="display:none;">
+        <div class="rm-label">Примечание</div>
+        <div class="rm-value" id="rm-note" style="font-weight:400;font-style:italic;color:#6b82aa;"></div>
+      </div>
+      <div class="rm-actions" id="rm-actions"></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
