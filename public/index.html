@@ -45,6 +45,10 @@
     .back-link { color: #6b82aa; font-size: 13px; margin-top: 1.25rem; }
     .back-link span { color: #1a50b4; cursor: pointer; font-weight: 600; }
     .error-msg { font-size: 12px; color: #c03030; width: 100%; margin-top: -4px; margin-bottom: 8px; display: none; }
+    .pending-box { text-align:center; padding:1.5rem 0; }
+    .pending-icon { font-size:48px; margin-bottom:1rem; }
+    .pending-title { font-size:18px; font-weight:700; color:#1a50b4; margin-bottom:8px; }
+    .pending-text { font-size:13px; color:#6b82aa; line-height:1.6; margin-bottom:1.5rem; }
     .page { display: none; flex-direction: column; align-items: center; width: 100%; }
     .page.active { display: flex; }
 
@@ -350,30 +354,34 @@
     <div class="modal-body">
 
       <!-- Должность -->
-      <div class="modal-section">
+      <div class="modal-section" id="pos-section">
         <div class="modal-section-title">Должность</div>
-        <div class="position-grid">
-          <div class="pos-card pos-chief" data-pos="Chief of PA" onclick="selectPosition(this)">
-            <div class="pos-dot"></div>
-            <span class="pos-label">Chief of PA</span>
-          </div>
-          <div class="pos-card pos-depchief" data-pos="Dep.Chief of PA" onclick="selectPosition(this)">
-            <div class="pos-dot"></div>
-            <span class="pos-label">Dep.Chief of PA</span>
-          </div>
-          <div class="pos-card pos-inspector" data-pos="Inspector of PA" onclick="selectPosition(this)">
-            <div class="pos-dot"></div>
-            <span class="pos-label">Inspector of PA</span>
-          </div>
-          <div class="pos-card pos-instructor" data-pos="Instructor of PA" onclick="selectPosition(this)">
-            <div class="pos-dot"></div>
-            <span class="pos-label">Instructor of PA</span>
-          </div>
-          <div class="pos-card pos-trainee" data-pos="Trainee of PA" onclick="selectPosition(this)" style="grid-column:1/-1;">
-            <div class="pos-dot"></div>
-            <span class="pos-label">Trainee of PA</span>
+        <div id="pos-display" style="font-size:14px;font-weight:600;margin-bottom:6px;"></div>
+        <div id="pos-grid-wrap" style="display:none;">
+          <div class="position-grid">
+            <div class="pos-card pos-chief" data-pos="Chief of PA" onclick="selectPosition(this)">
+              <div class="pos-dot"></div>
+              <span class="pos-label">Chief of PA</span>
+            </div>
+            <div class="pos-card pos-depchief" data-pos="Dep.Chief of PA" onclick="selectPosition(this)">
+              <div class="pos-dot"></div>
+              <span class="pos-label">Dep.Chief of PA</span>
+            </div>
+            <div class="pos-card pos-inspector" data-pos="Inspector of PA" onclick="selectPosition(this)">
+              <div class="pos-dot"></div>
+              <span class="pos-label">Inspector of PA</span>
+            </div>
+            <div class="pos-card pos-instructor" data-pos="Instructor of PA" onclick="selectPosition(this)">
+              <div class="pos-dot"></div>
+              <span class="pos-label">Instructor of PA</span>
+            </div>
+            <div class="pos-card pos-trainee" data-pos="Trainee of PA" onclick="selectPosition(this)" style="grid-column:1/-1;">
+              <div class="pos-dot"></div>
+              <span class="pos-label">Trainee of PA</span>
+            </div>
           </div>
         </div>
+        <div id="pos-no-access" style="font-size:12px;color:#8aa0c8;display:none;">Должность назначается администратором</div>
         <div id="pos-msg" class="modal-msg"></div>
       </div>
 
@@ -598,6 +606,18 @@
               <div class="pm-section-title">Управление</div>
               <div class="pm-actions" id="pm-actions"></div>
               <div class="pm-msg" id="pm-msg"></div>
+            <!-- Выбор префикса -->
+            <div id="prefix-select-wrap" style="display:none;margin-top:12px;border:1px solid #c2d4ee;border-radius:10px;padding:12px;">
+              <div style="font-size:12px;font-weight:700;color:#8aa0c8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">Выберите префикс</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <button class="pm-btn" style="background:#1a50b4;color:#fff;" onclick="givePrefix('Chief of PA')">Chief of PA</button>
+                <button class="pm-btn" style="background:#c03030;color:#fff;" onclick="givePrefix('Dep.Chief of PA')">Dep.Chief of PA</button>
+                <button class="pm-btn" style="background:#8b44d4;color:#fff;" onclick="givePrefix('Inspector of PA')">Inspector of PA</button>
+                <button class="pm-btn" style="background:#e07020;color:#fff;" onclick="givePrefix('Instructor of PA')">Instructor of PA</button>
+                <button class="pm-btn" style="background:#1a7a40;color:#fff;" onclick="givePrefix('Trainee of PA')">Trainee of PA</button>
+                <button class="pm-btn pm-btn-prefix-off" onclick="document.getElementById('prefix-select-wrap').style.display='none'">Отмена</button>
+              </div>
+            </div>
             </div>
           </div>
         </div>
@@ -691,13 +711,23 @@
       vkLink.textContent = 'vk.com/' + user.vk_page.replace(/^https?:\/\/vk\.com\//,'');
     }
 
-    // Выбранная должность
-    document.querySelectorAll('.pos-card').forEach(c => {
-      c.classList.toggle('selected', c.dataset.pos === pos);
-      const color = posColor(c.dataset.pos);
-      c.style.color = color;
-      c.style.borderColor = c.classList.contains('selected') ? color : '';
-    });
+    // Должность — показываем выбор только если есть доступ или admin
+    const posDisplay = document.getElementById('pos-display');
+    const posGridWrap = document.getElementById('pos-grid-wrap');
+    const posNoAccess = document.getElementById('pos-no-access');
+    posDisplay.textContent = pos;
+    posDisplay.className = posClass(pos);
+    const canChangePos = user.can_use_prefix || user.role === 'admin';
+    posGridWrap.style.display = canChangePos ? 'block' : 'none';
+    posNoAccess.style.display = canChangePos ? 'none' : 'block';
+    if (canChangePos) {
+      document.querySelectorAll('.pos-card').forEach(c => {
+        c.classList.toggle('selected', c.dataset.pos === pos);
+        const color = posColor(c.dataset.pos);
+        c.style.color = color;
+        c.style.borderColor = c.classList.contains('selected') ? color : '';
+      });
+    }
 
     // Очищаем поля пароля
     ['pw-old','pw-new','pw-new2'].forEach(id => document.getElementById(id).value = '');
@@ -810,7 +840,8 @@
     btn.disabled = true; btn.textContent = 'Регистрация...';
     try {
       const data = await api('POST', '/api/register', { nickname: nick, password: pass, vk_page: vk });
-      if (data.success) { showDashboard({ nickname: nick, position: 'Trainee of PA', vk_page: vk }); }
+      if (data.success) { showDashboard({ nickname: nick, position: 'Игрок', vk_page: vk }); }
+      else if (data.pending) { goTo('page-pending'); }
       else { errEl.textContent = data.error; errEl.style.display = 'block'; }
     } catch { errEl.textContent = 'Ошибка сети.'; errEl.style.display = 'block'; }
     btn.disabled = false; btn.textContent = 'Зарегистрироваться';
@@ -995,7 +1026,7 @@
       if (u.can_use_prefix) {
         btns += `<button class="pm-btn pm-btn-prefix-off" onclick="pmAction('prefix-off')">Убрать префикс</button>`;
       } else {
-        btns += `<button class="pm-btn pm-btn-prefix-on" onclick="pmAction('prefix-on')">Дать префикс</button>`;
+        btns += `<button class="pm-btn pm-btn-prefix-on" onclick="showPrefixSelect()">Дать префикс</button>`;
       }
       if (u.role !== 'admin') {
         btns += `<button class="pm-btn pm-btn-admin" onclick="pmAction('make-admin')">Сделать Admin</button>`;
@@ -1011,6 +1042,27 @@
   }
 
   function closePlayer() { document.getElementById('player-modal').classList.remove('open'); SELECTED_USER = null; }
+
+  function showPrefixSelect() {
+    document.getElementById('prefix-select-wrap').style.display = 'block';
+  }
+
+  async function givePrefix(prefix_label) {
+    if (!SELECTED_USER) return;
+    const msg = document.getElementById('pm-msg');
+    const result = await api('PATCH', `/api/admin/users/${SELECTED_USER.id}/give-prefix`, { prefix_label });
+    document.getElementById('prefix-select-wrap').style.display = 'none';
+    if (result.success) {
+      msg.textContent = `Префикс "${prefix_label}" выдан!`;
+      msg.className = 'pm-msg ok';
+      await loadUsers();
+      SELECTED_USER = ALL_USERS.find(x => x.id == SELECTED_USER.id);
+      if (SELECTED_USER) openPlayer(SELECTED_USER.id);
+    } else {
+      msg.textContent = result.error || 'Ошибка';
+      msg.className = 'pm-msg err';
+    }
+  }
   function closePlayerIfOutside(e) { if (e.target === document.getElementById('player-modal')) closePlayer(); }
 
   async function pmAction(action) {
