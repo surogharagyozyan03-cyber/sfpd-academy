@@ -1,77 +1,29 @@
-# SFPD Police Academy — Система отчётов
+# SFPD Police Academy
 
-## Что включено
-- Авторизация / Регистрация с базой данных
-- Пароли зашифрованы (bcrypt)
-- Сессии хранятся в SQLite
-- Создание, просмотр, удаление отчётов
-- Смена статуса отчёта (Ожидание / Принято / Отклонено)
+## Деплой на Render.com + Supabase
 
-## Стек
-- **Node.js + Express** — сервер
-- **SQLite (better-sqlite3)** — база данных
-- **bcryptjs** — шифрование паролей
-- **express-session** — сессии
+### Шаг 1 — Supabase (база данных)
+1. Зайди на https://supabase.com → Sign Up
+2. New Project → придумай название и пароль
+3. После создания: Settings → Database → Connection string → выбери "URI"
+4. Скопируй строку вида: postgresql://postgres:ПАРОЛЬ@db.xxx.supabase.co:5432/postgres
 
----
+### Шаг 2 — Render.com (хостинг)
+1. Зайди на https://render.com → Sign Up через GitHub
+2. New → Web Service → выбери репозиторий sfpd-academy
+3. Build Command: npm install
+4. Start Command: node server.js
+5. В разделе Environment Variables добавь:
+   - DATABASE_URL = (строка из Supabase)
+   - SESSION_SECRET = любое_случайное_слово
+   - ADMIN_NICKNAME = твой_ник (чтобы стать админом)
+6. Нажми Deploy
 
-## Деплой на Railway (бесплатно)
-
-### Шаг 1 — Загрузи код на GitHub
-1. Зайди на https://github.com и создай новый репозиторий (например `sfpd-academy`)
-2. Загрузи все файлы проекта в репозиторий
-
-### Шаг 2 — Задеплой на Railway
-1. Зайди на https://railway.app
-2. Нажми **"New Project"**
-3. Выбери **"Deploy from GitHub repo"**
-4. Выбери свой репозиторий `sfpd-academy`
-5. Railway автоматически найдёт `package.json` и задеплоит
-
-### Шаг 3 — Получи домен
-1. В Railway нажми на свой проект
-2. Перейди в **Settings → Networking**
-3. Нажми **"Generate Domain"**
-4. Готово! Сайт будет доступен по ссылке вида `sfpd-academy.up.railway.app`
-
----
-
-## Локальный запуск (для теста)
-
-```bash
-# Установить зависимости
-npm install
-
-# Запустить сервер
-npm start
-
-# Открыть в браузере
-http://localhost:3000
-```
-
----
-
-## Структура файлов
-
-```
-sfpd-academy/
-├── server.js          ← Сервер + все API маршруты
-├── package.json       ← Зависимости
-├── railway.toml       ← Конфиг для Railway
-├── .gitignore
-└── public/
-    └── index.html     ← Весь фронтенд (одна страница)
-```
-
-## API маршруты
-
-| Метод | URL | Описание |
-|-------|-----|----------|
-| POST | /api/register | Регистрация |
-| POST | /api/login | Вход |
-| POST | /api/logout | Выход |
-| GET | /api/me | Проверка сессии |
-| GET | /api/reports | Все отчёты |
-| POST | /api/reports | Создать отчёт |
-| PATCH | /api/reports/:id/status | Изменить статус |
-| DELETE | /api/reports/:id | Удалить отчёт |
+### Как управлять пользователями через Supabase
+1. Зайди на supabase.com → твой проект
+2. Слева нажми "Table Editor"
+3. Выбери таблицу "users"
+4. Прямо в таблице меняй:
+   - approved = true (дать доступ)
+   - can_use_prefix = true (дать префикс)
+   - role = admin (сделать админом)

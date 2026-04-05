@@ -1,106 +1,90 @@
 const express = require('express');
-const Database = require('better-sqlite3');
+const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
-const SQLiteStore = require('connect-sqlite3')(session);
+const pgSession = require('connect-pg-simple')(session);
 const path = require('path');
-const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-
-const db = new Database(path.join(DATA_DIR, 'sfpd.db'));
+// ── ПОДКЛЮЧЕНИЕ К SUPABASE ────────────────────────────────────────────────────
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 // ── СОЗДАНИЕ ТАБЛИЦ ───────────────────────────────────────────────────────────
-db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    nickname        TEXT    UNIQUE NOT NULL,
-    password_hash   TEXT    NOT NULL,
-    vk_page         TEXT,
-    position        TEXT    DEFAULT 'Trainee of PA',
-    role            TEXT    DEFAULT 'user',
-    approved        INTEGER DEFAULT 0,
-    can_use_prefix  INTEGER DEFAULT 0,
-    ip_address      TEXT,
-    reg_ip          TEXT,
-    created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_login      DATETIME,
-    notes           TEXT
-  );
-  CREATE TABLE IF NOT EXISTS reports (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id         INTEGER NOT NULL,
-    cadet           TEXT    NOT NULL,
-    exam_type       TEXT    NOT NULL,
-    instructor      TEXT    NOT NULL,
-    exam_date       TEXT,
-    screenshot_link TEXT    NOT NULL,
-    note            TEXT,
-    status          TEXT    DEFAULT 'pending',
-    created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-  );
-  CREATE TABLE IF NOT EXISTS login_logs (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id    INTEGER NOT NULL,
-    ip_address TEXT,
-    user_agent TEXT,
-    login_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    success    INTEGER DEFAULT 1,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-  );
-  CREATE TABLE IF NOT EXISTS prefixes (
-    id       INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id  INTEGER NOT NULL,
-    prefix   TEXT    NOT NULL,
-    given_by TEXT,
-    given_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    active   INTEGER DEFAULT 1,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-  );
-`);
+async function initDB() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id              SERIAL PRIMARY KEY,
+      nickname        TEXT UNIQUE NOT NULL,
+      password_hash   TEXT NOT NULL,
+      vk_page         TEXT,
+      position        TEXT DEFAULT 'Trainee of PA',
+      role            TEXT DEFAULT 'user',
+      approved        BOOLEAN DEFAULT FALSE,
+      can_use_prefix  BOOLEAN DEFAULT FALSE,
+      ip_address      TEXT,
+      reg_ip          TEXT,
+      created_at      TIMESTAMPTZ DEFAULT NOW(),
+      last_login      TIMESTAMPTZ,
+      notes           TEXT
+    );
 
-// Миграции для старых БД
-[
-  "ALTER TABLE users ADD COLUMN password_hash TEXT",
-  "ALTER TABLE users ADD COLUMN approved INTEGER DEFAULT 0",
-  "ALTER TABLE users ADD COLUMN can_use_prefix INTEGER DEFAULT 0",
-  "ALTER TABLE users ADD COLUMN ip_address TEXT",
-  "ALTER TABLE users ADD COLUMN reg_ip TEXT",
-  "ALTER TABLE users ADD COLUMN last_login DATETIME",
-  "ALTER TABLE users ADD COLUMN notes TEXT",
-  "ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'",
-  "ALTER TABLE users ADD COLUMN position TEXT DEFAULT 'Trainee of PA'",
-].forEach(sql => { try { db.exec(sql); } catch(e) {} });
+    CREATE TABLE IF NOT EXISTS reports (
+      id              SERIAL PRIMARY KEY,
+      user_id         INTEGER NOT NULL REFERENCES users(id),
+      cadet           TEXT NOT NULL,
+      exam_type       TEXT NOT NULL,
+      instructor      TEXT NOT NULL,
+      exam_date       TEXT,
+      screenshot_link TEXT NOT NULL,
+      note            TEXT,
+      status          TEXT DEFAULT 'pending',
+      created_at      TIMESTAMPTZ DEFAULT NOW()
+    );
 
-// Если есть старое поле password — переносим в password_hash
-try {
-  const cols = db.prepare("PRAGMA table_info(users)").all().map(r => r.name);
-  if (cols.includes('password') && cols.includes('password_hash')) {
-    db.exec("UPDATE users SET password_hash = password WHERE password_hash IS NULL");
+    CREATE TABLE IF NOT EXISTS login_logs (
+      id          SERIAL PRIMARY KEY,
+      user_id     INTEGER NOT NULL REFERENCES users(id),
+      ip_address  TEXT,
+      user_agent  TEXT,
+      login_at    TIMESTAMPTZ DEFAULT NOW(),
+      success     BOOLEAN DEFAULT TRUE
+    );
+
+    CREATE TABLE IF NOT EXISTS prefixes (
+      id        SERIAL PRIMARY KEY,
+      user_id   INTEGER NOT NULL REFERENCES users(id),
+      prefix    TEXT NOT NULL,
+      given_by  TEXT,
+      given_at  TIMESTAMPTZ DEFAULT NOW(),
+      active    BOOLEAN DEFAULT TRUE
+    );
+  `);
+
+  // Если задана переменная ADMIN_NICKNAME — делаем этого пользователя админом
+  const adminNick = process.env.ADMIN_NICKNAME;
+  if (adminNick) {
+    await pool.query(
+      "UPDATE users SET role='admin', approved=TRUE, can_use_prefix=TRUE WHERE nickname=$1",
+      [adminNick]
+    );
+    console.log(`Admin set: ${adminNick}`);
   }
-} catch(e) {}
 
-// Первый пользователь автоматически становится admin с доступом
-(function ensureAdmin() {
-  const admin = db.prepare("SELECT id FROM users WHERE role='admin' LIMIT 1").get();
-  if (!admin) {
-    const first = db.prepare("SELECT id FROM users ORDER BY id ASC LIMIT 1").get();
-    if (first) db.prepare("UPDATE users SET role='admin', approved=1, can_use_prefix=1 WHERE id=?").run(first.id);
-  }
-})();
+  console.log('БД готова');
+}
 
 // ── MIDDLEWARE ────────────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  store: new SQLiteStore({ db: 'sessions.db', dir: DATA_DIR }),
-  secret: process.env.SESSION_SECRET || 'sfpd-secret-key-2024',
+  store: new pgSession({ pool, createTableIfMissing: true }),
+  secret: process.env.SESSION_SECRET || 'sfpd-secret-2024',
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }
@@ -113,70 +97,63 @@ function requireAuth(req, res, next) {
   if (!req.session.userId) return res.status(401).json({ error: 'Не авторизован' });
   next();
 }
-function requireAdmin(req, res, next) {
+async function requireAdmin(req, res, next) {
   if (!req.session.userId) return res.status(401).json({ error: 'Не авторизован' });
-  const user = db.prepare('SELECT role FROM users WHERE id=?').get(req.session.userId);
-  if (!user || user.role !== 'admin') return res.status(403).json({ error: 'Нет прав' });
+  const { rows } = await pool.query('SELECT role FROM users WHERE id=$1', [req.session.userId]);
+  if (!rows[0] || rows[0].role !== 'admin') return res.status(403).json({ error: 'Нет прав' });
   next();
 }
 
 // ── РЕГИСТРАЦИЯ ───────────────────────────────────────────────────────────────
-app.post('/api/register', (req, res) => {
+app.post('/api/register', async (req, res) => {
   const { nickname, password, vk_page } = req.body;
   if (!nickname || !password || !vk_page) return res.json({ success: false, error: 'Заполните все поля' });
   if (password.length < 6) return res.json({ success: false, error: 'Пароль минимум 6 символов' });
 
-  const existing = db.prepare('SELECT id FROM users WHERE nickname=?').get(nickname);
-  if (existing) return res.json({ success: false, error: 'Никнейм уже занят' });
+  const existing = await pool.query('SELECT id FROM users WHERE nickname=$1', [nickname]);
+  if (existing.rows.length) return res.json({ success: false, error: 'Никнейм уже занят' });
 
   const hash = bcrypt.hashSync(password, 10);
   const ip = getIP(req);
+  const count = await pool.query('SELECT COUNT(*) FROM users');
+  const isFirst = count.rows[0].count === '0';
 
-  // Первый зарегистрировавшийся = admin с полным доступом
-  const isFirst = db.prepare('SELECT COUNT(*) as c FROM users').get().c === 0;
-  const result = db.prepare(
-    'INSERT INTO users (nickname, password_hash, vk_page, reg_ip, ip_address, approved, can_use_prefix, role) VALUES (?,?,?,?,?,?,?,?)'
-  ).run(nickname, hash, vk_page, ip, ip, isFirst ? 1 : 0, isFirst ? 1 : 0, isFirst ? 'admin' : 'user');
-
-  req.session.userId = result.lastInsertRowid;
-  req.session.nickname = nickname;
+  const result = await pool.query(
+    'INSERT INTO users (nickname, password_hash, vk_page, reg_ip, ip_address, approved, can_use_prefix, role) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id',
+    [nickname, hash, vk_page, ip, ip, isFirst, isFirst, isFirst ? 'admin' : 'user']
+  );
 
   if (!isFirst) {
-    // Новый пользователь — ждёт одобрения
-    return res.json({ success: false, pending: true, error: 'Аккаунт создан. Ожидайте одобрения от администратора.' });
+    return res.json({ success: false, pending: true, error: 'Аккаунт создан. Ожидайте одобрения администратора.' });
   }
 
+  req.session.userId = result.rows[0].id;
+  req.session.nickname = nickname;
   res.json({ success: true, nickname });
 });
 
 // ── ВХОД ──────────────────────────────────────────────────────────────────────
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { nickname, password } = req.body;
   if (!nickname || !password) return res.json({ success: false, error: 'Заполните все поля' });
 
-  const user = db.prepare('SELECT * FROM users WHERE nickname=?').get(nickname);
+  const { rows } = await pool.query('SELECT * FROM users WHERE nickname=$1', [nickname]);
+  const user = rows[0];
   const ip = getIP(req);
   const ua = req.headers['user-agent'] || '';
 
-  if (!user) {
-    return res.json({ success: false, error: 'Неверный никнейм или пароль' });
-  }
-
-  const passField = user.password_hash || user.password;
-  if (!bcrypt.compareSync(password, passField)) {
-    // Логируем неудачный вход
-    db.prepare('INSERT INTO login_logs (user_id, ip_address, user_agent, success) VALUES (?,?,?,0)').run(user.id, ip, ua);
+  if (!user || !bcrypt.compareSync(password, user.password_hash)) {
+    if (user) await pool.query('INSERT INTO login_logs (user_id,ip_address,user_agent,success) VALUES ($1,$2,$3,FALSE)', [user.id, ip, ua]);
     return res.json({ success: false, error: 'Неверный никнейм или пароль' });
   }
 
   if (!user.approved) {
-    db.prepare('INSERT INTO login_logs (user_id, ip_address, user_agent, success) VALUES (?,?,?,0)').run(user.id, ip, ua);
+    await pool.query('INSERT INTO login_logs (user_id,ip_address,user_agent,success) VALUES ($1,$2,$3,FALSE)', [user.id, ip, ua]);
     return res.json({ success: false, error: 'Ваш аккаунт ожидает одобрения администратора' });
   }
 
-  // Успешный вход
-  db.prepare('UPDATE users SET last_login=CURRENT_TIMESTAMP, ip_address=? WHERE id=?').run(ip, user.id);
-  db.prepare('INSERT INTO login_logs (user_id, ip_address, user_agent, success) VALUES (?,?,?,1)').run(user.id, ip, ua);
+  await pool.query('UPDATE users SET last_login=NOW(), ip_address=$1 WHERE id=$2', [ip, user.id]);
+  await pool.query('INSERT INTO login_logs (user_id,ip_address,user_agent,success) VALUES ($1,$2,$3,TRUE)', [user.id, ip, ua]);
 
   req.session.userId = user.id;
   req.session.nickname = user.nickname;
@@ -194,126 +171,109 @@ app.post('/api/login', (req, res) => {
 
 app.post('/api/logout', (req, res) => { req.session.destroy(); res.json({ success: true }); });
 
-app.get('/api/me', (req, res) => {
+app.get('/api/me', async (req, res) => {
   if (!req.session.userId) return res.json({ loggedIn: false });
-  const user = db.prepare('SELECT id, nickname, vk_page, position, role, can_use_prefix, created_at FROM users WHERE id=?').get(req.session.userId);
-  if (!user) return res.json({ loggedIn: false });
-  res.json({ loggedIn: true, ...user });
+  const { rows } = await pool.query('SELECT id,nickname,vk_page,position,role,can_use_prefix,created_at FROM users WHERE id=$1', [req.session.userId]);
+  if (!rows[0]) return res.json({ loggedIn: false });
+  res.json({ loggedIn: true, ...rows[0] });
 });
 
 // ── ПРОФИЛЬ ───────────────────────────────────────────────────────────────────
-app.patch('/api/profile/position', requireAuth, (req, res) => {
+app.patch('/api/profile/position', requireAuth, async (req, res) => {
   const { position } = req.body;
   const allowed = ['Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA'];
   if (!allowed.includes(position)) return res.json({ success: false, error: 'Неверная должность' });
-  // Проверяем: Chief и Dep.Chief только если есть can_use_prefix
-  const user = db.prepare('SELECT can_use_prefix FROM users WHERE id=?').get(req.session.userId);
-  if (['Chief of PA','Dep.Chief of PA'].includes(position) && !user.can_use_prefix) {
+  const { rows } = await pool.query('SELECT can_use_prefix FROM users WHERE id=$1', [req.session.userId]);
+  if (['Chief of PA','Dep.Chief of PA'].includes(position) && !rows[0].can_use_prefix)
     return res.json({ success: false, error: 'Нет доступа к этой должности' });
-  }
-  db.prepare('UPDATE users SET position=? WHERE id=?').run(position, req.session.userId);
+  await pool.query('UPDATE users SET position=$1 WHERE id=$2', [position, req.session.userId]);
   res.json({ success: true });
 });
 
-app.patch('/api/profile/password', requireAuth, (req, res) => {
+app.patch('/api/profile/password', requireAuth, async (req, res) => {
   const { old_password, new_password } = req.body;
   if (!old_password || !new_password) return res.json({ success: false, error: 'Заполните все поля' });
   if (new_password.length < 6) return res.json({ success: false, error: 'Минимум 6 символов' });
-  const user = db.prepare('SELECT password_hash, password FROM users WHERE id=?').get(req.session.userId);
-  const passField = user.password_hash || user.password;
-  if (!bcrypt.compareSync(old_password, passField)) return res.json({ success: false, error: 'Неверный текущий пароль' });
-  db.prepare('UPDATE users SET password_hash=? WHERE id=?').run(bcrypt.hashSync(new_password, 10), req.session.userId);
+  const { rows } = await pool.query('SELECT password_hash FROM users WHERE id=$1', [req.session.userId]);
+  if (!bcrypt.compareSync(old_password, rows[0].password_hash)) return res.json({ success: false, error: 'Неверный текущий пароль' });
+  await pool.query('UPDATE users SET password_hash=$1 WHERE id=$2', [bcrypt.hashSync(new_password, 10), req.session.userId]);
   res.json({ success: true });
 });
 
 // ── ADMIN: ПОЛЬЗОВАТЕЛИ ───────────────────────────────────────────────────────
-// Список всех пользователей
-app.get('/api/admin/users', requireAdmin, (req, res) => {
-  const users = db.prepare(`
+app.get('/api/admin/users', requireAdmin, async (req, res) => {
+  const { rows } = await pool.query(`
     SELECT id, nickname, vk_page, position, role, approved, can_use_prefix,
            ip_address, reg_ip, created_at, last_login, notes
     FROM users ORDER BY created_at DESC
-  `).all();
-  res.json({ success: true, users });
+  `);
+  res.json({ success: true, users: rows });
 });
 
-// Одобрить/заблокировать
-app.patch('/api/admin/users/:id/approved', requireAdmin, (req, res) => {
-  const { approved } = req.body;
-  db.prepare('UPDATE users SET approved=? WHERE id=?').run(approved ? 1 : 0, req.params.id);
+app.patch('/api/admin/users/:id/approved', requireAdmin, async (req, res) => {
+  await pool.query('UPDATE users SET approved=$1 WHERE id=$2', [req.body.approved, req.params.id]);
   res.json({ success: true });
 });
 
-// Дать/забрать доступ к префиксу
-app.patch('/api/admin/users/:id/prefix', requireAdmin, (req, res) => {
-  const { can_use_prefix } = req.body;
-  db.prepare('UPDATE users SET can_use_prefix=? WHERE id=?').run(can_use_prefix ? 1 : 0, req.params.id);
+app.patch('/api/admin/users/:id/prefix', requireAdmin, async (req, res) => {
+  await pool.query('UPDATE users SET can_use_prefix=$1 WHERE id=$2', [req.body.can_use_prefix, req.params.id]);
   res.json({ success: true });
 });
 
-// Сменить роль
-app.patch('/api/admin/users/:id/role', requireAdmin, (req, res) => {
+app.patch('/api/admin/users/:id/role', requireAdmin, async (req, res) => {
   const { role } = req.body;
   if (!['user','admin'].includes(role)) return res.json({ success: false, error: 'Неверная роль' });
-  db.prepare('UPDATE users SET role=? WHERE id=?').run(role, req.params.id);
+  await pool.query('UPDATE users SET role=$1 WHERE id=$2', [role, req.params.id]);
   res.json({ success: true });
 });
 
-// Заметка об игроке
-app.patch('/api/admin/users/:id/notes', requireAdmin, (req, res) => {
-  const { notes } = req.body;
-  db.prepare('UPDATE users SET notes=? WHERE id=?').run(notes || '', req.params.id);
-  res.json({ success: true });
-});
-
-// Удалить пользователя
-app.delete('/api/admin/users/:id', requireAdmin, (req, res) => {
+app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
   if (req.params.id == req.session.userId) return res.json({ success: false, error: 'Нельзя удалить себя' });
-  db.prepare('DELETE FROM users WHERE id=?').run(req.params.id);
+  await pool.query('DELETE FROM users WHERE id=$1', [req.params.id]);
   res.json({ success: true });
-});
-
-// Логи входов пользователя
-app.get('/api/admin/users/:id/logs', requireAdmin, (req, res) => {
-  const logs = db.prepare('SELECT * FROM login_logs WHERE user_id=? ORDER BY login_at DESC LIMIT 20').all(req.params.id);
-  res.json({ success: true, logs });
 });
 
 // ── ОТЧЁТЫ ────────────────────────────────────────────────────────────────────
-app.get('/api/reports/my', requireAuth, (req, res) => {
-  const reports = db.prepare('SELECT * FROM reports WHERE user_id=? ORDER BY created_at DESC').all(req.session.userId);
-  res.json({ success: true, reports });
+app.get('/api/reports/my', requireAuth, async (req, res) => {
+  const { rows } = await pool.query('SELECT * FROM reports WHERE user_id=$1 ORDER BY created_at DESC', [req.session.userId]);
+  res.json({ success: true, reports: rows });
 });
 
-app.get('/api/reports/all', requireAuth, (req, res) => {
-  const reports = db.prepare(`
+app.get('/api/reports/all', requireAuth, async (req, res) => {
+  const { rows } = await pool.query(`
     SELECT r.*, u.nickname as author_nickname
     FROM reports r JOIN users u ON r.user_id=u.id
     ORDER BY r.created_at DESC
-  `).all();
-  res.json({ success: true, reports });
+  `);
+  res.json({ success: true, reports: rows });
 });
 
-app.post('/api/reports', requireAuth, (req, res) => {
+app.post('/api/reports', requireAuth, async (req, res) => {
   const { cadet, exam_type, instructor, exam_date, screenshot_link, note } = req.body;
   if (!cadet || !exam_type || !instructor || !screenshot_link) return res.json({ success: false, error: 'Заполните все обязательные поля' });
-  const result = db.prepare(
-    'INSERT INTO reports (user_id,cadet,exam_type,instructor,exam_date,screenshot_link,note) VALUES (?,?,?,?,?,?,?)'
-  ).run(req.session.userId, cadet, exam_type, instructor, exam_date||null, screenshot_link, note||null);
-  const report = db.prepare('SELECT * FROM reports WHERE id=?').get(result.lastInsertRowid);
-  res.json({ success: true, report });
+  const { rows } = await pool.query(
+    'INSERT INTO reports (user_id,cadet,exam_type,instructor,exam_date,screenshot_link,note) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *',
+    [req.session.userId, cadet, exam_type, instructor, exam_date||null, screenshot_link, note||null]
+  );
+  res.json({ success: true, report: rows[0] });
 });
 
-app.patch('/api/reports/:id/status', requireAuth, (req, res) => {
+app.patch('/api/reports/:id/status', requireAuth, async (req, res) => {
   const { status } = req.body;
   if (!['pending','approved','rejected'].includes(status)) return res.json({ success: false, error: 'Неверный статус' });
-  db.prepare('UPDATE reports SET status=? WHERE id=?').run(status, req.params.id);
+  await pool.query('UPDATE reports SET status=$1 WHERE id=$2', [status, req.params.id]);
   res.json({ success: true });
 });
 
-app.delete('/api/reports/:id', requireAuth, (req, res) => {
-  db.prepare('DELETE FROM reports WHERE id=? AND user_id=?').run(req.params.id, req.session.userId);
+app.delete('/api/reports/:id', requireAuth, async (req, res) => {
+  await pool.query('DELETE FROM reports WHERE id=$1 AND user_id=$2', [req.params.id, req.session.userId]);
   res.json({ success: true });
 });
 
-app.listen(PORT, () => console.log(`SFPD Academy: http://localhost:${PORT}`));
+// ── ЗАПУСК ────────────────────────────────────────────────────────────────────
+initDB().then(() => {
+  app.listen(PORT, () => console.log(`SFPD Academy: http://localhost:${PORT}`));
+}).catch(err => {
+  console.error('Ошибка БД:', err);
+  process.exit(1);
+});
