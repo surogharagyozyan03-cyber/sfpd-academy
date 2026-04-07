@@ -51,6 +51,23 @@ async function initDB() {
     ALTER TABLE reports ADD COLUMN IF NOT EXISTS reviewed_by TEXT;
     ALTER TABLE reports ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMPTZ;
 
+    -- Таблица состава академии
+    CREATE TABLE IF NOT EXISTS roster (
+      id              SERIAL PRIMARY KEY,
+      section         TEXT NOT NULL DEFAULT 'staff',
+      position        TEXT,
+      rank            TEXT,
+      appointed_date  TEXT,
+      last_promotion  TEXT,
+      next_promotion  TEXT,
+      personal_file   TEXT,
+      promotion_status TEXT DEFAULT 'Рано',
+      warnings        TEXT DEFAULT '0/3',
+      sort_order      INTEGER DEFAULT 0,
+      updated_at      TIMESTAMPTZ DEFAULT NOW(),
+      updated_by      TEXT
+    );
+
     CREATE TABLE IF NOT EXISTS login_logs (
       id          SERIAL PRIMARY KEY,
       user_id     INTEGER NOT NULL REFERENCES users(id),
@@ -67,6 +84,22 @@ async function initDB() {
       given_by  TEXT,
       given_at  TIMESTAMPTZ DEFAULT NOW(),
       active    BOOLEAN DEFAULT TRUE
+    );
+    CREATE TABLE IF NOT EXISTS roster (
+      id            SERIAL PRIMARY KEY,
+      section       TEXT NOT NULL DEFAULT 'main',
+      sort_order    INTEGER DEFAULT 0,
+      full_name     TEXT DEFAULT '',
+      rank          TEXT DEFAULT '',
+      position      TEXT DEFAULT '',
+      date_assigned TEXT DEFAULT '',
+      date_last_up  TEXT DEFAULT '',
+      date_next_up  TEXT DEFAULT '',
+      personal_link TEXT DEFAULT '',
+      admission     TEXT DEFAULT 'Рано',
+      warnings      TEXT DEFAULT '0/3',
+      updated_at    TIMESTAMPTZ DEFAULT NOW(),
+      updated_by    TEXT DEFAULT ''
     );
   `);
 
@@ -268,6 +301,48 @@ app.patch('/api/admin/users/:id/give-prefix', requireMod, async (req, res) => {
   res.json({ success: true });
 });
 
+// ── СОСТАВ АКАДЕМИИ ──────────────────────────────────────────────────────────
+// Получить весь состав
+app.get('/api/roster', requireAuth, async (req, res) => {
+  const { rows } = await pool.query('SELECT * FROM roster ORDER BY sort_order ASC, id ASC');
+  res.json({ success: true, roster: rows });
+});
+
+// Добавить строку
+app.post('/api/roster', requireAuth, async (req, res) => {
+  const { section, position, sort_order } = req.body;
+  const { rows } = await pool.query(
+    'INSERT INTO roster (section, position, sort_order, updated_by) VALUES ($1,$2,$3,$4) RETURNING *',
+    [section||'staff', position||'', sort_order||0, req.session.nickname]
+  );
+  res.json({ success: true, row: rows[0] });
+});
+
+// Обновить поле строки
+app.patch('/api/roster/:id', requireAuth, async (req, res) => {
+  const allowed = ['position','rank','appointed_date','last_promotion','next_promotion','personal_file','promotion_status','warnings','sort_order','section'];
+  const updates = [];
+  const vals = [];
+  let i = 1;
+  for (const [k, v] of Object.entries(req.body)) {
+    if (allowed.includes(k)) {
+      updates.push(`${k}=$${i++}`);
+      vals.push(v);
+    }
+  }
+  if (!updates.length) return res.json({ success: false, error: 'Нет данных' });
+  updates.push(`updated_at=NOW()`, `updated_by=$${i++}`);
+  vals.push(req.session.nickname, req.params.id);
+  await pool.query(`UPDATE roster SET ${updates.join(',')} WHERE id=$${i}`, vals);
+  res.json({ success: true });
+});
+
+// Удалить строку
+app.delete('/api/roster/:id', requireAuth, async (req, res) => {
+  await pool.query('DELETE FROM roster WHERE id=$1', [req.params.id]);
+  res.json({ success: true });
+});
+
 // ── ОТЧЁТЫ ────────────────────────────────────────────────────────────────────
 app.get('/api/reports/my', requireAuth, async (req, res) => {
   const { rows } = await pool.query('SELECT * FROM reports WHERE user_id=$1 ORDER BY created_at DESC', [req.session.userId]);
@@ -314,6 +389,38 @@ app.delete('/api/reports/:id', requireAuth, async (req, res) => {
 
 // ── ЗАПУСК ────────────────────────────────────────────────────────────────────
 // Запускаем сервер сразу — даже если БД ещё не готова
+// ── ROSTER API ───────────────────────────────────────────────────────────────
+app.get('/api/roster', requireAuth, async (req, res) => {
+  const { rows } = await pool.query('SELECT * FROM roster ORDER BY section, sort_order, id');
+  res.json({ success: true, rows });
+});
+
+app.post('/api/roster', requireAuth, async (req, res) => {
+  const { section } = req.body;
+  const count = await pool.query('SELECT COUNT(*) FROM roster WHERE section=$1', [section]);
+  const { rows } = await pool.query(
+    'INSERT INTO roster (section, sort_order, updated_by) VALUES ($1,$2,$3) RETURNING *',
+    [section || 'main', parseInt(count.rows[0].count), req.session.nickname]
+  );
+  res.json({ success: true, row: rows[0] });
+});
+
+app.patch('/api/roster/:id', requireAuth, async (req, res) => {
+  const { field, value } = req.body;
+  const allowed = ['full_name','rank','position','date_assigned','date_last_up','date_next_up','personal_link','admission','warnings','sort_order'];
+  if (!allowed.includes(field)) return res.json({ success: false, error: 'Неверное поле' });
+  await pool.query(
+    `UPDATE roster SET ${field}=$1, updated_at=NOW(), updated_by=$2 WHERE id=$3`,
+    [value, req.session.nickname, req.params.id]
+  );
+  res.json({ success: true });
+});
+
+app.delete('/api/roster/:id', requireAuth, async (req, res) => {
+  await pool.query('DELETE FROM roster WHERE id=$1', [req.params.id]);
+  res.json({ success: true });
+});
+
 app.listen(PORT, () => console.log(`SFPD Academy: http://localhost:${PORT}`));
 
 // Подключаемся к БД с повторными попытками
