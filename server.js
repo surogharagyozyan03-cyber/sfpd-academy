@@ -94,13 +94,22 @@ async function initDB() {
       position      TEXT DEFAULT '',
       date_assigned TEXT DEFAULT '',
       date_last_up  TEXT DEFAULT '',
-      date_next_up  TEXT DEFAULT '',
       personal_link TEXT DEFAULT '',
       admission     TEXT DEFAULT 'Рано',
       warnings      TEXT DEFAULT '0/3',
       updated_at    TIMESTAMPTZ DEFAULT NOW(),
       updated_by    TEXT DEFAULT ''
     );
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0;
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS full_name TEXT DEFAULT '';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS rank TEXT DEFAULT '';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS position TEXT DEFAULT '';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS date_assigned TEXT DEFAULT '';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS date_last_up TEXT DEFAULT '';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS personal_link TEXT DEFAULT '';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS admission TEXT DEFAULT 'Рано';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS warnings TEXT DEFAULT '0/3';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS updated_by TEXT DEFAULT '';
   `);
 
   // Если задана переменная ADMIN_NICKNAME — делаем этого пользователя админом
@@ -401,6 +410,19 @@ app.post('/api/roster', requireAuth, async (req, res) => {
   const { rows } = await pool.query(
     'INSERT INTO roster (section, sort_order, updated_by) VALUES ($1,$2,$3) RETURNING *',
     [section || 'main', parseInt(count.rows[0].count), req.session.nickname]
+  );
+  res.json({ success: true, row: rows[0] });
+});
+
+app.post('/api/roster/full', requireAuth, async (req, res) => {
+  const { section, full_name, rank, position, date_assigned, date_last_up, personal_link, admission, warnings } = req.body;
+  if (!full_name || !rank || !position || !section) return res.json({ success: false, error: 'Заполните обязательные поля' });
+  const count = await pool.query('SELECT COUNT(*) FROM roster WHERE section=$1', [section]);
+  const { rows } = await pool.query(
+    `INSERT INTO roster (section, sort_order, full_name, rank, position, date_assigned, date_last_up, personal_link, admission, warnings, updated_by)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+    [section, parseInt(count.rows[0].count), full_name, rank, position,
+     date_assigned||'', date_last_up||'', personal_link||'', admission||'Рано', warnings||'0/3', req.session.nickname]
   );
   res.json({ success: true, row: rows[0] });
 });
