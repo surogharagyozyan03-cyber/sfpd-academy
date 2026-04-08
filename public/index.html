@@ -156,6 +156,98 @@
     .placeholder-card { background: #fff; border: 1px solid #c2d4ee; border-radius: 12px; padding: 3rem 2rem; text-align: center; box-shadow: 0 1px 6px rgba(24,80,180,0.05); }
     .placeholder-icon { font-size: 40px; margin-bottom: 1rem; opacity: 0.35; }
     .placeholder-text { color: #8aa0c8; font-size: 14px; line-height: 1.6; }
+    /* ── СОСТАВ PA ── */
+    #page-roster { width: 100%; }
+    .rt-section { margin-bottom: 1.5rem; border-radius: 10px; overflow: hidden; border: 1px solid #c2d4ee; }
+    body.dark-theme .rt-section { border-color: #2a2f42; }
+    .rt-section-header { background: #1a3a6b; color: #c8d8f0; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; padding: 9px 14px; text-transform: uppercase; }
+    .rt-scroll { overflow-x: hidden; width: 100%; }
+    .rt { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .rt th { background: #1e3a70; color: #a8c0e8; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 6px; text-align: center; border: 1px solid #2a4a8b; white-space: nowrap; overflow: hidden; }
+    .rt td { padding: 4px 5px; border: 1px solid #d0d8ea; text-align: center; vertical-align: middle; font-size: 12px; background: #fff; overflow: hidden; }
+    body.dark-theme .rt td { background: #141820 !important; border-color: #252a3a !important; color: #cdd2e0 !important; }
+    .rt tr:hover td { background: #f0f5fd; }
+    body.dark-theme .rt tr:hover td { background: #1a2030 !important; }
+    .rt .num-cell { color: #8aa0c8; font-size: 11px; width: 28px; }
+
+    /* Редактируемые поля */
+    .re { background: transparent; border: none; outline: none; font-family: inherit; font-size: 12px; color: inherit; width: 100%; text-align: center; padding: 2px 3px; border-radius: 3px; }
+    .re:hover { background: rgba(26,80,180,0.07); }
+    .re:focus { background: #e8f0fb; outline: 1px solid #1a50b4; }
+    body.dark-theme .re:focus { background: #1e2a40 !important; outline-color: #4a70b4 !important; }
+
+    /* Селекты в таблице */
+    .rs { background: transparent; border: none; outline: none; font-size: 12px; font-family: inherit; cursor: pointer; color: inherit; text-align: center; width: 100%; padding: 2px; }
+    .rs:hover { background: rgba(26,80,180,0.07); border-radius: 3px; }
+    body.dark-theme .rs { color: #cdd2e0 !important; }
+    body.dark-theme .rs option { background: #1e2235 !important; color: #cdd2e0 !important; }
+    body.dark-theme select option { background: #1e2235 !important; color: #cdd2e0 !important; }
+    body.dark-theme select { background: #1e2235 !important; color: #cdd2e0 !important; border-color: #2a2f42 !important; }
+
+    /* Допуск */
+    .adm { padding: 3px 7px; border-radius: 10px; font-size: 11px; font-weight: 700; border: none; cursor: pointer; outline: none; font-family: inherit; width: 100%; }
+    .adm-early    { background: #fef3c7; color: #92400e; }
+    .adm-ok       { background: #dcfce7; color: #166534; }
+    .adm-no       { background: #fee2e2; color: #991b1b; }
+    .adm-consider { background: #e8f0fb; color: #1a50b4; }
+    body.dark-theme .adm-early    { background: #2a2010 !important; color: #d4a843 !important; }
+    body.dark-theme .adm-ok       { background: #102010 !important; color: #4ade80 !important; }
+    body.dark-theme .adm-no       { background: #2a1010 !important; color: #f87171 !important; }
+    body.dark-theme .adm-consider { background: #101828 !important; color: #60a0e0 !important; }
+
+    /* Личное дело */
+    .plink { color: #1a50b4; text-decoration: none; font-size: 12px; font-weight: 600; }
+    .plink:hover { text-decoration: underline; }
+    body.dark-theme .plink { color: #6090d4 !important; }
+
+    /* Удалить */
+    .del-btn { background: none; border: 1px solid #f0a0a0; color: #c03030; border-radius: 4px; font-size: 11px; cursor: pointer; padding: 2px 5px; }
+    .del-btn:hover { background: #fde8e8; }
+
+    /* Индикатор сохранения */
+    .save-ind { font-size: 12px; color: #1a7a40; display: none; margin-left: 8px; }
+    body.dark-theme .save-ind { color: #4ade80 !important; }
+
+    /* Форма добавления */
+    .rt-add-form { background: #fff; border: 1px solid #c2d4ee; border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; }
+    body.dark-theme .rt-add-form { background: #141820 !important; border-color: #2a2f42 !important; }
+    .rt-add-title { font-size: 15px; font-weight: 700; color: #1a50b4; margin-bottom: 1rem; }
+    body.dark-theme .rt-add-title { color: #6090d4 !important; }
+    .rt-form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    .rt-field { display: flex; flex-direction: column; gap: 4px; }
+    .rt-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: #4a6090; text-transform: uppercase; }
+    body.dark-theme .rt-label { color: #8aa0c8 !important; }
+    .rt-input, .rt-select { background: #f0f5fd; border: 1px solid #c2d4ee; border-radius: 7px; padding: 8px 10px; font-size: 13px; font-family: inherit; color: #1a2a4a; outline: none; }
+    .rt-input:focus, .rt-select:focus { border-color: #1a50b4; }
+    body.dark-theme .rt-input, body.dark-theme .rt-select { background: #1e2235 !important; border-color: #2a2f42 !important; color: #cdd2e0 !important; }
+    body.dark-theme .rt-select option { background: #1e2235 !important; color: #cdd2e0 !important; }
+    .rt-add-btn { padding: 9px 24px; background: #1a50b4; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 4px; }
+    .rt-add-btn:hover { opacity: 0.88; }
+    .rt-err { font-size: 12px; color: #c03030; margin-top: 6px; display: none; }
+
+    /* Позиции — цвета */
+    .pc-curator    { color: #1a3a6b; font-weight: 700; }
+    .pc-chief      { color: #c03030; font-weight: 700; }
+    .pc-dep        { color: #c03030; font-weight: 700; }
+    .pc-inspector  { color: #8b44d4; font-weight: 700; }
+    .pc-instructor { color: #1a7a40; font-weight: 700; }
+    .pc-trainee    { color: #4a6090; }
+    .pc-academy    { color: #4a6090; }
+
+    /* Профиль в сайдбаре — фикс белого фона при тёмной теме */
+    body.dark-theme .sidebar-profile { background: transparent !important; }
+    body.dark-theme .pos-card { background: #1e2235 !important; border-color: #2a2f42 !important; }
+    body.dark-theme .pos-card.selected { background: #252a3a !important; }
+    body.dark-theme .modal { background: #141820 !important; }
+    body.dark-theme .modal-header { background: #1a3a6b !important; }
+    body.dark-theme .modal-body { background: #141820 !important; }
+    body.dark-theme .modal-section-title { border-color: #2a2f42 !important; color: #6b82aa !important; }
+    body.dark-theme .info-row { border-color: #1e2235 !important; }
+    body.dark-theme .info-label { color: #6b82aa !important; }
+    body.dark-theme .info-value { color: #cdd2e0 !important; }
+    body.dark-theme .modal-input { background: #1e2235 !important; border-color: #2a2f42 !important; color: #cdd2e0 !important; }
+    body.dark-theme .back-link { color: #6b82aa !important; }
+
 
     /* ── ТЁМНАЯ ТЕМА ── */
     body.dark-theme { background: #0f1117 !important; color: #cdd2e0 !important; }
@@ -431,71 +523,7 @@
     .pm-msg.err { color:#c03030; }
 
 
-    /* ── СОСТАВ PA ── */
-    .roster-wrap { overflow-x: auto; }
-    .roster-table { border-collapse: collapse; font-size: 12px; min-width: 900px; width: 100%; }
-    .roster-table th {
-      background: #1a3a6b; color: #c8d8f0; font-size: 10px; font-weight: 700;
-      letter-spacing: 0.05em; text-transform: uppercase; padding: 8px 10px;
-      text-align: center; white-space: nowrap; border: 1px solid #2a4a8b;
-    }
-    .roster-table td {
-      padding: 5px 8px; border: 1px solid #d0d8ea; text-align: center;
-      vertical-align: middle; font-size: 12px; background: #fff;
-    }
-    body.dark-theme .roster-table td { background: #141820 !important; border-color: #2a2f42 !important; color: #cdd2e0 !important; }
-    body.dark-theme .roster-table .roster-section-row td { background: #0f1117 !important; }
-    .roster-table tr:hover td { background: #f0f5fd; }
-    body.dark-theme .roster-table tr:hover td { background: #1e2235 !important; }
-    .roster-section-row td {
-      background: #1a3a6b !important; color: #e0eaf8 !important;
-      font-size: 11px; font-weight: 700; text-align: center;
-      letter-spacing: 0.04em; padding: 5px 10px;
-    }
-    .roster-editable {
-      background: transparent; border: none; outline: none;
-      font-family: inherit; font-size: 12px; color: inherit;
-      width: 100%; text-align: center; cursor: pointer;
-      padding: 2px 4px; border-radius: 4px; transition: background 0.15s;
-    }
-    .roster-editable:hover { background: rgba(26,80,180,0.08); }
-    .roster-editable:focus { background: #e8f0fb; outline: 1px solid #1a50b4; }
-    body.dark-theme .roster-editable:focus { background: #1e2235 !important; }
-    .roster-link { color: #1a50b4; text-decoration: none; font-size: 11px; }
-    .roster-link:hover { text-decoration: underline; }
-    .roster-pos-select { background: transparent; border: none; outline: none; font-size: 12px; font-family: inherit; cursor: pointer; color: inherit; text-align: center; width: 100%; }
-    body.dark-theme .roster-pos-select { color: #cdd2e0 !important; background: transparent !important; }
-    .pos-tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
-    .pos-curator    { background: #e8f0fb; color: #1a3a6b; }
-    .pos-vchief     { background: #fde8e8; color: #c03030; }
-    .pos-depchief   { background: #fde8e8; color: #c03030; }
-    .pos-vdepchief  { background: #fff3cd; color: #856404; }
-    .pos-inspector  { background: #f3eafd; color: #8b44d4; }
-    .pos-vinstructor{ background: #e8f8ee; color: #1a7a40; }
-    .pos-instructor { background: #e8f8ee; color: #1a7a40; }
-    .pos-trainee    { background: #f0f5fd; color: #4a6090; }
-    .admit-select {
-      padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;
-      border: none; cursor: pointer; outline: none; font-family: inherit;
-    }
-    .admit-early    { background: #fef3c7; color: #92400e; }
-    .admit-admitted { background: #dcfce7; color: #166534; }
-    .admit-rejected { background: #fee2e2; color: #991b1b; }
-    .admit-consider { background: #e8f0fb; color: #1a50b4; }
-    .roster-add-btn {
-      padding: 5px 14px; background: #1a50b4; color: #fff; border: none;
-      border-radius: 6px; font-size: 12px; font-family: inherit;
-      cursor: pointer; transition: opacity 0.15s; margin: 4px;
-    }
-    .roster-add-btn:hover { opacity: 0.85; }
-    .roster-del-btn {
-      padding: 2px 6px; background: none; border: 1px solid #f0a0a0;
-      color: #c03030; border-radius: 4px; font-size: 11px; cursor: pointer;
-    }
-    .roster-del-btn:hover { background: #fde8e8; }
-    .roster-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-    .save-indicator { font-size: 12px; color: #1a7a40; display: none; }
-    .save-indicator.show { display: inline; }
+
     @media (max-width: 700px) { .sidebar { width: 200px; } }
     @media (max-width: 520px) { .sidebar { display: none; } .dashboard-content { padding: 1rem; } }
   </style>
@@ -695,12 +723,7 @@
           Все отчёты
         </a>
       </li>
-      <li class="sidebar-menu-item">
-        <a href="#" data-page="lectures" onclick="switchPage('lectures');return false;">
-          <svg viewBox="0 0 24 24"><path d="M12 2L2 6V8H22V6L12 2ZM4 10V18H6V10H4ZM10 10V18H14V10H10ZM18 10V18H20V10H18ZM2 20V22H22V20H2Z"/></svg>
-          Состав
-        </a>
-      </li>
+
       <li class="sidebar-menu-item">
         <a href="#" data-page="binds" onclick="switchPage('binds');return false;">
           <svg viewBox="0 0 24 24"><path d="M20 2H4C3 2 2 3 2 4V6C2 7.1 2.9 8 4 8H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V8H20C21 8 22 7 22 6V4C22 3 21 2 20 2ZM15 13H13V17H11V13H9L12 10L15 13ZM20 6H4V4H20V6Z"/></svg>
@@ -954,99 +977,94 @@
 
       <!-- СОСТАВ PA -->
       <div id="page-roster" class="dashboard-page">
-        <div class="section-title">★ Police Academy ★ — Состав</div>
-        <span class="save-indicator" id="roster-save-indicator" style="font-size:13px;color:#1a7a40;margin-bottom:8px;display:none;">✓ Сохранено</span>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;">
+          <div class="section-title" style="margin-bottom:0;">★ Police Academy ★ — Состав</div>
+          <span class="save-ind" id="rst-saved">✓ Сохранено</span>
+        </div>
 
-        <!-- 6 таблиц -->
-        <div id="roster-tables-wrap"></div>
+        <div id="rst-wrap"></div>
 
         <!-- Форма добавления -->
-        <div class="form-card" style="margin-top:1.5rem;">
-          <div class="form-card-title">Добавить запись в состав</div>
-          <div class="form-row">
-            <div class="dash-form-group">
-              <label>Имя и Фамилия <span class="req">*</span></label>
-              <input type="text" id="ra-name" placeholder="Имя_Фамилия" />
+        <div class="rt-add-form" id="rst-add-form">
+          <div class="rt-add-title">+ Добавить запись</div>
+          <div class="rt-form-grid">
+            <div class="rt-field">
+              <label class="rt-label">Имя и Фамилия *</label>
+              <input class="rt-input" id="fa-name" type="text" placeholder="Имя_Фамилия"/>
             </div>
-            <div class="dash-form-group">
-              <label>Звание <span class="req">*</span></label>
-              <select id="ra-rank">
+            <div class="rt-field">
+              <label class="rt-label">Звание *</label>
+              <select class="rt-select" id="fa-rank">
                 <option value="">— Выбрать —</option>
                 <option>Кадет</option>
-                <option>Офицер</option>
-                <option>Мл.Сержант</option>
-                <option>Сержант</option>
-                <option>Ст.Сержант</option>
-                <option>Прапорщик</option>
-                <option>Ст.Прапорщик</option>
-                <option>Мл.Лейтенант</option>
-                <option>Лейтенант</option>
-                <option>Ст.Лейтенант</option>
-                <option>Капитан</option>
-                <option>Майор</option>
-                <option>Подполковник</option>
-                <option>Полковник</option>
-                <option>Шериф</option>
+<option>Офицер</option>
+<option>Мл.Сержант</option>
+<option>Сержант</option>
+<option>Ст.Сержант</option>
+<option>Прапорщик</option>
+<option>Ст.Прапорщик</option>
+<option>Мл.Лейтенант</option>
+<option>Лейтенант</option>
+<option>Ст.Лейтенант</option>
+<option>Капитан</option>
+<option>Майор</option>
+<option>Подполковник</option>
+<option>Полковник</option>
+<option>Шериф</option>
               </select>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="dash-form-group">
-              <label>Должность <span class="req">*</span></label>
-              <select id="ra-position">
+            <div class="rt-field">
+              <label class="rt-label">Должность *</label>
+              <select class="rt-select" id="fa-pos">
                 <option value="">— Выбрать —</option>
                 <option>Curator of PA</option>
-                <option>Chief of PA</option>
-                <option>Dep.Chief of PA</option>
-                <option>Inspector of PA</option>
-                <option>Instructor of PA</option>
-                <option>Trainee of PA</option>
-                <option>Academy PA</option>
+<option>Chief of PA</option>
+<option>Dep.Chief of PA</option>
+<option>Inspector of PA</option>
+<option>Instructor of PA</option>
+<option>Trainee of PA</option>
+<option>Academy PA</option>
               </select>
             </div>
-            <div class="dash-form-group">
-              <label>Допуск к повышению</label>
-              <select id="ra-admission">
-                <option value="Рано">Рано</option>
-                <option value="Допущен(а)">Допущен(а)</option>
-                <option value="Не допущен(а)">Не допущен(а)</option>
-                <option value="На усмотрение">На усмотрение</option>
+            <div class="rt-field">
+              <label class="rt-label">Допуск к повышению</label>
+              <select class="rt-select" id="fa-adm">
+                <option>Рано</option>
+<option>Допущен(а)</option>
+<option>Не допущен(а)</option>
+<option>На усмотрение</option>
               </select>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="dash-form-group">
-              <label>Дата назначения</label>
-              <input type="date" id="ra-date-assigned" />
+            <div class="rt-field">
+              <label class="rt-label">Дата назначения</label>
+              <input class="rt-input" id="fa-date-a" type="date"/>
             </div>
-            <div class="dash-form-group">
-              <label>Дата последнего повышения</label>
-              <input type="date" id="ra-date-last" />
+            <div class="rt-field">
+              <label class="rt-label">Дата посл. повышения</label>
+              <input class="rt-input" id="fa-date-l" type="date"/>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="dash-form-group">
-              <label>Личное дело (ссылка)</label>
-              <input type="url" id="ra-link" placeholder="https://..." />
+            <div class="rt-field">
+              <label class="rt-label">Личное дело (ссылка)</label>
+              <input class="rt-input" id="fa-link" type="url" placeholder="https://..."/>
             </div>
-            <div class="dash-form-group">
-              <label>Выговоры</label>
-              <input type="text" id="ra-warnings" placeholder="0/3" value="0/3" />
+            <div class="rt-field">
+              <label class="rt-label">Выговоры</label>
+              <input class="rt-input" id="fa-warn" type="text" value="0/3" placeholder="0/3"/>
             </div>
           </div>
-          <div class="dash-form-group">
-            <label>Добавить в раздел <span class="req">*</span></label>
-            <select id="ra-section">
-              <option value="leadership">Рук-во</option>
-              <option value="main">Основной состав</option>
-              <option value="trainee">Стажёры</option>
-              <option value="cadets_contract">Кадеты по контракту</option>
-              <option value="transfer">Перевод</option>
-              <option value="interview">По заявлению/собеседованию</option>
+          <div class="rt-field" style="max-width:300px;margin-bottom:12px;">
+            <label class="rt-label">Добавить в раздел *</label>
+            <select class="rt-select" id="fa-sec">
+              <option value="leadership">РУК-ВО</option>
+<option value="main">ОСНОВНОЙ СОСТАВ АКАДЕМИИ</option>
+<option value="trainee">СТАЖЁРЫ АКАДЕМИИ</option>
+<option value="cadets_contract">КАДЕТЫ ПО КОНТРАКТУ</option>
+<option value="transfer">ПЕРЕВОД</option>
+<option value="interview">ПО ЗАЯВЛЕНИЮ/СОБЕСЕДОВАНИЮ</option>
             </select>
           </div>
-          <div id="ra-error" style="font-size:12px;color:#c03030;margin-bottom:8px;display:none;"></div>
-          <button class="btn-blue" style="margin-top:0.5rem;" onclick="addRosterEntry()">Добавить</button>
+          <div class="rt-err" id="fa-err"></div>
+          <button class="rt-add-btn" onclick="rstAdd()">Добавить</button>
         </div>
       </div>
 
@@ -1661,225 +1679,198 @@
 
 
   // ── СОСТАВ PA ─────────────────────────────────────────
-  let ROSTER_DATA = [];
-  let rosterSaveTimer = null;
+  let RST = [];
+  let rstTimer = null;
 
-  const SECTIONS = [
-    { key: 'leadership',      label: 'РУК-ВО' },
-    { key: 'main',            label: 'ОСНОВНОЙ СОСТАВ АКАДЕМИИ' },
-    { key: 'trainee',         label: 'СТАЖЁРЫ АКАДЕМИИ' },
-    { key: 'cadets_contract', label: 'КАДЕТЫ ПО КОНТРАКТУ' },
-    { key: 'transfer',        label: 'ПЕРЕВОД' },
-    { key: 'interview',       label: 'ПО ЗАЯВЛЕНИЮ/СОБЕСЕДОВАНИЮ' },
+  const RST_SECTIONS = [
+    {key:'leadership',      label:'РУК-ВО'},
+    {key:'main',            label:'ОСНОВНОЙ СОСТАВ АКАДЕМИИ'},
+    {key:'trainee',         label:'СТАЖЁРЫ АКАДЕМИИ'},
+    {key:'cadets_contract', label:'КАДЕТЫ ПО КОНТРАКТУ'},
+    {key:'transfer',        label:'ПЕРЕВОД'},
+    {key:'interview',       label:'ПО ЗАЯВЛЕНИЮ/СОБЕСЕДОВАНИЮ'},
   ];
+  const RST_RANKS = ['Кадет','Офицер','Мл.Сержант','Сержант','Ст.Сержант','Прапорщик','Ст.Прапорщик','Мл.Лейтенант','Лейтенант','Ст.Лейтенант','Капитан','Майор','Подполковник','Полковник','Шериф'];
+  const RST_POS   = ['Curator of PA','Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA','Academy PA'];
+  const RST_ADM   = ['Рано','Допущен(а)','Не допущен(а)','На усмотрение'];
+  const ADM_CLS   = {'Рано':'adm-early','Допущен(а)':'adm-ok','Не допущен(а)':'adm-no','На усмотрение':'adm-consider'};
+  const POS_CLS   = {'Curator of PA':'pc-curator','Chief of PA':'pc-chief','Dep.Chief of PA':'pc-dep','Inspector of PA':'pc-inspector','Instructor of PA':'pc-instructor','Trainee of PA':'pc-trainee','Academy PA':'pc-academy'};
 
-  const ADMIT_CLASSES = {
-    'Рано':            'admit-early',
-    'Допущен(а)':      'admit-admitted',
-    'Не допущен(а)':   'admit-rejected',
-    'На усмотрение':   'admit-consider',
-  };
-
-  const RANKS = ['Кадет','Офицер','Мл.Сержант','Сержант','Ст.Сержант','Прапорщик','Ст.Прапорщик','Мл.Лейтенант','Лейтенант','Ст.Лейтенант','Капитан','Майор','Подполковник','Полковник','Шериф'];
-  const POSITIONS_ROSTER = ['Curator of PA','Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA','Academy PA'];
-
-  // Проверяем права на редактирование состава
-  function canEditRoster() {
-    const role = CURRENT_USER.role;
-    const pos = CURRENT_USER.position;
-    if (['admin','moderator'].includes(role)) return true;
-    const editPositions = ['Chief of PA','Dep.Chief of PA','Curator of PA'];
-    return editPositions.includes(pos);
+  function canEditRst() {
+    const r = CURRENT_USER.role, p = CURRENT_USER.position;
+    if (['admin','moderator'].includes(r)) return true;
+    return ['Curator of PA','Chief of PA','Dep.Chief of PA'].includes(p);
   }
 
-  function fmtDateRoster(str) {
-    if (!str) return '';
-    // Если формат YYYY-MM-DD конвертируем
-    if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
-      const [y,m,d] = str.split('-');
-      return d+'.'+m+'.'+y;
-    }
-    return str;
+  function esc(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function fmtD(v) {
+    if (!v) return '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v)) { const [y,m,d]=v.split('-'); return d+'.'+m+'.'+y; }
+    return v;
   }
 
   async function loadRoster() {
-    const wrap = document.getElementById('roster-tables-wrap');
+    const wrap = document.getElementById('rst-wrap');
+    if (!wrap) return;
     wrap.innerHTML = '<div style="text-align:center;padding:2rem;color:#8aa0c8;">Загрузка...</div>';
     try {
       const data = await api('GET', '/api/roster');
-      ROSTER_DATA = data.rows || [];
-      renderAllRoster();
-    } catch {
-      wrap.innerHTML = '<div style="text-align:center;padding:2rem;color:#c03030;">Ошибка загрузки</div>';
+      RST = data.rows || [];
+      renderRst();
+    } catch(e) {
+      wrap.innerHTML = '<div style="text-align:center;padding:2rem;color:#c03030;">Ошибка загрузки. Попробуйте обновить страницу.</div>';
     }
+    // Показываем/скрываем форму
+    const form = document.getElementById('rst-add-form');
+    if (form) form.style.display = canEditRst() ? 'block' : 'none';
   }
 
-  function renderAllRoster() {
-    const wrap = document.getElementById('roster-tables-wrap');
-    const canEdit = canEditRoster();
-    let html = '';
+  function renderRst() {
+    const wrap = document.getElementById('rst-wrap');
+    if (!wrap) return;
+    const canEdit = canEditRst();
+    const COL_W = ['28px','18%','12%','15%','10%','10%','8%','13%','7%', canEdit?'30px':''];
 
-    SECTIONS.forEach(sec => {
-      const rows = ROSTER_DATA.filter(r => r.section === sec.key);
-      html += `<div style="margin-bottom:1.5rem;">
-        <div style="background:#1a3a6b;color:#c8d8f0;font-size:12px;font-weight:700;letter-spacing:0.06em;padding:8px 14px;border-radius:8px 8px 0 0;">${sec.label}</div>
-        <div style="overflow-x:auto;border:1px solid #c2d4ee;border-top:none;border-radius:0 0 8px 8px;">
-        <table class="roster-table" style="min-width:100%;width:100%;">
-          <thead>
-            <tr>
-              <th style="width:32px;">#</th>
-              <th style="min-width:130px;">Имя и Фамилия</th>
-              <th style="min-width:110px;">Звание</th>
-              <th style="min-width:120px;">Должность</th>
-              <th style="min-width:95px;">Дата назначения</th>
-              <th style="min-width:95px;">Дата посл. повышения</th>
-              <th style="min-width:70px;">Личное дело</th>
-              <th style="min-width:130px;">Допуск к повышению</th>
-              <th style="min-width:65px;">Выговоры</th>
-              ${canEdit ? '<th style="width:36px;"></th>' : ''}
-            </tr>
-          </thead>
+    let html = '';
+    RST_SECTIONS.forEach(sec => {
+      const rows = RST.filter(r => r.section === sec.key);
+      const cols = canEdit ? 10 : 9;
+      const rankOpts = RST_RANKS.map(r => `<option>${r}</option>`).join('');
+      const posOpts  = RST_POS.map(p => `<option>${p}</option>`).join('');
+      const admOpts  = RST_ADM.map(a => `<option>${a}</option>`).join('');
+
+      html += `<div class="rt-section">
+        <div class="rt-section-header">${sec.label}</div>
+        <div class="rt-scroll">
+        <table class="rt">
+          <colgroup>
+            <col style="width:28px"><col style="width:18%"><col style="width:12%"><col style="width:14%">
+            <col style="width:10%"><col style="width:10%"><col style="width:8%"><col style="width:13%">
+            <col style="width:7%">${canEdit ? '<col style="width:30px">' : ''}
+          </colgroup>
+          <thead><tr>
+            <th>#</th><th>Имя и Фамилия</th><th>Звание</th><th>Должность</th>
+            <th>Дата назн.</th><th>Дата повыш.</th><th>Личное дело</th>
+            <th>Допуск</th><th>Выговоры</th>${canEdit ? '<th></th>' : ''}
+          </tr></thead>
           <tbody>`;
 
       if (!rows.length) {
-        html += `<tr><td colspan="${canEdit?10:9}" style="text-align:center;padding:1rem;color:#8aa0c8;font-size:12px;">Пусто</td></tr>`;
+        html += `<tr><td colspan="${cols}" style="text-align:center;padding:10px;color:#8aa0c8;font-size:12px;">Пусто</td></tr>`;
       } else {
         rows.forEach((r, i) => {
-          const admitClass = ADMIT_CLASSES[r.admission] || 'admit-early';
-          const rankOpts = RANKS.map(rk => `<option ${r.rank===rk?'selected':''}>${rk}</option>`).join('');
-          const posOpts = POSITIONS_ROSTER.map(p => `<option ${r.position===p?'selected':''}>${p}</option>`).join('');
-
+          const ac = ADM_CLS[r.admission] || 'adm-early';
+          const pc = POS_CLS[r.position] || '';
           if (canEdit) {
+            const rSel = RST_RANKS.map(rk=>`<option${r.rank===rk?' selected':''}>${esc(rk)}</option>`).join('');
+            const pSel = RST_POS.map(p=>`<option${r.position===p?' selected':''}>${esc(p)}</option>`).join('');
+            const aSel = RST_ADM.map(a=>`<option${r.admission===a?' selected':''}>${esc(a)}</option>`).join('');
             html += `<tr>
-              <td style="color:#8aa0c8;font-size:11px;">${i+1}</td>
-              <td><input class="roster-editable" value="${escHtml(r.full_name)}" onblur="saveRF(${r.id},'full_name',this.value)"/></td>
-              <td><select class="roster-pos-select" onchange="saveRF(${r.id},'rank',this.value)"><option value="">—</option>${rankOpts}</select></td>
-              <td><select class="roster-pos-select" onchange="saveRF(${r.id},'position',this.value)"><option value="">—</option>${posOpts}</select></td>
-              <td><input class="roster-editable" value="${escHtml(r.date_assigned)}" onblur="saveRF(${r.id},'date_assigned',this.value)" placeholder="дд.мм.гггг"/></td>
-              <td><input class="roster-editable" value="${escHtml(r.date_last_up)}" onblur="saveRF(${r.id},'date_last_up',this.value)" placeholder="дд.мм.гггг"/></td>
-              <td style="text-align:center;">
-                ${r.personal_link ? `<a href="${escHtml(r.personal_link)}" target="_blank" class="roster-link">sfpd.pa ↗</a><br>` : ''}
-                <input class="roster-editable" value="${escHtml(r.personal_link)}" onblur="saveRF(${r.id},'personal_link',this.value)" placeholder="ссылка" style="font-size:10px;"/>
-              </td>
-              <td>
-                <select class="admit-select ${admitClass}" onchange="saveRF(${r.id},'admission',this.value);updateAdmitColor(this)">
-                  <option value="Рано" ${r.admission==='Рано'?'selected':''}>Рано</option>
-                  <option value="Допущен(а)" ${r.admission==='Допущен(а)'?'selected':''}>Допущен(а)</option>
-                  <option value="Не допущен(а)" ${r.admission==='Не допущен(а)'?'selected':''}>Не допущен(а)</option>
-                  <option value="На усмотрение" ${r.admission==='На усмотрение'?'selected':''}>На усмотрение</option>
-                </select>
-              </td>
-              <td><input class="roster-editable" value="${escHtml(r.warnings||'0/3')}" onblur="saveRF(${r.id},'warnings',this.value)" style="width:44px;text-align:center;"/></td>
-              <td><button class="roster-del-btn" onclick="delRosterRow(${r.id})">✕</button></td>
+              <td class="num-cell">${i+1}</td>
+              <td><input class="re" value="${esc(r.full_name)}" onblur="rstSave(${r.id},'full_name',this.value)"/></td>
+              <td><select class="rs" onchange="rstSave(${r.id},'rank',this.value)"><option value="">—</option>${rSel}</select></td>
+              <td><select class="rs ${pc}" onchange="rstSave(${r.id},'position',this.value);this.className='rs '+(POS_CLS[this.value]||'')"><option value="">—</option>${pSel}</select></td>
+              <td><input class="re" value="${esc(r.date_assigned)}" onblur="rstSave(${r.id},'date_assigned',this.value)" placeholder="дд.мм.гггг"/></td>
+              <td><input class="re" value="${esc(r.date_last_up)}" onblur="rstSave(${r.id},'date_last_up',this.value)" placeholder="дд.мм.гггг"/></td>
+              <td>${r.personal_link ? `<a href="${esc(r.personal_link)}" target="_blank" class="plink">sfpd.pa ↗</a>` : `<input class="re" value="" onblur="rstSave(${r.id},'personal_link',this.value)" placeholder="ссылка" style="font-size:10px;"/>`}</td>
+              <td><select class="adm ${ac}" onchange="rstSave(${r.id},'admission',this.value);this.className='adm '+(ADM_CLS[this.value]||'adm-early')">${aSel}</select></td>
+              <td><input class="re" value="${esc(r.warnings||'0/3')}" onblur="rstSave(${r.id},'warnings',this.value)" style="width:36px;"/></td>
+              <td><button class="del-btn" onclick="rstDel(${r.id})">✕</button></td>
             </tr>`;
           } else {
             html += `<tr>
-              <td style="color:#8aa0c8;font-size:11px;">${i+1}</td>
-              <td>${escHtml(r.full_name)}</td>
-              <td>${escHtml(r.rank)}</td>
-              <td>${escHtml(r.position)}</td>
-              <td>${escHtml(r.date_assigned)}</td>
-              <td>${escHtml(r.date_last_up)}</td>
-              <td style="text-align:center;">${r.personal_link ? `<a href="${escHtml(r.personal_link)}" target="_blank" class="roster-link">sfpd.pa ↗</a>` : '—'}</td>
-              <td><span class="admit-select ${admitClass}" style="pointer-events:none;">${escHtml(r.admission)}</span></td>
-              <td style="text-align:center;">${escHtml(r.warnings||'0/3')}</td>
+              <td class="num-cell">${i+1}</td>
+              <td>${esc(r.full_name)}</td>
+              <td>${esc(r.rank)}</td>
+              <td class="${pc}">${esc(r.position)}</td>
+              <td>${esc(r.date_assigned)}</td>
+              <td>${esc(r.date_last_up)}</td>
+              <td>${r.personal_link ? `<a href="${esc(r.personal_link)}" target="_blank" class="plink">sfpd.pa ↗</a>` : '—'}</td>
+              <td><span class="adm ${ac}" style="pointer-events:none;display:inline-block;">${esc(r.admission)}</span></td>
+              <td>${esc(r.warnings||'0/3')}</td>
             </tr>`;
           }
         });
       }
-
       html += `</tbody></table></div></div>`;
     });
-
     wrap.innerHTML = html;
   }
 
-  function escHtml(str) {
-    if (!str) return '';
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  function rstShowSaved() {
+    const el = document.getElementById('rst-saved');
+    if (!el) return;
+    el.style.display = 'inline';
+    clearTimeout(rstTimer);
+    rstTimer = setTimeout(() => { el.style.display = 'none'; }, 2500);
   }
 
-  function updateAdmitColor(el) {
-    el.className = 'admit-select ' + (ADMIT_CLASSES[el.value] || 'admit-early');
-  }
-
-  async function saveRF(id, field, value) {
-    const allowed = ['full_name','rank','position','date_assigned','date_last_up','personal_link','admission','warnings'];
-    if (!allowed.includes(field)) return;
+  async function rstSave(id, field, value) {
+    const ok = ['full_name','rank','position','date_assigned','date_last_up','personal_link','admission','warnings'];
+    if (!ok.includes(field)) return;
     await api('PATCH', `/api/roster/${id}`, { field, value });
-    const row = ROSTER_DATA.find(r => r.id == id);
-    if (row) row[field] = value;
-    showRosterSaved();
+    const row = RST.find(r => r.id == id);
+    if (row) { row[field] = value; }
+    rstShowSaved();
+    // Если изменили personal_link или position — перерисовываем
+    if (field === 'personal_link' || field === 'position') renderRst();
   }
 
-  function showRosterSaved() {
-    const ind = document.getElementById('roster-save-indicator');
-    if (!ind) return;
-    ind.style.display = 'inline';
-    clearTimeout(rosterSaveTimer);
-    rosterSaveTimer = setTimeout(() => { ind.style.display = 'none'; }, 2500);
+  async function rstDel(id) {
+    if (!confirm('Удалить эту запись?')) return;
+    await api('DELETE', `/api/roster/${id}`);
+    RST = RST.filter(r => r.id != id);
+    renderRst();
+    rstShowSaved();
   }
 
-  async function addRosterEntry() {
-    if (!canEditRoster()) {
-      alert('Нет прав для добавления записей');
-      return;
-    }
-    const name    = document.getElementById('ra-name').value.trim();
-    const rank    = document.getElementById('ra-rank').value;
-    const pos     = document.getElementById('ra-position').value;
-    const section = document.getElementById('ra-section').value;
-    const errEl   = document.getElementById('ra-error');
+  async function rstAdd() {
+    const name = document.getElementById('fa-name').value.trim();
+    const rank = document.getElementById('fa-rank').value;
+    const pos  = document.getElementById('fa-pos').value;
+    const sec  = document.getElementById('fa-sec').value;
+    const err  = document.getElementById('fa-err');
 
-    if (!name || !rank || !pos || !section) {
-      errEl.textContent = 'Заполните обязательные поля: Имя, Звание, Должность';
-      errEl.style.display = 'block';
-      return;
+    if (!name || !rank || !pos || !sec) {
+      err.textContent = 'Заполните: Имя, Звание, Должность и выберите раздел';
+      err.style.display = 'block'; return;
     }
-    errEl.style.display = 'none';
+    err.style.display = 'none';
 
-    // Форматируем даты
-    const dateA = document.getElementById('ra-date-assigned').value;
-    const dateL = document.getElementById('ra-date-last').value;
-    function fmtD(d) { if (!d) return ''; const [y,m,dd]=d.split('-'); return dd+'.'+m+'.'+y; }
+    const dA = document.getElementById('fa-date-a').value;
+    const dL = document.getElementById('fa-date-l').value;
+    const fmtDate = d => { if(!d) return ''; const [y,m,dd]=d.split('-'); return dd+'.'+m+'.'+y; };
 
     const body = {
-      section,
-      full_name:     name,
-      rank,
-      position:      pos,
-      date_assigned: fmtD(dateA),
-      date_last_up:  fmtD(dateL),
-      personal_link: document.getElementById('ra-link').value.trim(),
-      admission:     document.getElementById('ra-admission').value,
-      warnings:      document.getElementById('ra-warnings').value || '0/3',
+      section: sec, full_name: name, rank, position: pos,
+      date_assigned: fmtDate(dA), date_last_up: fmtDate(dL),
+      personal_link: document.getElementById('fa-link').value.trim(),
+      admission: document.getElementById('fa-adm').value,
+      warnings: document.getElementById('fa-warn').value || '0/3',
     };
 
     const data = await api('POST', '/api/roster/full', body);
     if (data.success) {
-      ROSTER_DATA.push(data.row);
-      renderAllRoster();
-      showRosterSaved();
-      // Очищаем форму
-      ['ra-name','ra-link','ra-warnings'].forEach(id => { const el = document.getElementById(id); if(el) el.value = id==='ra-warnings'?'0/3':''; });
-      ['ra-rank','ra-position','ra-admission'].forEach(id => { const el = document.getElementById(id); if(el) el.selectedIndex = 0; });
-      ['ra-date-assigned','ra-date-last'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+      RST.push(data.row);
+      renderRst();
+      rstShowSaved();
+      ['fa-name','fa-link'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+      ['fa-rank','fa-pos','fa-adm'].forEach(id => { const el=document.getElementById(id); if(el) el.selectedIndex=0; });
+      ['fa-date-a','fa-date-l'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+      document.getElementById('fa-warn').value = '0/3';
     } else {
-      errEl.textContent = data.error || 'Ошибка';
-      errEl.style.display = 'block';
+      err.textContent = data.error || 'Ошибка при добавлении';
+      err.style.display = 'block';
     }
   }
 
-  async function delRosterRow(id) {
-    if (!confirm('Удалить эту запись из состава?')) return;
-    await api('DELETE', `/api/roster/${id}`);
-    ROSTER_DATA = ROSTER_DATA.filter(r => r.id != id);
-    renderAllRoster();
-    showRosterSaved();
-  }
-
-  // Старые функции для совместимости
-  async function addRosterRow(section) { /* заменено на форму снизу */ }
+  // Совместимость
+  async function addRosterRow() {}
+  async function addRosterEntry() {}
 
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
