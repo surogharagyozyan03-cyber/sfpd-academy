@@ -955,37 +955,98 @@
       <!-- СОСТАВ PA -->
       <div id="page-roster" class="dashboard-page">
         <div class="section-title">★ Police Academy ★ — Состав</div>
+        <span class="save-indicator" id="roster-save-indicator" style="font-size:13px;color:#1a7a40;margin-bottom:8px;display:none;">✓ Сохранено</span>
 
-        <div class="roster-toolbar">
-          <span class="save-indicator" id="roster-save-indicator">✓ Сохранено</span>
-        </div>
+        <!-- 6 таблиц -->
+        <div id="roster-tables-wrap"></div>
 
-        <div class="roster-wrap">
-          <table class="roster-table" id="roster-table">
-            <thead>
-              <tr>
-                <th style="width:30px;">#</th>
-                <th style="min-width:140px;">Имя и Фамилия</th>
-                <th style="min-width:120px;">Звание</th>
-                <th style="min-width:130px;">Должность</th>
-                <th style="min-width:100px;">Дата назначения</th>
-                <th style="min-width:100px;">Дата последнего повышения</th>
-                <th style="min-width:100px;">Дата следующего повышения</th>
-                <th style="min-width:80px;">Личное дело</th>
-                <th style="min-width:140px;">Допуск к повышению</th>
-                <th style="min-width:80px;">Выговоры</th>
-                <th style="width:40px;"></th>
-              </tr>
-            </thead>
-            <tbody id="roster-tbody">
-              <tr><td colspan="11" style="text-align:center;padding:2rem;color:#8aa0c8;">Загрузка...</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="roster-add-btn" onclick="addRosterRow('leadership')">+ Добавить в руководство</button>
-          <button class="roster-add-btn" onclick="addRosterRow('main')">+ Добавить в основной состав</button>
-          <button class="roster-add-btn" onclick="addRosterRow('trainee')">+ Добавить стажёра</button>
+        <!-- Форма добавления -->
+        <div class="form-card" style="margin-top:1.5rem;">
+          <div class="form-card-title">Добавить запись в состав</div>
+          <div class="form-row">
+            <div class="dash-form-group">
+              <label>Имя и Фамилия <span class="req">*</span></label>
+              <input type="text" id="ra-name" placeholder="Имя_Фамилия" />
+            </div>
+            <div class="dash-form-group">
+              <label>Звание <span class="req">*</span></label>
+              <select id="ra-rank">
+                <option value="">— Выбрать —</option>
+                <option>Кадет</option>
+                <option>Офицер</option>
+                <option>Мл.Сержант</option>
+                <option>Сержант</option>
+                <option>Ст.Сержант</option>
+                <option>Прапорщик</option>
+                <option>Ст.Прапорщик</option>
+                <option>Мл.Лейтенант</option>
+                <option>Лейтенант</option>
+                <option>Ст.Лейтенант</option>
+                <option>Капитан</option>
+                <option>Майор</option>
+                <option>Подполковник</option>
+                <option>Полковник</option>
+                <option>Шериф</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="dash-form-group">
+              <label>Должность <span class="req">*</span></label>
+              <select id="ra-position">
+                <option value="">— Выбрать —</option>
+                <option>Curator of PA</option>
+                <option>Chief of PA</option>
+                <option>Dep.Chief of PA</option>
+                <option>Inspector of PA</option>
+                <option>Instructor of PA</option>
+                <option>Trainee of PA</option>
+                <option>Academy PA</option>
+              </select>
+            </div>
+            <div class="dash-form-group">
+              <label>Допуск к повышению</label>
+              <select id="ra-admission">
+                <option value="Рано">Рано</option>
+                <option value="Допущен(а)">Допущен(а)</option>
+                <option value="Не допущен(а)">Не допущен(а)</option>
+                <option value="На усмотрение">На усмотрение</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="dash-form-group">
+              <label>Дата назначения</label>
+              <input type="date" id="ra-date-assigned" />
+            </div>
+            <div class="dash-form-group">
+              <label>Дата последнего повышения</label>
+              <input type="date" id="ra-date-last" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="dash-form-group">
+              <label>Личное дело (ссылка)</label>
+              <input type="url" id="ra-link" placeholder="https://..." />
+            </div>
+            <div class="dash-form-group">
+              <label>Выговоры</label>
+              <input type="text" id="ra-warnings" placeholder="0/3" value="0/3" />
+            </div>
+          </div>
+          <div class="dash-form-group">
+            <label>Добавить в раздел <span class="req">*</span></label>
+            <select id="ra-section">
+              <option value="leadership">Рук-во</option>
+              <option value="main">Основной состав</option>
+              <option value="trainee">Стажёры</option>
+              <option value="cadets_contract">Кадеты по контракту</option>
+              <option value="transfer">Перевод</option>
+              <option value="interview">По заявлению/собеседованию</option>
+            </select>
+          </div>
+          <div id="ra-error" style="font-size:12px;color:#c03030;margin-bottom:8px;display:none;"></div>
+          <button class="btn-blue" style="margin-top:0.5rem;" onclick="addRosterEntry()">Добавить</button>
         </div>
       </div>
 
@@ -1603,139 +1664,222 @@
   let ROSTER_DATA = [];
   let rosterSaveTimer = null;
 
-  const SECTION_LABELS = {
-    'leadership': 'РУКОВОДСТВО АКАДЕМИИ',
-    'main': 'ОСНОВНОЙ СОСТАВ АКАДЕМИИ',
-    'trainee': 'СТАЖЁРЫ АКАДЕМИИ'
-  };
-
-  const POSITIONS_ROSTER = [
-    'Curator of PA','V-Chief of PA','Dep.Chief of PA','V-Dep.Chief of PA',
-    'Inspector of PA','V-Instructor of PA','Instructor of PA','Trainee of PA'
+  const SECTIONS = [
+    { key: 'leadership',      label: 'РУК-ВО' },
+    { key: 'main',            label: 'ОСНОВНОЙ СОСТАВ АКАДЕМИИ' },
+    { key: 'trainee',         label: 'СТАЖЁРЫ АКАДЕМИИ' },
+    { key: 'cadets_contract', label: 'КАДЕТЫ ПО КОНТРАКТУ' },
+    { key: 'transfer',        label: 'ПЕРЕВОД' },
+    { key: 'interview',       label: 'ПО ЗАЯВЛЕНИЮ/СОБЕСЕДОВАНИЮ' },
   ];
 
-  const POS_COLORS = {
-    'Curator of PA':      'pos-curator',
-    'V-Chief of PA':      'pos-vchief',
-    'Dep.Chief of PA':    'pos-depchief',
-    'V-Dep.Chief of PA':  'pos-vdepchief',
-    'Inspector of PA':    'pos-inspector',
-    'V-Instructor of PA': 'pos-vinstructor',
-    'Instructor of PA':   'pos-instructor',
-    'Trainee of PA':      'pos-trainee',
+  const ADMIT_CLASSES = {
+    'Рано':            'admit-early',
+    'Допущен(а)':      'admit-admitted',
+    'Не допущен(а)':   'admit-rejected',
+    'На усмотрение':   'admit-consider',
   };
 
+  const RANKS = ['Кадет','Офицер','Мл.Сержант','Сержант','Ст.Сержант','Прапорщик','Ст.Прапорщик','Мл.Лейтенант','Лейтенант','Ст.Лейтенант','Капитан','Майор','Подполковник','Полковник','Шериф'];
+  const POSITIONS_ROSTER = ['Curator of PA','Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA','Academy PA'];
+
+  // Проверяем права на редактирование состава
+  function canEditRoster() {
+    const role = CURRENT_USER.role;
+    const pos = CURRENT_USER.position;
+    if (['admin','moderator'].includes(role)) return true;
+    const editPositions = ['Chief of PA','Dep.Chief of PA','Curator of PA'];
+    return editPositions.includes(pos);
+  }
+
+  function fmtDateRoster(str) {
+    if (!str) return '';
+    // Если формат YYYY-MM-DD конвертируем
+    if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+      const [y,m,d] = str.split('-');
+      return d+'.'+m+'.'+y;
+    }
+    return str;
+  }
+
   async function loadRoster() {
-    const tbody = document.getElementById('roster-tbody');
-    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:#8aa0c8;">Загрузка...</td></tr>';
+    const wrap = document.getElementById('roster-tables-wrap');
+    wrap.innerHTML = '<div style="text-align:center;padding:2rem;color:#8aa0c8;">Загрузка...</div>';
     try {
       const data = await api('GET', '/api/roster');
       ROSTER_DATA = data.rows || [];
-      renderRoster();
+      renderAllRoster();
     } catch {
-      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:#c03030;">Ошибка загрузки</td></tr>';
+      wrap.innerHTML = '<div style="text-align:center;padding:2rem;color:#c03030;">Ошибка загрузки</div>';
     }
   }
 
-  function renderRoster() {
-    const tbody = document.getElementById('roster-tbody');
-    if (!ROSTER_DATA.length) {
-      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:#8aa0c8;">Состав пуст. Добавьте записи.</td></tr>';
-      return;
-    }
-
-    const sections = ['leadership','main','trainee'];
+  function renderAllRoster() {
+    const wrap = document.getElementById('roster-tables-wrap');
+    const canEdit = canEditRoster();
     let html = '';
-    let globalIdx = 1;
 
-    sections.forEach(sec => {
-      const rows = ROSTER_DATA.filter(r => r.section === sec);
-      if (!rows.length) return;
+    SECTIONS.forEach(sec => {
+      const rows = ROSTER_DATA.filter(r => r.section === sec.key);
+      html += `<div style="margin-bottom:1.5rem;">
+        <div style="background:#1a3a6b;color:#c8d8f0;font-size:12px;font-weight:700;letter-spacing:0.06em;padding:8px 14px;border-radius:8px 8px 0 0;">${sec.label}</div>
+        <div style="overflow-x:auto;border:1px solid #c2d4ee;border-top:none;border-radius:0 0 8px 8px;">
+        <table class="roster-table" style="min-width:100%;width:100%;">
+          <thead>
+            <tr>
+              <th style="width:32px;">#</th>
+              <th style="min-width:130px;">Имя и Фамилия</th>
+              <th style="min-width:110px;">Звание</th>
+              <th style="min-width:120px;">Должность</th>
+              <th style="min-width:95px;">Дата назначения</th>
+              <th style="min-width:95px;">Дата посл. повышения</th>
+              <th style="min-width:70px;">Личное дело</th>
+              <th style="min-width:130px;">Допуск к повышению</th>
+              <th style="min-width:65px;">Выговоры</th>
+              ${canEdit ? '<th style="width:36px;"></th>' : ''}
+            </tr>
+          </thead>
+          <tbody>`;
 
-      html += `<tr class="roster-section-row"><td colspan="11">${SECTION_LABELS[sec]}</td></tr>`;
+      if (!rows.length) {
+        html += `<tr><td colspan="${canEdit?10:9}" style="text-align:center;padding:1rem;color:#8aa0c8;font-size:12px;">Пусто</td></tr>`;
+      } else {
+        rows.forEach((r, i) => {
+          const admitClass = ADMIT_CLASSES[r.admission] || 'admit-early';
+          const rankOpts = RANKS.map(rk => `<option ${r.rank===rk?'selected':''}>${rk}</option>`).join('');
+          const posOpts = POSITIONS_ROSTER.map(p => `<option ${r.position===p?'selected':''}>${p}</option>`).join('');
 
-      rows.forEach((r, i) => {
-        const posClass = POS_COLORS[r.position] || '';
-        const posOptions = POSITIONS_ROSTER.map(p =>
-          `<option value="${p}" ${r.position === p ? 'selected' : ''}>${p}</option>`
-        ).join('');
+          if (canEdit) {
+            html += `<tr>
+              <td style="color:#8aa0c8;font-size:11px;">${i+1}</td>
+              <td><input class="roster-editable" value="${escHtml(r.full_name)}" onblur="saveRF(${r.id},'full_name',this.value)"/></td>
+              <td><select class="roster-pos-select" onchange="saveRF(${r.id},'rank',this.value)"><option value="">—</option>${rankOpts}</select></td>
+              <td><select class="roster-pos-select" onchange="saveRF(${r.id},'position',this.value)"><option value="">—</option>${posOpts}</select></td>
+              <td><input class="roster-editable" value="${escHtml(r.date_assigned)}" onblur="saveRF(${r.id},'date_assigned',this.value)" placeholder="дд.мм.гггг"/></td>
+              <td><input class="roster-editable" value="${escHtml(r.date_last_up)}" onblur="saveRF(${r.id},'date_last_up',this.value)" placeholder="дд.мм.гггг"/></td>
+              <td style="text-align:center;">
+                ${r.personal_link ? `<a href="${escHtml(r.personal_link)}" target="_blank" class="roster-link">sfpd.pa ↗</a><br>` : ''}
+                <input class="roster-editable" value="${escHtml(r.personal_link)}" onblur="saveRF(${r.id},'personal_link',this.value)" placeholder="ссылка" style="font-size:10px;"/>
+              </td>
+              <td>
+                <select class="admit-select ${admitClass}" onchange="saveRF(${r.id},'admission',this.value);updateAdmitColor(this)">
+                  <option value="Рано" ${r.admission==='Рано'?'selected':''}>Рано</option>
+                  <option value="Допущен(а)" ${r.admission==='Допущен(а)'?'selected':''}>Допущен(а)</option>
+                  <option value="Не допущен(а)" ${r.admission==='Не допущен(а)'?'selected':''}>Не допущен(а)</option>
+                  <option value="На усмотрение" ${r.admission==='На усмотрение'?'selected':''}>На усмотрение</option>
+                </select>
+              </td>
+              <td><input class="roster-editable" value="${escHtml(r.warnings||'0/3')}" onblur="saveRF(${r.id},'warnings',this.value)" style="width:44px;text-align:center;"/></td>
+              <td><button class="roster-del-btn" onclick="delRosterRow(${r.id})">✕</button></td>
+            </tr>`;
+          } else {
+            html += `<tr>
+              <td style="color:#8aa0c8;font-size:11px;">${i+1}</td>
+              <td>${escHtml(r.full_name)}</td>
+              <td>${escHtml(r.rank)}</td>
+              <td>${escHtml(r.position)}</td>
+              <td>${escHtml(r.date_assigned)}</td>
+              <td>${escHtml(r.date_last_up)}</td>
+              <td style="text-align:center;">${r.personal_link ? `<a href="${escHtml(r.personal_link)}" target="_blank" class="roster-link">sfpd.pa ↗</a>` : '—'}</td>
+              <td><span class="admit-select ${admitClass}" style="pointer-events:none;">${escHtml(r.admission)}</span></td>
+              <td style="text-align:center;">${escHtml(r.warnings||'0/3')}</td>
+            </tr>`;
+          }
+        });
+      }
 
-        const admitClass = {
-          'Рано': 'admit-early',
-          'Допущен(а)': 'admit-admitted',
-          'Не Допущен(а)': 'admit-rejected',
-          'На усмотрение': 'admit-consider'
-        }[r.admission] || 'admit-early';
-
-        html += `<tr>
-          <td style="color:#8aa0c8;font-size:11px;">${globalIdx++}</td>
-          <td><input class="roster-editable" value="${r.full_name||''}" onblur="saveRosterField(${r.id},'full_name',this.value)" placeholder="Имя_Фамилия"/></td>
-          <td><input class="roster-editable" value="${r.rank||''}" onblur="saveRosterField(${r.id},'rank',this.value)" placeholder="Звание"/></td>
-          <td>
-            <select class="roster-pos-select" onchange="saveRosterField(${r.id},'position',this.value)">
-              <option value="">— выбрать —</option>
-              ${posOptions}
-            </select>
-          </td>
-          <td><input class="roster-editable" value="${r.date_assigned||''}" onblur="saveRosterField(${r.id},'date_assigned',this.value)" placeholder="дд.мм.гггг"/></td>
-          <td><input class="roster-editable" value="${r.date_last_up||''}" onblur="saveRosterField(${r.id},'date_last_up',this.value)" placeholder="дд.мм.гггг"/></td>
-          <td><input class="roster-editable" value="${r.date_next_up||''}" onblur="saveRosterField(${r.id},'date_next_up',this.value)" placeholder="дд.мм.гггг"/></td>
-          <td>
-            ${r.personal_link
-              ? `<a href="${r.personal_link}" target="_blank" class="roster-link" title="${r.personal_link}">sfpd.pa ↗</a><br><input class="roster-editable" value="${r.personal_link}" onblur="saveRosterField(${r.id},'personal_link',this.value)" style="font-size:10px;" placeholder="ссылка"/>`
-              : `<input class="roster-editable" value="" onblur="saveRosterField(${r.id},'personal_link',this.value)" placeholder="ссылка на дело"/>`
-            }
-          </td>
-          <td>
-            <select class="admit-select ${admitClass}" onchange="saveRosterField(${r.id},'admission',this.value);this.className='admit-select '+({'Рано':'admit-early','Допущен(а)':'admit-admitted','Не Допущен(а)':'admit-rejected','На усмотрение':'admit-consider'}[this.value]||'admit-early')">
-              <option value="Рано" ${r.admission==='Рано'?'selected':''}>Рано</option>
-              <option value="Допущен(а)" ${r.admission==='Допущен(а)'?'selected':''}>Допущен(а)</option>
-              <option value="Не Допущен(а)" ${r.admission==='Не Допущен(а)'?'selected':''}>Не Допущен(а)</option>
-              <option value="На усмотрение" ${r.admission==='На усмотрение'?'selected':''}>На усмотрение</option>
-            </select>
-          </td>
-          <td><input class="roster-editable" value="${r.warnings||'0/3'}" onblur="saveRosterField(${r.id},'warnings',this.value)" style="width:50px;" placeholder="0/3"/></td>
-          <td><button class="roster-del-btn" onclick="deleteRosterRow(${r.id})">✕</button></td>
-        </tr>`;
-      });
+      html += `</tbody></table></div></div>`;
     });
 
-    tbody.innerHTML = html;
+    wrap.innerHTML = html;
   }
 
-  async function saveRosterField(id, field, value) {
+  function escHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function updateAdmitColor(el) {
+    el.className = 'admit-select ' + (ADMIT_CLASSES[el.value] || 'admit-early');
+  }
+
+  async function saveRF(id, field, value) {
+    const allowed = ['full_name','rank','position','date_assigned','date_last_up','personal_link','admission','warnings'];
+    if (!allowed.includes(field)) return;
     await api('PATCH', `/api/roster/${id}`, { field, value });
-    showRosterSaved();
-    // Обновляем локально
     const row = ROSTER_DATA.find(r => r.id == id);
     if (row) row[field] = value;
-    if (field === 'position' || field === 'personal_link') renderRoster();
+    showRosterSaved();
   }
 
   function showRosterSaved() {
     const ind = document.getElementById('roster-save-indicator');
     if (!ind) return;
-    ind.classList.add('show');
+    ind.style.display = 'inline';
     clearTimeout(rosterSaveTimer);
-    rosterSaveTimer = setTimeout(() => ind.classList.remove('show'), 2000);
+    rosterSaveTimer = setTimeout(() => { ind.style.display = 'none'; }, 2500);
   }
 
-  async function addRosterRow(section) {
-    const data = await api('POST', '/api/roster', { section });
+  async function addRosterEntry() {
+    if (!canEditRoster()) {
+      alert('Нет прав для добавления записей');
+      return;
+    }
+    const name    = document.getElementById('ra-name').value.trim();
+    const rank    = document.getElementById('ra-rank').value;
+    const pos     = document.getElementById('ra-position').value;
+    const section = document.getElementById('ra-section').value;
+    const errEl   = document.getElementById('ra-error');
+
+    if (!name || !rank || !pos || !section) {
+      errEl.textContent = 'Заполните обязательные поля: Имя, Звание, Должность';
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+
+    // Форматируем даты
+    const dateA = document.getElementById('ra-date-assigned').value;
+    const dateL = document.getElementById('ra-date-last').value;
+    function fmtD(d) { if (!d) return ''; const [y,m,dd]=d.split('-'); return dd+'.'+m+'.'+y; }
+
+    const body = {
+      section,
+      full_name:     name,
+      rank,
+      position:      pos,
+      date_assigned: fmtD(dateA),
+      date_last_up:  fmtD(dateL),
+      personal_link: document.getElementById('ra-link').value.trim(),
+      admission:     document.getElementById('ra-admission').value,
+      warnings:      document.getElementById('ra-warnings').value || '0/3',
+    };
+
+    const data = await api('POST', '/api/roster/full', body);
     if (data.success) {
       ROSTER_DATA.push(data.row);
-      renderRoster();
+      renderAllRoster();
       showRosterSaved();
+      // Очищаем форму
+      ['ra-name','ra-link','ra-warnings'].forEach(id => { const el = document.getElementById(id); if(el) el.value = id==='ra-warnings'?'0/3':''; });
+      ['ra-rank','ra-position','ra-admission'].forEach(id => { const el = document.getElementById(id); if(el) el.selectedIndex = 0; });
+      ['ra-date-assigned','ra-date-last'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+    } else {
+      errEl.textContent = data.error || 'Ошибка';
+      errEl.style.display = 'block';
     }
   }
 
-  async function deleteRosterRow(id) {
-    if (!confirm('Удалить эту запись?')) return;
+  async function delRosterRow(id) {
+    if (!confirm('Удалить эту запись из состава?')) return;
     await api('DELETE', `/api/roster/${id}`);
     ROSTER_DATA = ROSTER_DATA.filter(r => r.id != id);
-    renderRoster();
+    renderAllRoster();
     showRosterSaved();
   }
+
+  // Старые функции для совместимости
+  async function addRosterRow(section) { /* заменено на форму снизу */ }
 
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
