@@ -8,13 +8,11 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ── ПОДКЛЮЧЕНИЕ К SUPABASE ────────────────────────────────────────────────────
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-// ── СОЗДАНИЕ ТАБЛИЦ ───────────────────────────────────────────────────────────
 async function initDB() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
@@ -51,19 +49,20 @@ async function initDB() {
     ALTER TABLE reports ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMPTZ;
 
     CREATE TABLE IF NOT EXISTS roster (
-      id            SERIAL PRIMARY KEY,
-      section       TEXT NOT NULL DEFAULT 'main',
-      sort_order    INTEGER DEFAULT 0,
-      full_name     TEXT DEFAULT '',
-      rank          TEXT DEFAULT '',
-      position      TEXT DEFAULT '',
-      date_assigned TEXT DEFAULT '',
-      date_last_up  TEXT DEFAULT '',
-      personal_link TEXT DEFAULT '',
-      admission     TEXT DEFAULT 'Рано',
-      warnings      TEXT DEFAULT '0/3',
-      updated_at    TIMESTAMPTZ DEFAULT NOW(),
-      updated_by    TEXT DEFAULT ''
+      id              SERIAL PRIMARY KEY,
+      section         TEXT NOT NULL DEFAULT 'main',
+      sort_order      INTEGER DEFAULT 0,
+      full_name       TEXT DEFAULT '',
+      rank            TEXT DEFAULT '',
+      position        TEXT DEFAULT '',
+      date_assigned   TEXT DEFAULT '',
+      date_last_up    TEXT DEFAULT '',
+      date_next_up    TEXT DEFAULT '',
+      personal_link   TEXT DEFAULT '',
+      admission       TEXT DEFAULT 'Рано',
+      warnings        TEXT DEFAULT '0/3',
+      updated_at      TIMESTAMPTZ DEFAULT NOW(),
+      updated_by      TEXT DEFAULT ''
     );
     ALTER TABLE roster ADD COLUMN IF NOT EXISTS sort_order    INTEGER DEFAULT 0;
     ALTER TABLE roster ADD COLUMN IF NOT EXISTS full_name     TEXT DEFAULT '';
@@ -71,6 +70,7 @@ async function initDB() {
     ALTER TABLE roster ADD COLUMN IF NOT EXISTS position      TEXT DEFAULT '';
     ALTER TABLE roster ADD COLUMN IF NOT EXISTS date_assigned TEXT DEFAULT '';
     ALTER TABLE roster ADD COLUMN IF NOT EXISTS date_last_up  TEXT DEFAULT '';
+    ALTER TABLE roster ADD COLUMN IF NOT EXISTS date_next_up  TEXT DEFAULT '';
     ALTER TABLE roster ADD COLUMN IF NOT EXISTS personal_link TEXT DEFAULT '';
     ALTER TABLE roster ADD COLUMN IF NOT EXISTS admission     TEXT DEFAULT 'Рано';
     ALTER TABLE roster ADD COLUMN IF NOT EXISTS warnings      TEXT DEFAULT '0/3';
@@ -103,11 +103,9 @@ async function initDB() {
     );
     console.log(`Admin set: ${adminNick}`);
   }
-
   console.log('БД готова');
 }
 
-// ── MIDDLEWARE ────────────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -144,24 +142,19 @@ app.post('/api/register', async (req, res) => {
   const { nickname, password, vk_page } = req.body;
   if (!nickname || !password || !vk_page) return res.json({ success: false, error: 'Заполните все поля' });
   if (password.length < 6) return res.json({ success: false, error: 'Пароль минимум 6 символов' });
-
   const existing = await pool.query('SELECT id FROM users WHERE nickname=$1', [nickname]);
   if (existing.rows.length) return res.json({ success: false, error: 'Никнейм уже занят' });
-
   const hash = bcrypt.hashSync(password, 10);
   const ip = getIP(req);
   const count = await pool.query('SELECT COUNT(*) FROM users');
   const isFirst = count.rows[0].count === '0';
-
   const result = await pool.query(
     'INSERT INTO users (nickname, password_hash, vk_page, reg_ip, ip_address, approved, can_use_prefix, role, position) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id',
     [nickname, hash, vk_page, ip, ip, isFirst, isFirst, isFirst ? 'admin' : 'user', isFirst ? 'Chief of PA' : 'Игрок']
   );
-
   if (!isFirst) {
     return res.json({ success: false, pending: true, error: 'Аккаунт создан. Ожидайте одобрения администратора.' });
   }
-
   req.session.userId = result.rows[0].id;
   req.session.nickname = nickname;
   res.json({ success: true, nickname });
@@ -171,36 +164,25 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   const { nickname, password } = req.body;
   if (!nickname || !password) return res.json({ success: false, error: 'Заполните все поля' });
-
   const { rows } = await pool.query('SELECT * FROM users WHERE nickname=$1', [nickname]);
   const user = rows[0];
   const ip = getIP(req);
   const ua = req.headers['user-agent'] || '';
-
   if (!user || !bcrypt.compareSync(password, user.password_hash)) {
     if (user) await pool.query('INSERT INTO login_logs (user_id,ip_address,user_agent,success) VALUES ($1,$2,$3,FALSE)', [user.id, ip, ua]);
     return res.json({ success: false, error: 'Неверный никнейм или пароль' });
   }
-
   if (!user.approved) {
     await pool.query('INSERT INTO login_logs (user_id,ip_address,user_agent,success) VALUES ($1,$2,$3,FALSE)', [user.id, ip, ua]);
     return res.json({ success: false, not_approved: true, error: 'Ваш аккаунт ожидает одобрения администратора' });
   }
-
   await pool.query('UPDATE users SET last_login=NOW(), ip_address=$1 WHERE id=$2', [ip, user.id]);
   await pool.query('INSERT INTO login_logs (user_id,ip_address,user_agent,success) VALUES ($1,$2,$3,TRUE)', [user.id, ip, ua]);
-
   req.session.userId = user.id;
   req.session.nickname = user.nickname;
-
   res.json({
-    success: true,
-    nickname: user.nickname,
-    position: user.position,
-    role: user.role,
-    vk_page: user.vk_page,
-    can_use_prefix: user.can_use_prefix,
-    created_at: user.created_at
+    success: true, nickname: user.nickname, position: user.position,
+    role: user.role, vk_page: user.vk_page, can_use_prefix: user.can_use_prefix, created_at: user.created_at
   });
 });
 
@@ -216,14 +198,10 @@ app.get('/api/me', async (req, res) => {
 // ── ПРОФИЛЬ ───────────────────────────────────────────────────────────────────
 app.patch('/api/profile/position', requireAuth, async (req, res) => {
   const { position } = req.body;
-  const allowed = ['Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA'];
+  const allowed = ['Curator of PA','Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA'];
   if (!allowed.includes(position)) return res.json({ success: false, error: 'Неверная должность' });
-  const { rows } = await pool.query('SELECT can_use_prefix, role FROM users WHERE id=$1', [req.session.userId]);
-  const user = rows[0];
-  if (!['admin','moderator'].includes(user.role) && !user.can_use_prefix) {
-    return res.json({ success: false, error: 'Нет доступа к выбору должности. Обратитесь к администратору.' });
-  }
-  if (user.role === 'user') {
+  const { rows } = await pool.query('SELECT role FROM users WHERE id=$1', [req.session.userId]);
+  if (!['admin','moderator'].includes(rows[0]?.role)) {
     return res.json({ success: false, error: 'Должность назначается только администратором или модератором.' });
   }
   await pool.query('UPDATE users SET position=$1 WHERE id=$2', [position, req.session.userId]);
@@ -277,9 +255,16 @@ app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
   res.json({ success: true });
 });
 
+// Убрать префикс — позиция сразу становится "Игрок"
+app.patch('/api/admin/users/:id/remove-prefix', requireMod, async (req, res) => {
+  await pool.query("UPDATE users SET can_use_prefix=FALSE, position='Игрок' WHERE id=$1", [req.params.id]);
+  res.json({ success: true });
+});
+
+// Выдать конкретный префикс
 app.patch('/api/admin/users/:id/give-prefix', requireMod, async (req, res) => {
   const { prefix_label } = req.body;
-  const allowed = ['Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA'];
+  const allowed = ['Curator of PA','Chief of PA','Dep.Chief of PA','Inspector of PA','Instructor of PA','Trainee of PA'];
   if (!allowed.includes(prefix_label)) return res.json({ success: false, error: 'Неверный префикс' });
   await pool.query('UPDATE users SET can_use_prefix=TRUE, position=$1 WHERE id=$2', [prefix_label, req.params.id]);
   res.json({ success: true });
@@ -314,7 +299,8 @@ app.post('/api/reports', requireAuth, async (req, res) => {
   res.json({ success: true, report: rows[0] });
 });
 
-app.patch('/api/reports/:id/status', requireAuth, async (req, res) => {
+// Изменить статус отчёта — только moderator и admin
+app.patch('/api/reports/:id/status', requireMod, async (req, res) => {
   const { status } = req.body;
   if (!['pending','approved','rejected'].includes(status)) return res.json({ success: false, error: 'Неверный статус' });
   await pool.query('UPDATE reports SET status=$1, reviewed_by=$2, reviewed_at=NOW() WHERE id=$3',
@@ -322,8 +308,9 @@ app.patch('/api/reports/:id/status', requireAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-app.delete('/api/reports/:id', requireAuth, async (req, res) => {
-  await pool.query('DELETE FROM reports WHERE id=$1 AND user_id=$2', [req.params.id, req.session.userId]);
+// Удаление отчётов — только moderator и admin
+app.delete('/api/reports/:id', requireMod, async (req, res) => {
+  await pool.query('DELETE FROM reports WHERE id=$1', [req.params.id]);
   res.json({ success: true });
 });
 
@@ -334,21 +321,21 @@ app.get('/api/roster', requireAuth, async (req, res) => {
 });
 
 app.post('/api/roster/full', requireAuth, async (req, res) => {
-  const { section, full_name, rank, position, date_assigned, date_last_up, personal_link, admission, warnings } = req.body;
+  const { section, full_name, rank, position, date_assigned, date_last_up, date_next_up, personal_link, admission, warnings } = req.body;
   if (!full_name || !rank || !position || !section) return res.json({ success: false, error: 'Заполните обязательные поля' });
   const count = await pool.query('SELECT COUNT(*) FROM roster WHERE section=$1', [section]);
   const { rows } = await pool.query(
-    `INSERT INTO roster (section, sort_order, full_name, rank, position, date_assigned, date_last_up, personal_link, admission, warnings, updated_by)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+    `INSERT INTO roster (section, sort_order, full_name, rank, position, date_assigned, date_last_up, date_next_up, personal_link, admission, warnings, updated_by)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
     [section, parseInt(count.rows[0].count), full_name, rank, position,
-     date_assigned||'', date_last_up||'', personal_link||'', admission||'Рано', warnings||'0/3', req.session.nickname]
+     date_assigned||'', date_last_up||'', date_next_up||'', personal_link||'', admission||'Рано', warnings||'0/3', req.session.nickname]
   );
   res.json({ success: true, row: rows[0] });
 });
 
 app.patch('/api/roster/:id', requireAuth, async (req, res) => {
   const { field, value } = req.body;
-  const allowed = ['full_name','rank','position','date_assigned','date_last_up','personal_link','admission','warnings','sort_order'];
+  const allowed = ['full_name','rank','position','date_assigned','date_last_up','date_next_up','personal_link','admission','warnings','sort_order'];
   if (!allowed.includes(field)) return res.json({ success: false, error: 'Неверное поле' });
   await pool.query(
     `UPDATE roster SET ${field}=$1, updated_at=NOW(), updated_by=$2 WHERE id=$3`,
